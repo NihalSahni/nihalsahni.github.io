@@ -1,12 +1,14 @@
-var MS = document.getElementById("MS");
-var HS = document.getElementById("HS");
+var MS = document.getElementById("Cadet");
+var HS = document.getElementById("Lieutenant");
 var submit = document.getElementById("Submit");
 var questions = "";
+var questions = "";
+var questionType = "";
 function MSSelect() {
-  question = "MS";
+  questions = "MS";
 }
 function HSSelect() {
-  question = "HS";
+  questions = "HS";
 }
 
 MS.onclick = "MSSelect";
@@ -21,8 +23,12 @@ function AddMCQuestion() {
   var ranks = document.getElementById("ranks");
   var subjects = document.getElementById("SubjectContainer");
   var title = document.getElementById("Title");
+
+  CheckQuestion(randomQuestion);
+  var container = document.getElementById("QuestionContainer");
+  container.innerHTML = "";
+
   if (randomQuestion.indexOf("W)") >= 0) {
-    var container = document.getElementById("QuestionContainer");
     container.insertAdjacentHTML(
       "beforeend",
       `
@@ -32,20 +38,31 @@ function AddMCQuestion() {
   <input id=c2 type="checkbox" onclick="check()">X</input>
   <input id=c3 type="checkbox" onclick="check()">Y</input>
   <input id=c4 type="checkbox" onclick="check()">Z</input>
-  `
+  `,
     );
+    questionType = "MC";
   } else {
-    var container = document.getElementById("QuestionContainer");
     container.insertAdjacentHTML(
       "beforeend",
       `
   <h2>${randomQuestion}</h2>
-  <input>
-  `
+  <input id=OpenInput>
+  `,
     );
+    questionType = "OE";
   }
 
   ranks.remove();
   subjects.remove();
   title.innerHTML = "Neural Trials Online";
+}
+function CheckQuestion(question) {
+  if (questionType == "MC") {
+  }
+  if (questionType == "OE") {
+    var input = document.getElementById("OpenInput");
+    if (input.value.includes(MSQuestions[question])) {
+      alert("Correct");
+    }
+  }
 }
