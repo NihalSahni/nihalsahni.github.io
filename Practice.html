@@ -1,9 +1,12 @@
 <h1 id="Title">Trial Configuration</h1>
 <div id="ranks">
-  <button id="Cadet">Cadet</button>
-  <button id="Lieutenant">Lieutenant</button>
+  <button id="Cadet" onclick="MSSelect()">Cadet</button>
+  <button id="Lieutenant" onclick="HSSelect()">Lieutenant</button>
 </div>
 <br>
+<h3>Campaign Length</h3>
+<h3 id="AmountQuestions">30 Questions</h3>
+<input type="Range" min="10", max="100" value="30" id="QuestionSlider" onchange="UpdateQuestions()">
 <div id ="SubjectContainer">
   <button id="Everything">All Subjects</button>
   <input id=Biology type="checkbox" onclick="check()">Biology</input>

@@ -2,23 +2,27 @@ var MS = document.getElementById("Cadet");
 var HS = document.getElementById("Lieutenant");
 var submit = document.getElementById("Submit");
 var questions = "";
-var questions = "";
 var questionType = "";
+var MaxQuestion = 30;
 function MSSelect() {
-  questions = "MS";
+  questions = MSQuestions;
 }
 function HSSelect() {
-  questions = "HS";
+  questions = HSQuestions;
 }
 
-MS.onclick = "MSSelect";
-HS.onclick = "HSSelect";
-
 function AddMCQuestion() {
+  //Question limiter
+  if (MaxQuestion <= 0) {
+    return;
+  } else {
+    MaxQuestion -= 1;
+  }
+  //Adding the Questions
   submit.innerHTML = "Next Phase";
   var randomQuestion =
-    Object.keys(MSQuestions)[
-      Math.floor(Math.random() * Object.keys(MSQuestions).length)
+    Object.keys(questions)[
+      Math.floor(Math.random() * Object.keys(questions).length)
     ];
   var ranks = document.getElementById("ranks");
   var subjects = document.getElementById("SubjectContainer");
@@ -65,4 +69,10 @@ function CheckQuestion(question) {
       alert("Correct");
     }
   }
+}
+function UpdateQuestions() {
+  var h3 = document.getElementById("AmountQuestions");
+  var slider = document.getElementById("QuestionSlider");
+  h3.innerHTML = slider.value + " questions";
+  MaxQuestions = slider.value;
 }

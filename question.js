@@ -263,4 +263,8 @@ MSQuestions = {
     "1, 2, 3",
 };
 
-HSQuestions = { "What is 125x27": "3375" };
+HSQuestions = {
+  "What is 125x27": "3375",
+  "Find the mass of 1 mole of cuprous oxide, or Cu2O. Assume the atomic mass of copper is 64 and oxygen is 16.":
+    "144",
+};
