@@ -129,10 +129,122 @@ MSMath = {
   "4 blue marbles, 3 green marbles, and 3 red marbles are in a jar...": "4/15"
 };
 
-
-HSQuestions = {
-  "What is 125x27": "3375",
-  "Find the mass of 1 mole of cuprous oxide, or Cu2O. Assume the atomic mass of copper is 64 and oxygen is 16.":
-    "144",
+HSBiology = {
+  "Atherosclerotic plaques are composed of what lipid stored in LDL and HDL particles?": "Cholesterol",
+  "In which organ system do the tonsils primarily function?": "Lymphatic",
+  "While its expression can also be increased in certain cancers, human chorionic gonadotropin is most associated with what condition in women?": "Pregnancy",
+  "In the first step of glycolysis, what moiety is added to glucose?": "Phosphate",
+  "Ducks have webbed feet while chickens do not. This morphogenetic difference is mediated by BMP4 and Gremlin, which are proteins involved in what cellular process?": "Apoptosis",
+  "What enzyme joins all of the various Okazaki fragments together in DNA replication?": "DNA ligase",
+  "If nondisjunction occurs in meiosis I, how many of the daughter cells at the end of meiosis will have an abnormal number of chromosomes?": "Four",
+  "What plant vascular tissue is composed of sieve cells and sieve-tube members?": "Phloem",
+  "Basidiomycota is a phylum in what kingdom?": "Fungi",
+  "Some poisonous organisms are brightly colored to demonstrate their toxicity. What is the term for this type of coloring?": "Warning coloration",
+  "In peas, tall is dominant to short, and green is dominant to yellow. If two plants that are each heterozygous for both traits are bred, what is the probability that a given offspring is both tall and yellow?": "3/16",
+  "What technique did Rosalind Franklin use to determine the helical structure of DNA?": "X-ray crystallography",
+  "It is hypothesized that humans derived little to no fitness benefit from dogs in the early stages of their domestication. What best describes the symbiotic relationship between these two species at that time?": "Commensalism",
+  "What chromosome are Barr bodies derived from?": "X",
+  "Identify all of the following three compounds that are derivatives of cholesterol: 1) Testosterone; 2) Cortisol; 3) Retinol.": "1, 2"
 };
+
+
+HSChemistry = {
+  "What is the SI base unit for luminous intensity?": "Candela",
+  "What term best describes the relationship between buckminsterfullerene and graphite?": "Allotropes",
+  "What is the conjugate acid of ammonia?": "Ammonium",
+  "What is the name of the aldehyde with only a single carbon atom?": "Formaldehyde",
+  "Kevin performs a titration using sodium hydroxide as the titrant. He finds that the pH at the equivalence point is above 7. What does this imply about the analyte?": "It is a weak acid",
+  "Identify all of the following four molecules that are linear: 1) Carbon dioxide; 2) Selenium dioxide; 3) Beryllium dichloride; 4) Xenon difluoride.": "1, 3, 4",
+  "What is the value of the reaction quotient when the change in Gibbs free energy is zero?": "K",
+  "Match the flame test colors blue, green, and purple to the following three metals or compounds: 1) Boric acid; 2) Potassium; 3) Cesium.": "1) Green; 2) Purple; 3) Blue",
+  "What principle states that two electrons cannot have the same quantum numbers?": "Pauli exclusion principle",
+  "Which of the following statements is true regarding the energetics of electrochemical cells?": "For a voltaic cell, E-cell is positive and delta G is negative",
+  "Identify all of the following four acids that are considered weak acids: 1) HF; 2) CH3COOH; 3) HCN; 4) H3PO4.": "All",
+  "In what specific orbital or orbitals are a sodium plus ion’s highest energy level electrons?": "2s and 2p",
+  "What is the name of the principle that states that equal volumes of gasses at the same temperature and pressure contain the same number of particles?": "Avogadro’s principle",
+  "Which of the following best describes the role of ammonia in the gas-phase reaction of ammonia with boron trichloride?": "Lewis base"
+};
+
+HSPhysics = {
+  "Kate is tuning her cello's A string by producing an A note on a string that is already tuned and comparing the sounds. Which beat frequency would indicate that the strings are closest to having the same pitch?": "2",
+  "Identify all of the following three statements that are true of freefall: 1) Apparent weightlessness is the sensation that occurs when the gravitational force is negated by air friction; 2) Satellites orbiting the earth are in near free-fall; 3) Objects free-falling on Earth all reach terminal velocity.": "2",
+  "Unlike momentum, angular momentum is not simply the product of angular velocity and mass. What analogous quantity must the angular velocity of a body be multiplied with to give its angular momentum?": "Moment of inertia",
+  "Identify all of the following four types of waves that are mainly transverse: 1) Plucked violin string; 2) Sound wave; 3) Earthquake P wave; 4) Earthquake S wave.": "1, 4",
+  "A remote control car drops from a cliff and travels 19.6 meters before hitting the ground. How long, in seconds, did it spend in the air?": "2",
+  "A certain particle has a potential energy of zero at a given moment. Identify all of the following three statements that must be TRUE of the particle: 1) The force on the particle is zero; 2) The particle is at equilibrium; 3) The particle has zero acceleration.": "None of them",
+  "Which of the following statements is NOT TRUE of Kepler’s laws?": "The second law states that planets move equal distances in equal times",
+  "Light passes from a mineral with an index of refraction of 2.5 into air. Which of the following is closest to the smallest incident angle at which there will be total internal reflection?": "25",
+  "J.J. Thomson won the Nobel Prize in Physics for calculating the charge-to-mass ratio of what particles in cathode rays?": "Electrons",
+  "The x-component and the y-component of an object’s velocity are both 5 meters per second. In meters per second, what is the speed of this object?": "5√2",
+  "What is the general term for the type of material that can be placed between the plates of a parallel-plate capacitor to increase the capacitance?": "Dielectric",
+  "Which of the following physical quantities is least precisely known?": "The value of the gravitational constant",
+  "A certain particle undergoes a constant forward acceleration of two meters per second squared. After five seconds, the particle has moved 45 meters. In meters per second, what was its initial speed?": "4",
+  "A car starting at rest undergoes a constant acceleration of 16 meters per second squared. In meters per second, what is the speed of the car after it has traveled half a meter?": "4"
+};
+
+HSMath = {
+  "Giving your answer as a decimal, increasing a number by 125% is equivalent to multiplying it by what?": "2.25",
+  "Three exterior angles, one at each vertex of a triangle, have measures in the ratio of 5 to 7 to 8. What is the degree measure of the triangle’s smallest interior angle?": "36",
+  "What is the height of a triangle with area 144 and base 36?": "8",
+  "What is the least common multiple of the first 6 positive composite numbers?": "360",
+  "Using the point names A, B, C, D, E, F, G, and H, how many different names are there for octagon ABCDEFGH?": "16",
+  "What are the coordinates of the vertex of the graph of y = –4x^2 – 16x – 9?": "(-2, 7)",
+  "The mean of a set of 5 numbers is 6. Four of the numbers are 2, 3, 5, and 8. What is the fifth number?": "12",
+  "The sums of three whole numbers taken in pairs are 16, 17, and 23. What is the product of these three numbers?": "660",
+  "What is the discriminant of the quadratic function y = x^2 – 5x + 8?": "-7",
+  "Evaluate the integral from x = –10 to 0 of the square root of (100 – x^2) dx.": "25π",
+  "In a Fibonacci-type sequence, if the ninth term is 11 and the tenth term is 18, what is the twelfth term?": "47",
+  "Given g(x) = x^2 – 2x – 4 and f(x) = x – 2, what is the composition g(f(x))?": "x^2 – 6x + 4",
+  "Which of the following numbers is not divisible by 3? W) 2847 X) 5550 Y) 7612 Z) 9330": "7612",
+  "A particle moves along the x-axis. Its position p at any time t is given by p(t) = t^3 – 5t^2 – 3t + 4. What is the particle's acceleration at t = 4?": "14",
+  "Lloyd is asked by his teacher to subtract 4 from a number and multiply the result by 2. Instead, he subtracts 2 and then multiplies the result by 4, giving him 124. What is the correct answer to the teacher’s question?": "58",
+  "What is the product of the two binomials 2x + 3 and 3x – 2?": "6x^2 + 5x – 6",
+  "Identify all of the following 4 types of quadrilaterals that can always be inscribed in a circle: 1) Parallelogram; 2) Rectangle; 3) Rhombus; 4) Kite.": "2",
+  "In the prime factorization of a perfect square, the exponents of the prime factors must be which of the following types of numbers?": "Even",
+  "If f is a continuous function such that the definite integral from 4 to 8 of f(x) dx equals 24, what is the average value of f on the closed interval from 4 to 8?": "6",
+  "If the product of cosine x and sine x is –1/6, what is the value of (cos x – sin x)^2?": "4/3"
+};
+
+HSEarthSpace = {
+  "Horsts and grabens are bounded by what type of fault?": "Normal",
+  "Identify all of the following three regions that are passive margins: 1) East coast of North America; 2) West coast of North America; 3) West coast of Africa.": "1, 3",
+  "RR Lyrae and Cepheid are classes of what type of star?": "Variable",
+  "What planet of the solar system has the highest albedo?": "Venus",
+  "Which layer of Earth's interior is the largest by volume?": "Mantle",
+  "Identify all of the following four locations where groundwater may discharge: 1) Spring; 2) Lake; 3) River; 4) Bay.": "All",
+  "The incus, or anvil, characterizes the shape of what type of cloud that has reached the tropopause?": "Cumulonimbus",
+  "What set of prevailing winds is responsible for the curving of Atlantic hurricanes toward the northeast once they reach temperate latitudes?": "Westerlies",
+  "Hydrogen and helium make up approximately 97 percent of the Sun’s mass. What element, making up about one percent of the Sun’s mass, is the next most abundant?": "Oxygen",
+  "Identify all of the following three aspects of planetary motion that were included in Copernicus’ model of the solar system: 1) The Sun is at the center; 2) Planets have elliptical orbits; 3) The Moon orbits Earth.": "1, 3",
+  "Which of the following statements about Earth’s Moon is true?": "The Moon is the largest satellite in our solar system relative to its parent planet",
+  "Rank the following three planets in order of increasing average density: 1) Saturn; 2) Jupiter; 3) Neptune.": "1, 2, 3",
+  "What is the name for the gap between Saturn’s A and B rings?": "Cassini Division",
+  "In kelvins, which of the following is closest to the radiative equilibrium temperature of Earth?": "250",
+  "What term is used to describe an apron of coalescing alluvial fans?": "Bajada",
+  "Rank the following three carbon reservoirs in order of increasing amount of carbon stored: 1) Terrestrial vegetation and soils; 2) Earth's lithosphere and mantle; 3) Earth's atmosphere.": "3, 1, 2",
+  "In what phase is the Moon when moonrise occurs at noon?": "First quarter",
+  "What stellar spectral type has a spectrum dominated by molecular lines?": "M",
+  "What is the most massive object in the asteroid belt?": "Ceres",
+  "Jet streams are located at what boundary in Earth's atmosphere?": "Tropopause",
+  "Speleothem cave deposits are most typically composed of what type of rock?": "Limestone",
+  "Which of the following types of stars has a luminosity most similar to that of red dwarfs?": "White dwarfs"
+};
+
+HSEnergyQuestions = {
+  "Scientists at Princeton Plasma Physics Lab are developing improvements to the fusion reactions occurring inside a tokamak. These fusion reactions are fueled by what isotopes of hydrogen?": "Deuterium and Tritium",
+  "Researchers at Idaho National Lab are developing practical methods to reduce the cost of biofuel production from biomass. What class of biofuel is made from vegetable oil or animal fat and consists of long-chain alkyl esters?": "Biodiesel",
+  "Scientists at Idaho National Lab are studying cyanobacteria. These organisms perform photosynthesis in what flattened sacs?": "Thylakoids",
+  "Lawrence Berkeley National Lab researchers are developing near-infrared lasers to study chemical reactions. Near-infrared light corresponds to which of the following wavelengths?": "1 micrometer",
+  "Scientists at Berkeley National Laboratory are using artificial intelligence to create dark matter simulations. One neural network learns the training data, while a second tries to fool the first. What is this type of network called?": "Adversarial",
+  "Scientists at SLAC National Accelerator Lab are studying the hormone N-acetyl-5-meth-oxy-tryptamine, produced by the pineal gland. What is it more commonly known as?": "Melatonin",
+  "Scientists supported by the Department of Energy are developing new ways to synthesize carbon fiber. In carbon fiber, what is the hybridization state of the carbon atoms?": "sp2",
+  "Scientists supported by the Department of Energy are producing catalysts for methanol production. They are synthesizing methanol via the oxidation of what organic starting material?": "Methane",
+  "Scientists at Argonne National Lab are researching methods to convert methane to an alcohol. What single-carbon alcohol are they trying to synthesize?": "Methanol",
+  "Argonne National Lab scientists are examining the formation of the solid-electrolyte interphase layers on graphite electrodes in lithium-ion batteries. Which of the following best describes the graphite electrode during battery discharge?": "Anode",
+  "Scientists at Pacific Northwest National Lab are collecting xenon-136 in order to study a special type of double beta decay. What particle does regular beta decay produce that this special type of double beta decay does not?": "Neutrino",
+  "Scientists at Fermi National Lab are studying the decay modes of the lightest group of mesons. What is the name of this group of 3 particles?": "Pions",
+  "Researchers at Los Alamos National Lab are studying the effects of Super El Nino events. Identify all of the following three changes that are consequences of an El Nino event: 1) Increases in soil moisture in India; 2) High air pressure in the Western Pacific; 3) High sea surface temperatures off the coast of Peru.": "2 and 3"
+};
+
+
 
