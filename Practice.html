@@ -8,13 +8,13 @@
 <h3 id="AmountQuestions">30 Questions</h3>
 <input type="Range" min="10", max="100" value="30" id="QuestionSlider" onchange="UpdateQuestions()">
 <div id ="SubjectContainer">
-  <button id="Everything">All Subjects</button>
-  <input id=Biology type="checkbox" onclick="check()">Biology</input>
-  <input id=Physics type="checkbox" onclick="check()">Physics</input>
-  <input id=Chemistry type="checkbox" onclick="check()">Chemistry</input>
-  <input id=Earth type="checkbox" onclick="check()">Earth and Space</input>
-  <input id=Energy type="checkbox" onclick="check()">Energy</input>
-  <input id=Math type="checkbox" onclick="check()">Math</input>
+  <button id="Everything" onclick="(addSubject('Everthing'))">All Subjects</button>
+  <input id=Biology type="checkbox" onclick="(addSubject('Biology'))">Biology</input>
+  <input id=Physics type="checkbox" onclick="(addSubject('Physics'))">Physics</input>
+  <input id=Chemistry type="checkbox" onclick="(addSubject('Chemistry'))">Chemistry</input>
+  <input id=EarthSpace type="checkbox" onclick="(addSubject('EarthSpace'))">Earth and Space</input>
+  <input id=Energy type="checkbox" onclick="(addSubject('Energy'))">Energy</input>
+  <input id=Math type="checkbox" onclick="(addSubject('Math'))">Math</input>
 </div>
 
 <div id="QuestionContainer">
