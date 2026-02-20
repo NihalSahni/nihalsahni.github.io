@@ -87,26 +87,68 @@ function addSubject(subject, checkbox) {
     if (subject == "Math" && checkbox.checked == true) {
       Subjects.push(MSMath);
     } else if (subject == "Math" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSMath) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Physics" && checkbox.checked == true) {
       Subjects.push(MSPhysics);
     } else if (subject == "Physics" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSPhysics) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Chemistry" && checkbox.checked == true) {
       Subjects.push(MSChemistry);
     } else if (subject == "Chemistry" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSChemistry) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Biology" && checkbox.checked == true) {
       Subjects.push(MSBiology);
     } else if (subject == "Biology" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSBiology) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "EarthSpace" && checkbox.checked == true) {
       Subjects.push(MSEarthSpace);
     } else if (subject == "EarthSpace" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSEarthSpace) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Energy" && checkbox.checked == true) {
       Subjects.push(MSEnergy);
     } else if (subject == "Energy" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == MSEnergy) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Everything" && checkbox.checked == true) {
       Subjects.push(MSMath);
@@ -115,33 +157,88 @@ function addSubject(subject, checkbox) {
       Subjects.push(MSBiology);
       Subjects.push(MSEarthSpace);
       Subjects.push(MSEnergy);
+      getElementById("Math").checked = true;
+      getElementById("Physics").checked = true;
+      getElementById("Chemistry").checked = true;
+      getElementById("Biology").checked = true;
+      getElementById("EarthSpace").checked = true;
+      getElementById("Energy").checked = true;
     } else if (subject == "Everything" && checkbox.checked == false) {
+      subject = [];
+      getElementById("Math").checked = false;
+      getElementById("Physics").checked = false;
+      getElementById("Chemistry").checked = false;
+      getElementById("Biology").checked = false;
+      getElementById("EarthSpace").checked = false;
+      getElementById("Energy").checked = false;
     }
   }
   if (Questions == "HS") {
     if (subject == "Math" && checkbox.checked == true) {
       Subjects.push(HSMath);
     } else if (subject == "Math" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSMath) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Physics" && checkbox.checked == true) {
       Subjects.push(HSPhysics);
     } else if (subject == "Physics" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSPhysics) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Chemistry" && checkbox.checked == true) {
       Subjects.push(HSChemistry);
     } else if (subject == "Chemistry" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSChemistry) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Biology" && checkbox.checked == true) {
       Subjects.push(HSBiology);
     } else if (subject == "Biology" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSBiology) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "EarthSpace" && checkbox.checked == true) {
       Subjects.push(HSEarthSpace);
     } else if (subject == "EarthSpace" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSEarthSpace) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Energy" && checkbox.checked == true) {
       Subjects.push(HSEnergy);
     } else if (subject == "Energy" && checkbox.checked == false) {
+      var i = 0;
+      while (i < Subjects.length) {
+        if (Subjects[i] == HSEnergy) {
+          Subjects.splice(i, 1);
+        }
+        i++;
+      }
     }
     if (subject == "Everything" && checkbox.checked == true) {
       Subjects.push(HSMath);
@@ -150,7 +247,20 @@ function addSubject(subject, checkbox) {
       Subjects.push(HSBiology);
       Subjects.push(HSEarthSpace);
       Subjects.push(HSEnergy);
+      getElementById("Math").checked = true;
+      getElementById("Physics").checked = true;
+      getElementById("Chemistry").checked = true;
+      getElementById("Biology").checked = true;
+      getElementById("EarthSpace").checked = true;
+      getElementById("Energy").checked = true;
     } else if (subject == "Everything" && checkbox.checked == false) {
+      subject = [];
+      getElementById("Math").checked = false;
+      getElementById("Physics").checked = false;
+      getElementById("Chemistry").checked = false;
+      getElementById("Biology").checked = false;
+      getElementById("EarthSpace").checked = false;
+      getElementById("Energy").checked = false;
     }
   }
 }
