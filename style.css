@@ -1,0 +1,239 @@
+:root {
+  --bg:      #0a0a1a;
+  --surface: #0f1535;
+  --cyan:    #00f5ff;
+  --magenta: #ff2d78;
+  --green:   #39ff14;
+  --orange:  #ff6b00;
+  --text:    #e8f4ff;
+  --muted:   #6b7db3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 2rem;
+}
+
+h1, h2, h3, h4 {
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan);
+}
+
+a {
+  color: var(--magenta);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan);
+}
+
+button {
+  background: transparent;
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-shadow: 0 0 6px var(--cyan);
+  box-shadow: 0 0 10px var(--cyan)44;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+  background: var(--cyan)22;
+  box-shadow: 0 0 18px var(--cyan);
+}
+
+input[type="range"] {
+  accent-color: var(--cyan);
+}
+
+input[type="text"], input:not([type]) {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  color: var(--text);
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input[type="text"]:focus, input:not([type]):focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan)66;
+}
+
+label {
+  color: var(--text);
+  margin-right: 1rem;
+}
+
+#answer.correct {
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green);
+  font-size: 1.4rem;
+}
+
+#answer.incorrect {
+  color: var(--orange);
+  text-shadow: 0 0 10px var(--orange);
+  font-size: 1.4rem;
+}
+
+.results-screen {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.results-screen h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.results-screen h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 2px solid var(--muted);
+  padding-bottom: 0.25rem;
+}
+
+.overall-score {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.score-ring {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--surface);
+  stroke-width: 12;
+}
+
+.ring-fill {
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s ease;
+}
+
+.score-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.score-pct {
+  font-size: 2.8rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.score-fraction {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.subject-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.subject-row {
+  display: grid;
+  grid-template-columns: 110px 1fr 90px;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 0 0.75rem;
+}
+
+.subject-label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: var(--cyan);
+}
+
+.bar-track {
+  background: var(--surface);
+  border: 1px solid var(--muted)66;
+  border-radius: 6px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.5s ease;
+  min-width: 2px;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.subject-score {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.subject-feedback {
+  grid-column: 2 / 4;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.missed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.missed-card {
+  background: var(--surface);
+  border-left: 4px solid var(--orange);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 0 10px var(--orange)33;
+}
+
+.missed-q {
+  font-weight: bold;
+  margin: 0 0 0.4rem;
+  color: var(--text);
+}
+
+.missed-yours,
+.missed-correct,
+.missed-subject {
+  margin: 0.15rem 0;
+  font-size: 0.9rem;
+}
+
+.missed-yours span   { color: var(--orange); text-shadow: 0 0 6px var(--orange); }
+.missed-correct span { color: var(--green);   text-shadow: 0 0 6px var(--green); font-weight: bold; }
+.missed-subject      { color: var(--muted); font-style: italic; }
+
+.no-misses {
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green);
+  font-weight: bold;
+  font-size: 1.1rem;
+}

@@ -1,266 +1,236 @@
-var MS = document.getElementById("Cadet");
-var HS = document.getElementById("Lieutenant");
-var Subjects = [];
-var Submit = document.getElementById("Submit");
-var Questions = "";
-var QuestionType = "";
-var MaxQuestion = 30;
-function MSSelect() {
-  Questions = "MS";
+const subjectMap = {
+  MS: {
+    Math: MSMath,
+    Physics: MSPhysics,
+    Chemistry: MSChemistry,
+    Biology: MSBiology,
+    EarthSpace: MSEarthSpace,
+    Energy: MSEnergy,
+  },
+  HS: {
+    Math: HSMath,
+    Physics: HSPhysics,
+    Chemistry: HSChemistry,
+    Biology: HSBiology,
+    EarthSpace: HSEarthSpace,
+    Energy: HSEnergyQuestions,
+  },
+};
+
+const allSubjectNames = ["Math", "Physics", "Chemistry", "Biology", "EarthSpace", "Energy"];
+
+let level = "";
+let currentQuestion = "";
+let currentSubject = null;
+let currentSubjectName = "";
+let currentAnswer = "";
+let questionType = "";
+let maxQuestions = 30;
+let selectedSubjects = [];
+const selectedSubjectNames = new Set();
+
+const stats = {};
+const answeredQuestions = [];
+
+const submitBtn = document.getElementById("Submit");
+
+function rebuildSelectedSubjects() {
+  selectedSubjects = [...selectedSubjectNames]
+    .map(n => ({ name: n, data: subjectMap[level][n] }))
+    .filter(s => s.data);
 }
-function HSSelect() {
-  Questions = "HS";
+
+function MSSelect() { level = "MS"; rebuildSelectedSubjects(); }
+function HSSelect() { level = "HS"; rebuildSelectedSubjects(); }
+
+function extractOption(question, letter) {
+  const order = ["W", "X", "Y", "Z"];
+  const idx = order.indexOf(letter);
+  const start = question.indexOf(letter + ") ") + 3;
+  const nextLetter = order[idx + 1];
+  const end = nextLetter ? question.indexOf(nextLetter + ") ") : question.length;
+  return question.slice(start, end).trim();
+}
+
+function getSelectedAnswer(question) {
+  const options = ["W", "X", "Y", "Z"];
+  for (let i = 0; i < options.length; i++) {
+    const checkbox = document.getElementById("c" + (i + 1));
+    if (checkbox && checkbox.checked) {
+      return extractOption(question, options[i]);
+    }
+  }
+  return "";
 }
 
 function AddMCQuestion() {
-  if (Questions == "" || Subjects.length == 0) {
-    return;
+  if (level === "" || selectedSubjects.length === 0) return;
+
+  if (currentQuestion !== "") {
+    checkAndShowAnswer();
   }
 
-  //Question limiter
-  if (MaxQuestion <= 0) {
+  if (maxQuestions <= 0) {
+    showResults();
     return;
-  } else {
-    MaxQuestion -= 1;
   }
-  //Adding the Questions
-  Submit.innerHTML = "Next Phase";
-  var randomSubjects = Subjects[Math.floor(Math.random() * Subjects.length)];
-  var randomQuestion =
-    Object.keys(randomSubjects)[
-      Math.floor(Math.random() * Object.keys(randomSubjects).length)
-    ];
-  var ranks = document.getElementById("ranks");
-  var subjects = document.getElementById("SubjectContainer");
-  var title = document.getElementById("Title");
+  maxQuestions--;
 
-  CheckQuestion(randomQuestion, randomSubjects);
-  var container = document.getElementById("QuestionContainer");
+  submitBtn.innerHTML = "Next Phase";
+  const pick = selectedSubjects[Math.floor(Math.random() * selectedSubjects.length)];
+  currentSubjectName = pick.name;
+  currentSubject = pick.data;
+  currentQuestion = Object.keys(currentSubject)[Math.floor(Math.random() * Object.keys(currentSubject).length)];
+
+  const container = document.getElementById("QuestionContainer");
   container.innerHTML = "";
 
-  if (randomQuestion.indexOf("W)") >= 0) {
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
-  <h2>${randomQuestion}</h2>
-  <h2>Answers</h2>
-  <input id=c1 type= "checkbox" onclick="check()">W</input>
-  <input id=c2 type="checkbox" onclick="check()">X</input>
-  <input id=c3 type="checkbox" onclick="check()">Y</input>
-  <input id=c4 type="checkbox" onclick="check()">Z</input>
-  `,
-    );
-    QuestionType = "MC";
+  if (currentQuestion.includes("W)")) {
+    container.insertAdjacentHTML("beforeend", `
+      <h2>${currentQuestion}</h2>
+      <h2>Answers</h2>
+      <label><input id="c1" type="checkbox"> W</label>
+      <label><input id="c2" type="checkbox"> X</label>
+      <label><input id="c3" type="checkbox"> Y</label>
+      <label><input id="c4" type="checkbox"> Z</label>
+    `);
+    questionType = "MC";
   } else {
-    container.insertAdjacentHTML(
-      "beforeend",
-      `
-  <h2>${randomQuestion}</h2>
-  <input id=OpenInput>
-  `,
-    );
-    QuestionType = "OE";
+    container.insertAdjacentHTML("beforeend", `
+      <h2>${currentQuestion}</h2>
+      <input id="OpenInput">
+    `);
+    questionType = "OE";
   }
 
-  ranks.remove();
-  subjects.remove();
-  title.innerHTML = "Neural Trials Online";
+  document.getElementById("ranks")?.remove();
+  document.getElementById("SubjectContainer")?.remove();
+  document.getElementById("CampaignLength")?.remove();
+  document.getElementById("Title").innerHTML = "Neural Trials Online";
 }
-function CheckQuestion(question, subject) {
-  if (QuestionType == "MC") {
+
+function checkAndShowAnswer() {
+  if (questionType === "MC") {
+    currentAnswer = getSelectedAnswer(currentQuestion);
+  } else if (questionType === "OE") {
+    const input = document.getElementById("OpenInput");
+    currentAnswer = input ? input.value.toLowerCase() : "";
   }
-  if (QuestionType == "OE") {
-    var input = document.getElementById("OpenInput");
-    if (input.value.includes(subject[question])) {
-      alert("Correct");
-    }
-  }
+
+  const correctAnswer = currentSubject[currentQuestion];
+  const isCorrect =
+    currentAnswer.toLowerCase() === correctAnswer.toLowerCase() ||
+    (questionType === "OE" && currentAnswer.includes(correctAnswer.toLowerCase()));
+
+  if (!stats[currentSubjectName]) stats[currentSubjectName] = { correct: 0, total: 0 };
+  stats[currentSubjectName].total++;
+  if (isCorrect) stats[currentSubjectName].correct++;
+
+  answeredQuestions.push({
+    question: currentQuestion,
+    subjectName: currentSubjectName,
+    correctAnswer,
+    userAnswer: currentAnswer,
+    wasCorrect: isCorrect,
+  });
+
+  const answerEl = document.getElementById("answer");
+  answerEl.className = isCorrect ? "correct" : "incorrect";
+  answerEl.innerHTML = isCorrect
+    ? "Correct!"
+    : `Incorrect. The correct answer was: ${correctAnswer}`;
 }
+
 function UpdateQuestions() {
-  var h3 = document.getElementById("AmountQuestions");
-  var slider = document.getElementById("Questionslider");
-  h3.innerHTML = slider.value + " Questions";
-  MaxQuestions = slider.value;
+  const slider = document.getElementById("QuestionSlider");
+  document.getElementById("AmountQuestions").innerHTML = slider.value + " Questions";
+  maxQuestions = Number(slider.value);
 }
-function addSubject(subject, checkbox) {
-  if (Questions == "MS") {
-    if (subject == "Math" && checkbox.checked == true) {
-      Subjects.push(MSMath);
-    } else if (subject == "Math" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSMath) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
+
+function addSubject(subjectName, checkbox) {
+  if (subjectName === "Everything") {
+    if (checkbox.checked) {
+      allSubjectNames.forEach(n => {
+        selectedSubjectNames.add(n);
+        document.getElementById(n).checked = true;
+      });
+    } else {
+      selectedSubjectNames.clear();
+      allSubjectNames.forEach(n => { document.getElementById(n).checked = false; });
     }
-    if (subject == "Physics" && checkbox.checked == true) {
-      Subjects.push(MSPhysics);
-    } else if (subject == "Physics" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSPhysics) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Chemistry" && checkbox.checked == true) {
-      Subjects.push(MSChemistry);
-    } else if (subject == "Chemistry" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSChemistry) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Biology" && checkbox.checked == true) {
-      Subjects.push(MSBiology);
-    } else if (subject == "Biology" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSBiology) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "EarthSpace" && checkbox.checked == true) {
-      Subjects.push(MSEarthSpace);
-    } else if (subject == "EarthSpace" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSEarthSpace) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Energy" && checkbox.checked == true) {
-      Subjects.push(MSEnergy);
-    } else if (subject == "Energy" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == MSEnergy) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Everything" && checkbox.checked == true) {
-      Subjects.push(MSMath);
-      Subjects.push(MSPhysics);
-      Subjects.push(MSChemistry);
-      Subjects.push(MSBiology);
-      Subjects.push(MSEarthSpace);
-      Subjects.push(MSEnergy);
-      getElementById("Math").checked = true;
-      getElementById("Physics").checked = true;
-      getElementById("Chemistry").checked = true;
-      getElementById("Biology").checked = true;
-      getElementById("EarthSpace").checked = true;
-      getElementById("Energy").checked = true;
-    } else if (subject == "Everything" && checkbox.checked == false) {
-      subject = [];
-      getElementById("Math").checked = false;
-      getElementById("Physics").checked = false;
-      getElementById("Chemistry").checked = false;
-      getElementById("Biology").checked = false;
-      getElementById("EarthSpace").checked = false;
-      getElementById("Energy").checked = false;
+  } else {
+    if (checkbox.checked) {
+      selectedSubjectNames.add(subjectName);
+    } else {
+      selectedSubjectNames.delete(subjectName);
     }
   }
-  if (Questions == "HS") {
-    if (subject == "Math" && checkbox.checked == true) {
-      Subjects.push(HSMath);
-    } else if (subject == "Math" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSMath) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Physics" && checkbox.checked == true) {
-      Subjects.push(HSPhysics);
-    } else if (subject == "Physics" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSPhysics) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Chemistry" && checkbox.checked == true) {
-      Subjects.push(HSChemistry);
-    } else if (subject == "Chemistry" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSChemistry) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Biology" && checkbox.checked == true) {
-      Subjects.push(HSBiology);
-    } else if (subject == "Biology" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSBiology) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "EarthSpace" && checkbox.checked == true) {
-      Subjects.push(HSEarthSpace);
-    } else if (subject == "EarthSpace" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSEarthSpace) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Energy" && checkbox.checked == true) {
-      Subjects.push(HSEnergy);
-    } else if (subject == "Energy" && checkbox.checked == false) {
-      var i = 0;
-      while (i < Subjects.length) {
-        if (Subjects[i] == HSEnergy) {
-          Subjects.splice(i, 1);
-        }
-        i++;
-      }
-    }
-    if (subject == "Everything" && checkbox.checked == true) {
-      Subjects.push(HSMath);
-      Subjects.push(HSPhysics);
-      Subjects.push(HSChemistry);
-      Subjects.push(HSBiology);
-      Subjects.push(HSEarthSpace);
-      Subjects.push(HSEnergy);
-      getElementById("Math").checked = true;
-      getElementById("Physics").checked = true;
-      getElementById("Chemistry").checked = true;
-      getElementById("Biology").checked = true;
-      getElementById("EarthSpace").checked = true;
-      getElementById("Energy").checked = true;
-    } else if (subject == "Everything" && checkbox.checked == false) {
-      subject = [];
-      getElementById("Math").checked = false;
-      getElementById("Physics").checked = false;
-      getElementById("Chemistry").checked = false;
-      getElementById("Biology").checked = false;
-      getElementById("EarthSpace").checked = false;
-      getElementById("Energy").checked = false;
-    }
-  }
+
+  if (level !== "") rebuildSelectedSubjects();
+}
+
+function showResults() {
+  const container = document.getElementById("QuestionContainer");
+  document.getElementById("answer").innerHTML = "";
+  submitBtn.style.display = "none";
+
+  const totalAnswered = answeredQuestions.length;
+  const totalCorrect = Object.values(stats).reduce((s, v) => s + v.correct, 0);
+  const overallPct = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) : 0;
+  const scoreColor = overallPct >= 70 ? "#4caf50" : overallPct >= 40 ? "#ff9800" : "#f44336";
+
+  const subjectBarsHTML = Object.entries(stats).map(([name, data]) => {
+    const pct = data.total ? Math.round((data.correct / data.total) * 100) : 0;
+    const color = pct >= 70 ? "#4caf50" : pct >= 40 ? "#ff9800" : "#f44336";
+    const feedback =
+      pct === 100 ? "Perfect — keep it up!" :
+      pct >= 70   ? "Strong — review any misses." :
+      pct >= 40   ? "Needs work — revisit this subject." :
+                    "Struggling — focus study time here.";
+    return `
+      <div class="subject-row">
+        <span class="subject-label">${name}</span>
+        <div class="bar-track">
+          <div class="bar-fill" style="width:${pct}%; background:${color};"></div>
+        </div>
+        <span class="subject-score">${data.correct}/${data.total} (${pct}%)</span>
+        <span class="subject-feedback">${feedback}</span>
+      </div>`;
+  }).join("");
+
+  const missed = answeredQuestions.filter(q => !q.wasCorrect);
+  const missedHTML = missed.length === 0
+    ? `<p class="no-misses">Perfect score — no incorrect answers!</p>`
+    : missed.map(q => `
+      <div class="missed-card">
+        <p class="missed-q">${q.question}</p>
+        <p class="missed-yours">Your answer: <span>${q.userAnswer || "(no answer)"}</span></p>
+        <p class="missed-correct">Correct answer: <span>${q.correctAnswer}</span></p>
+        <p class="missed-subject">Subject: ${q.subjectName}</p>
+      </div>`).join("");
+
+  container.innerHTML = `
+    <div class="results-screen">
+      <h2>Session Complete</h2>
+
+      <div class="overall-score">
+        <svg class="score-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg"   cx="60" cy="60" r="50"/>
+          <circle class="ring-fill" cx="60" cy="60" r="50"
+            stroke="${scoreColor}"
+            stroke-dasharray="${overallPct * 3.14159} 314.159"
+            transform="rotate(-90 60 60)"/>
+        </svg>
+        <div class="score-text">
+          <span class="score-pct" style="color:${scoreColor}">${overallPct}%</span>
+          <span class="score-fraction">${totalCorrect} / ${totalAnswered}</span>
+        </div>
+      </div>
+
+      <h3>Subject Breakdown</h3>
+      <div class="subject-breakdown">${subjectBarsHTML}</div>
+
+      <h3>Missed Questions (${missed.length})</h3>
+      <div class="missed-list">${missedHTML}</div>
+    </div>`;
 }
