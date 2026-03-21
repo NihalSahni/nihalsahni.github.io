@@ -3,36 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <title>Science Bowl Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1 id="Title">Trial Configuration</h1>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
 
-    <div id="ranks">
-      <button id="Cadet" onclick="MSSelect()">Cadet</button>
-      <button id="Lieutenant" onclick="HSSelect()">Lieutenant</button>
+    <h1 id="Title">COMMAND DECK<span class="blink-cursor">|</span></h1>
+
+    <div id="ranks" class="hud-panel">
+      <div class="panel-label">OPERATIVE CLASS</div>
+      <button id="Cadet" onclick="MSSelect()">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
+      <button id="Lieutenant" onclick="HSSelect()">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
     </div>
 
-    <div id="CampaignLength">
-      <br />
-      <h3>Campaign Length</h3>
-      <h3 id="AmountQuestions">30 Questions</h3>
-      <input type="range" min="10" max="100" value="30" id="QuestionSlider" onchange="UpdateQuestions()" />
+    <div id="CampaignLength" class="hud-panel">
+      <div class="panel-label">OPERATION SCALE</div>
+      <h3 id="AmountQuestions">30 QUESTIONS</h3>
+      <input type="range" min="10" max="100" value="30" id="QuestionSlider" oninput="UpdateQuestions()" />
     </div>
 
-    <div id="SubjectContainer">
-      <label><input id="Everything" type="checkbox" onclick="addSubject('Everything', this)" /> All Subjects</label>
-      <label><input id="Biology"    type="checkbox" onclick="addSubject('Biology', this)"    /> Biology</label>
-      <label><input id="Physics"    type="checkbox" onclick="addSubject('Physics', this)"    /> Physics</label>
-      <label><input id="Chemistry"  type="checkbox" onclick="addSubject('Chemistry', this)"  /> Chemistry</label>
-      <label><input id="EarthSpace" type="checkbox" onclick="addSubject('EarthSpace', this)" /> Earth and Space</label>
-      <label><input id="Energy"     type="checkbox" onclick="addSubject('Energy', this)"     /> Energy</label>
-      <label><input id="Math"       type="checkbox" onclick="addSubject('Math', this)"       /> Math</label>
+    <div id="SubjectContainer" class="hud-panel">
+      <div class="panel-label">MODULE SELECT</div>
+      <label><input id="Everything" type="checkbox" onclick="addSubject('Everything', this)" /> ALL MODULES</label>
+      <label><input id="Biology"    type="checkbox" onclick="addSubject('Biology', this)"    /> BIOLOGY</label>
+      <label><input id="Physics"    type="checkbox" onclick="addSubject('Physics', this)"    /> PHYSICS</label>
+      <label><input id="Chemistry"  type="checkbox" onclick="addSubject('Chemistry', this)"  /> CHEMISTRY</label>
+      <label><input id="EarthSpace" type="checkbox" onclick="addSubject('EarthSpace', this)" /> EARTH &amp; SPACE</label>
+      <label><input id="Energy"     type="checkbox" onclick="addSubject('Energy', this)"     /> ENERGY</label>
+      <label><input id="Math"       type="checkbox" onclick="addSubject('Math', this)"       /> MATHEMATICS</label>
     </div>
 
+    <div id="OptionsPanel" class="hud-panel">
+      <div class="panel-label">MISSION OPTIONS</div>
+      <label><input id="TimedMode" type="checkbox" /> TIMED MODE</label>
+      <label><input id="AudioMode" type="checkbox" /> AUDIO READOUT</label>
+      <div class="option-divider"></div>
+      <span class="option-group-label">QUESTION TYPE</span>
+      <label><input type="radio" name="qtype" value="mixed" checked /> MIXED</label>
+      <label><input type="radio" name="qtype" value="mc" /> MC ONLY</label>
+      <label><input type="radio" name="qtype" value="oe" /> OE ONLY</label>
+    </div>
+
+    <div id="status-indicator">
+      <span id="status-dot" class="dot-offline"></span>
+      <span id="status-text">SYSTEMS OFFLINE</span>
+    </div>
+
+    <div id="streak-display" style="display:none"></div>
+    <div id="key-hint" style="display:none" class="key-hint">W / X / Y / Z to select &nbsp;·&nbsp; ENTER to submit</div>
     <div id="QuestionContainer"></div>
     <h1 id="answer"></h1>
-    <button onclick="AddMCQuestion()" id="Submit">Initiate trial</button>
+    <button onclick="AddMCQuestion()" id="Submit">&#9889; LAUNCH SEQUENCE</button>
 
     <script src="question.js"></script>
     <script src="Practice.js"></script>
