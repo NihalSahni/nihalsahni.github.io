@@ -174,8 +174,7 @@ MSBiology = {
   "What organelles in plant cells contain chlorophyll?": "Chloroplasts",
   "The chordae tendineae attach what set of structures within the heart to the heart wall?":
     "Valves",
-  "What is the most abundant molecule found in the cytosol of cells?":
-    "Water",
+  "What is the most abundant molecule found in the cytosol of cells?": "Water",
   "What biopolymer is the primary constituent of the cell wall of fungi?":
     "Chitin",
   "What is the term for the part of the eye that contains various colored pigments?":
@@ -223,6 +222,27 @@ MSBiology = {
     "Fibrinogen",
   "A surge in luteinizing hormone is the trigger for what event in the human ovarian cycle?":
     "Ovulation",
+  "What vitamin is the most directly associated with the disease scurvy?":
+    "Vitamin C",
+  "Which of the following animals does NOT live in or around Antarctica? W) Seal X) Polar bear Y) Penguin Z) Nematode":
+    "Polar bear",
+  "All chordates possess which of the following? W) A notochord X) A spinal cord Y) Lungs Z) A four-chambered heart":
+    "A notochord",
+  "Sharks and salmon have evolved different adaptations. Which of the following statements is true? W) Sharks lay eggs while salmon give birth to live young X) Sharks have cartilaginous skeletons while salmon have bony skeletons Y) Salmon possess gills while sharks do not Z) Sharks possess opercula while salmon do not":
+    "Sharks have cartilaginous skeletons while salmon have bony skeletons",
+  "Most organisms need nitrogen to create important compounds, but cannot directly access nitrogen from the atmosphere. What is the name of the process that makes atmospheric nitrogen accessible to individuals in the food web?":
+    "Nitrogen fixation",
+  "Arthropods evolved exoskeletons to better adapt to their environments. Which of the following statements does NOT describe a disadvantage associated with exoskeletons? W) Increased risk of desiccation X) Restricted sensory input Y) Restricted movement Z) Limited body size":
+    "Increased risk of desiccation",
+  "Many scientists believe viruses represent the boundary between the living and nonliving. Identify all of the following four areas in which viruses are different from living organisms: 1) presence of genetic material, 2) reproduction, 3) evolution by natural selection, 4) metabolism":
+    "2, 4",
+  "When crossing two heterozygous plants, what percentage of the offspring do you expect to be homozygous? W) 0 X) 25 Y) 50 Z) 75":
+    "50",
+  "Prokaryotic cells divide by the process of: W) Fusion X) Osmosis Y) Mitosis Z) Binary fission":
+    "Binary fission",
+  "What is the term for the part of the eye that contains various colored pigments?":
+    "Iris",
+  "What is the generic name for the trade-named drug Tylenol?": "Acetaminophen",
 };
 
 MSPhysics = {
@@ -337,7 +357,8 @@ MSPhysics = {
     "10",
   "What is twenty and 55 hundredths expressed as a decimal, a mixed number in simplest form, and a percent?":
     "20.55, 20 11/20, 2055%",
-  "What is the name for the individual repeating units of polymers?": "Monomers",
+  "What is the name for the individual repeating units of polymers?":
+    "Monomers",
   "What is the term for the tendency for an object to resist change in its motion?":
     "Inertia",
   "What adjective describes an air parcel when it reaches a relative humidity of 100%?":
@@ -360,8 +381,7 @@ MSPhysics = {
     "Proton",
   "Which of the following is NOT a base unit of measure in the metric system? W) Meter X) Second Y) Gram Z) Ampere":
     "Gram",
-  "How many moles of hydrogen gas may be obtained from one mole of water?":
-    "1",
+  "How many moles of hydrogen gas may be obtained from one mole of water?": "1",
   "How many atoms of magnesium are present in two molecules of the compound Mg3N2? W) 2 X) 3 Y) 6 Z) 8":
     "6",
   "What is the molecular weight in grams per mole of sodium chloride given sodium is 22.99 and chlorine is 35.45?":
@@ -384,6 +404,28 @@ MSPhysics = {
     "Gravity",
   "What is the term for a substance that speeds up a chemical reaction without being consumed?":
     "Catalyst",
+  "Which of the following does the prefix 'ambi' mean, as in the word ambidextrous? W) Equal X) Both Y) Neither Z) Always":
+    "Both",
+  "What is the mass, in grams to the nearest whole number, of one cubic centimeter of pure water at standard temperature and pressure?":
+    "1",
+  "Suppose you measured the voltage of a fully-charged 12-volt battery and you get 3 identical results of 10.45 volts. Which of the following BEST describes your data? W) Precise but not accurate X) Accurate but not precise Y) Both accurate and precise Z) Neither accurate nor precise":
+    "Precise but not accurate",
+  "What technology used to transmit digital information specifically takes advantage of the property of light called total internal reflection?":
+    "Fiber optics",
+  "Identify all of the following four parties who know which subjects are in which treatment groups in a double blind study: 1) the subjects, 2) the investigators who carry out the study, 3) the investigators who plan the study, 4) the statisticians who analyze the data":
+    "4",
+  "Many fish possess a swim bladder filled with air for what purpose? W) Buoyancy X) Circulation Y) Digestion Z) Respiration":
+    "Buoyancy",
+  "If you were to design an experiment to see how high a ball bounces in response to the height from which it is dropped, what would be your independent variable?":
+    "Height from which it is dropped",
+  "A material with which of the following specific heats will require the least heat to change its temperature? W) 10 X) 50 Y) 100 Z) 1000":
+    "10",
+  "Imagine that you are conducting an experiment to test the effects of temperature on plant height. Which of the following describes plant height in this experiment? W) Dependent variable X) Controlled variable Y) Independent variable Z) Predictor variable":
+    "Dependent variable",
+  "Through which of the following mediums does sound travel the slowest? W) Air X) Water Y) Copper Z) Ice":
+    "Air",
+  "Regarding computer technology, which of the following BEST describes the bit? W) An analogue magnetic storage sequence X) A computer processor Y) A memory value of 1 through 8 Z) A binary digit that stores information":
+    "A binary digit that stores information",
 };
 
 MSChemistry = {
@@ -465,6 +507,28 @@ MSChemistry = {
     "3",
   "Identify all of the following three functional groups that contain double bonds: 1) Carboxyl; 2) Amide; 3) Ester":
     "All",
+  "What hard silvery-grey metal is the 9th most common element in the Earth's crust, has an atomic number of 22, and takes its name from the Titans?":
+    "Titanium",
+  "Which of the following is a property of carbon that makes it most effective as a polymer building block? W) It is in period 2 of the Periodic Table X) It is a non-metal Y) It has a valence of 4 Z) It is highly electronegative":
+    "It has a valence of 4",
+  "What is the name for a narrow, cylindrical container that is scaled and used in a laboratory to measure exact amounts of a liquid?":
+    "Graduated cylinder",
+  "Which of the following is true about the use of boiling chips in an experiment? W) The addition of boiling chips increases the safety of the boiling process X) The addition of boiling chips slows down the boiling process Y) Boiling chips provide a surface area upon which chemical reactions can occur Z) Larger boiling chips are more effective than smaller boiling chips":
+    "The addition of boiling chips increases the safety of the boiling process",
+  "What are the 4 physical states of matter?": "Solid, liquid, gas, plasma",
+  "By crushing a tablet of medicine before you take it, you are changing the reaction rate by changing which of the following characteristics of the tablet? W) Surface area X) Amount of reactants Y) Activation energy Z) Km of the reaction":
+    "Surface area",
+  "What element is considered the main building block of life on Earth?":
+    "Carbon",
+  "What is the most abundant element in the universe?": "Hydrogen",
+  "What is the name for a narrow, cylindrical container used in a laboratory to measure exact amounts of a liquid?":
+    "Graduated cylinder",
+  "Which of the following is closest to the ratio of nitrogen molecules to oxygen molecules in the air? W) 1 to 4 X) 1 to 3 Y) 3 to 1 Z) 4 to 1":
+    "4 to 1",
+  "To guard against sparks causing a fire, mechanics aboard submarines during World War II often used tools made from which of the following: W) Chrome plated steel X) Vanadium Y) Cold rolled steel Z) Bronze":
+    "Bronze",
+  "Life on Earth is based on building blocks of what element? W) Oxygen X) Carbon Y) Fluorine Z) Nitrogen":
+    "Carbon",
 };
 
 MSEarthSpace = {
@@ -694,7 +758,8 @@ MSEarthSpace = {
     "Mesozoic",
   "From the following four measurements made on a collection of stars, identify the two that can be plotted against each other to create an H-R diagram: 1) Absolute magnitude; 2) Age; 3) Temperature; 4) Mass":
     "1 and 3",
-  "What two elements primarily make up the core of the Earth?": "Iron and nickel",
+  "What two elements primarily make up the core of the Earth?":
+    "Iron and nickel",
   "Most of the CO2 presently entering Earth's atmosphere is generated by human activities. Which of the following is closest to the percentage of CO2 released into the atmosphere by land and sea volcanoes combined? W) 1 X) 5 Y) 10 Z) 15":
     "1",
   "In what layer of Earth's atmosphere does nearly all weather occur?":
@@ -766,6 +831,37 @@ MSEarthSpace = {
     "Corona",
   "Identify all of the following three descriptions that characterize Earth: 1) Differentiated; 2) Jovian; 3) Highly eccentric orbit":
     "1",
+  "What state in the U.S. has the largest continuous system of mangroves in the world?":
+    "Florida",
+  "Which of the following types of maps would be most useful on a hiking trip through the Alps? W) Synoptic X) Topographic Y) Planimetric Z) Mercator projection":
+    "Topographic",
+  "What is the scientific term often used by astronomers and geoscientists that refers to the point directly overhead?":
+    "Zenith",
+  "The light year is a useful unit of measure for the distance between: W) Planets X) Stars Y) Atoms Z) Asteroids":
+    "Stars",
+  "Which of the following is NOT true of comets? W) They have highly elliptical orbits around the sun X) They leave a trail of particles that reflect sun light Y) They are made of rocks and condensed gases Z) They can only be seen when they pass through the atmosphere":
+    "They can only be seen when they pass through the atmosphere",
+  "In which of the following biomes does MOST of Earth's photosynthesis take place? W) Tundra X) Tropical forests Y) Oceans Z) Taiga":
+    "Oceans",
+  "What is the shape of the orbits of the planets around the Sun in our Solar System?":
+    "Ellipse",
+  "What was the first planet discovered with a telescope?": "Uranus",
+  "The Sahara Desert in Africa is what type of desert? W) Subtropical X) Continental Y) Rain shadow Z) Coastal":
+    "Subtropical",
+  "What is the name of the warm water event originally recognized by anchovy fishermen off the coast of Peru that sometimes occurs near Christmas?":
+    "El Niño",
+  "What inner planet of our solar system is known for its clouds of sulfuric acid and sulfur dioxide?":
+    "Venus",
+  "Which of the following pairs of countries is NOT located on the same tectonic plate? W) Great Britain and Russia X) China and India Y) Greenland and Mexico Z) Malaysia and Norway":
+    "China and India",
+  "The movement of lithospheric plates over the asthenosphere is explained by which theory?":
+    "Continental drift",
+  "What is the name of the process in which sediments compact under pressure and gradually become solid rock?":
+    "Lithification",
+  "What are the three major climatic zones? W) Tropical, subtropical and arctic X) Tropical, subarctic, and arctic Y) Tropical, temperate, and polar Z) Subtropical, tropical, and temperate":
+    "Tropical, temperate, and polar",
+  "Continental rifts and mid-ocean ridges are found at which type of plate boundary?":
+    "Divergent",
 };
 
 MSEnergy = {
@@ -1086,8 +1182,7 @@ MSMath = {
     "96π",
   "The two strands of DNA are held together by hydrogen bonds between what components of the DNA?":
     "Bases",
-  "What is the leading coefficient of the polynomial x^5 – 2x^3 – 4x + 6?":
-    "1",
+  "What is the leading coefficient of the polynomial x^5 – 2x^3 – 4x + 6?": "1",
   "A squirrel runs 11 meters north, 7 meters west, and then 4 meters north. To the nearest whole meter, how far is the squirrel from its original starting point?":
     "17",
   "What phase of mitosis is marked by the sister chromatids traveling in opposite directions away from the metaphase plate?":
@@ -1101,8 +1196,7 @@ MSMath = {
   "In which quadrant does the point (3, -4) lie?": "Fourth",
   "If a 15-degree sector of a circle has area 20 pi, then to the nearest whole number, what is the radius of the circle?":
     "22",
-  "What is the leading coefficient of the polynomial x^4 – 2x^2 – 2x + 4?":
-    "1",
+  "What is the leading coefficient of the polynomial x^4 – 2x^2 – 2x + 4?": "1",
   "How many positive integers less than 300 are divisible by 3 but not by 21?":
     "85",
   "What is the multiplicative inverse of -1/5?": "-5",
@@ -1201,37 +1295,10 @@ MSMath = {
     "720",
   "What is the leading coefficient of the polynomial 6x^3 – 2x^2 + 7x – 9?":
     "6",
-};
-
-MSGeneralScience = {
-  "Which of the following does the prefix 'ambi' mean, as in the word ambidextrous? W) Equal X) Both Y) Neither Z) Always":
-    "Both",
   "Arrange the following 4 choices from the one with the LOWEST mass to the HIGHEST mass: decigram; microgram; centigram; hectogram":
     "Microgram; centigram; decigram; hectogram",
-  "What is the mass, in grams to the nearest whole number, of one cubic centimeter of pure water at standard temperature and pressure?":
-    "1",
-  "What hard silvery-grey metal is the 9th most common element in the Earth's crust, has an atomic number of 22, and takes its name from the Titans?":
-    "Titanium",
-  "What state in the U.S. has the largest continuous system of mangroves in the world?":
-    "Florida",
-  "Which of the following types of maps would be most useful on a hiking trip through the Alps? W) Synoptic X) Topographic Y) Planimetric Z) Mercator projection":
-    "Topographic",
-  "Regarding computer technology, which of the following BEST describes the bit? W) An analogue magnetic storage sequence X) A computer processor Y) A memory value of 1 through 8 Z) A binary digit that stores information":
-    "A binary digit that stores information",
-  "What is the scientific term often used by astronomers and geoscientists that refers to the point directly overhead?":
-    "Zenith",
-  "The light year is a useful unit of measure for the distance between: W) Planets X) Stars Y) Atoms Z) Asteroids":
-    "Stars",
   "Rounded to the nearest whole number, how many centimeters are in 2 inches?":
     "5",
-  "Which of the following is NOT true of comets? W) They have highly elliptical orbits around the sun X) They leave a trail of particles that reflect sun light Y) They are made of rocks and condensed gases Z) They can only be seen when they pass through the atmosphere":
-    "They can only be seen when they pass through the atmosphere",
-  "What vitamin is the most directly associated with the disease scurvy?":
-    "Vitamin C",
-  "Which of the following is the best estimate of what a gallon of water weighs in kilograms? W) 2 kilograms X) 4 kilograms Y) 6 kilograms Z) 8 kilograms":
-    "4 kilograms",
-  "Which of the following animals does NOT live in or around Antarctica? W) Seal X) Polar bear Y) Penguin Z) Nematode":
-    "Polar bear",
   "Convert 10 square feet into square inches": "1440",
   "If you are 5 feet 10 inches tall, which of the following is closest to your height, in meters? W) 1.8 X) 1.7 Y) 1.6 Z) 1.5":
     "1.8",
@@ -1239,88 +1306,14 @@ MSGeneralScience = {
     "6",
   "Which of the following is a number with 3 significant digits? W) 0.003 X) 0.03030 Y) 0.033 Z) 0.0300":
     "0.0300",
-  "In which of the following biomes does MOST of Earth's photosynthesis take place? W) Tundra X) Tropical forests Y) Oceans Z) Taiga":
-    "Oceans",
-  "Which of the following is a property of carbon that makes it most effective as a polymer building block? W) It is in period 2 of the Periodic Table X) It is a non-metal Y) It has a valence of 4 Z) It is highly electronegative":
-    "It has a valence of 4",
-  "Suppose you measured the voltage of a fully-charged 12-volt battery and you get 3 identical results of 10.45 volts. Which of the following BEST describes your data? W) Precise but not accurate X) Accurate but not precise Y) Both accurate and precise Z) Neither accurate nor precise":
-    "Precise but not accurate",
   "Giving your answer in proper scientific notation, convert 100 millimeters into kilometers":
     "1 × 10^-4",
-  "What technology used to transmit digital information specifically takes advantage of the property of light called total internal reflection?":
-    "Fiber optics",
-  "What is the generic name for the trade-named drug Tylenol?": "Acetaminophen",
-  "What is the shape of the orbits of the planets around the Sun in our Solar System?":
-    "Ellipse",
-  "What was the first planet discovered with a telescope?": "Uranus",
-  "What element is considered the main building block of life on Earth?":
-    "Carbon",
-  "What is the most abundant element in the universe?": "Hydrogen",
-  "Which of the following animals does NOT live in or around Antarctica? W) Seal X) Polar bear Y) Penguin Z) Nematode":
-    "Polar bear",
-  "What is the name for a narrow, cylindrical container that is scaled and used in a laboratory to measure exact amounts of a liquid?":
-    "Graduated cylinder",
-  "Which of the following is true about the use of boiling chips in an experiment? W) The addition of boiling chips increases the safety of the boiling process X) The addition of boiling chips slows down the boiling process Y) Boiling chips provide a surface area upon which chemical reactions can occur Z) Larger boiling chips are more effective than smaller boiling chips":
-    "The addition of boiling chips increases the safety of the boiling process",
-  "What are the 4 physical states of matter?": "Solid, liquid, gas, plasma",
-  "The Sahara Desert in Africa is what type of desert? W) Subtropical X) Continental Y) Rain shadow Z) Coastal":
-    "Subtropical",
-  "What is the name of the warm water event originally recognized by anchovy fishermen off the coast of Peru that sometimes occurs near Christmas?":
-    "El Niño",
-  "By crushing a tablet of medicine before you take it, you are changing the reaction rate by changing which of the following characteristics of the tablet? W) Surface area X) Amount of reactants Y) Activation energy Z) Km of the reaction":
-    "Surface area",
-  "All chordates possess which of the following? W) A notochord X) A spinal cord Y) Lungs Z) A four-chambered heart":
-    "A notochord",
-  "Identify all of the following four parties who know which subjects are in which treatment groups in a double blind study: 1) the subjects, 2) the investigators who carry out the study, 3) the investigators who plan the study, 4) the statisticians who analyze the data":
-    "4",
-  "Sharks and salmon have evolved different adaptations. Which of the following statements is true? W) Sharks lay eggs while salmon give birth to live young X) Sharks have cartilaginous skeletons while salmon have bony skeletons Y) Salmon possess gills while sharks do not Z) Sharks possess opercula while salmon do not":
-    "Sharks have cartilaginous skeletons while salmon have bony skeletons",
-  "What inner planet of our solar system is known for its clouds of sulfuric acid and sulfur dioxide?":
-    "Venus",
-  "Most organisms need nitrogen to create important compounds, but cannot directly access nitrogen from the atmosphere. What is the name of the process that makes atmospheric nitrogen accessible to individuals in the food web?":
-    "Nitrogen fixation",
-  "Arthropods evolved exoskeletons to better adapt to their environments. Which of the following statements does NOT describe a disadvantage associated with exoskeletons? W) Increased risk of desiccation X) Restricted sensory input Y) Restricted movement Z) Limited body size":
-    "Increased risk of desiccation",
-  "Many scientists believe viruses represent the boundary between the living and nonliving. Identify all of the following four areas in which viruses are different from living organisms: 1) presence of genetic material, 2) reproduction, 3) evolution by natural selection, 4) metabolism":
-    "2, 4",
-  "Which of the following pairs of countries is NOT located on the same tectonic plate? W) Great Britain and Russia X) China and India Y) Greenland and Mexico Z) Malaysia and Norway":
-    "China and India",
-  "Many fish possess a swim bladder filled with air for what purpose? W) Buoyancy X) Circulation Y) Digestion Z) Respiration":
-    "Buoyancy",
-  "When crossing two heterozygous plants, what percentage of the offspring do you expect to be homozygous? W) 0 X) 25 Y) 50 Z) 75":
-    "50",
-  "The movement of lithospheric plates over the asthenosphere is explained by which theory?":
-    "Continental drift",
-  "What is the name of the process in which sediments compact under pressure and gradually become solid rock?":
-    "Lithification",
-  "Which of the following is closest to the ratio of nitrogen molecules to oxygen molecules in the air? W) 1 to 4 X) 1 to 3 Y) 3 to 1 Z) 4 to 1":
-    "4 to 1",
+  "Which of the following is the best estimate of what a gallon of water weighs in kilograms? W) 2 kilograms X) 4 kilograms Y) 6 kilograms Z) 8 kilograms":
+    "4 kilograms",
   "Assuming that the following numbers represent measurements, and giving your answer with the correct number of significant figures, simplify: 2.5 + 0.50 + 0.055":
     "3.1",
-  "If you were to design an experiment to see how high a ball bounces in response to the height from which it is dropped, what would be your independent variable?":
-    "Height from which it is dropped",
   "What temperature in degrees Celsius is equivalent to 50 degrees Fahrenheit?":
     "10",
-  "Prokaryotic cells divide by the process of: W) Fusion X) Osmosis Y) Mitosis Z) Binary fission":
-    "Binary fission",
-  "What is the term for the part of the eye that contains various colored pigments?":
-    "Iris",
-  "A material with which of the following specific heats will require the least heat to change its temperature? W) 10 X) 50 Y) 100 Z) 1000":
-    "10",
-  "Imagine that you are conducting an experiment to test the effects of temperature on plant height. Which of the following describes plant height in this experiment? W) Dependent variable X) Controlled variable Y) Independent variable Z) Predictor variable":
-    "Dependent variable",
-  "What are the three major climatic zones? W) Tropical, subtropical and arctic X) Tropical, subarctic, and arctic Y) Tropical, temperate, and polar Z) Subtropical, tropical, and temperate":
-    "Tropical, temperate, and polar",
-  "What is the name for a narrow, cylindrical container used in a laboratory to measure exact amounts of a liquid?":
-    "Graduated cylinder",
-  "To guard against sparks causing a fire, mechanics aboard submarines during World War II often used tools made from which of the following: W) Chrome plated steel X) Vanadium Y) Cold rolled steel Z) Bronze":
-    "Bronze",
-  "Life on Earth is based on building blocks of what element? W) Oxygen X) Carbon Y) Fluorine Z) Nitrogen":
-    "Carbon",
-  "Through which of the following mediums does sound travel the slowest? W) Air X) Water Y) Copper Z) Ice":
-    "Air",
-  "Continental rifts and mid-ocean ridges are found at which type of plate boundary?":
-    "Divergent",
 };
 
 HSBiology = {
@@ -1634,6 +1627,8 @@ HSBiology = {
     "Methyl",
   "Whether cleavage is holoblastic or meroblastic in a developing fertilized egg primarily depends on the amount of what substance in the egg?":
     "Yolk",
+  "Identify the following 3 fabrics as derived from animals or plants, respectively: jute; linen; wool":
+    "Jute = plants; linen = plants; wool = animals",
 };
 
 HSChemistry = {
@@ -1897,6 +1892,8 @@ HSChemistry = {
     "2 and 3",
   "Which of the following terms best describes the relationship between 1-butanol and 4-butanol? W) Structural isomers X) Same compound Y) Diastereomers Z) Enantiomers":
     "Same compound",
+  "The reaction of lead oxide in the presence of what acid is fundamental to the operation of the lead-acid rechargeable battery found in most cars?":
+    "Sulfuric acid",
 };
 
 HSPhysics = {
@@ -2173,6 +2170,13 @@ HSPhysics = {
     "2",
   "A large water rocket is in the process of taking off. It is noted that when the rocket weighs 600 newtons and has an exhaust speed of 5 meters per second that it doesn't leave the ground. What must be the volume flow rate of the exhaust in liters per second?":
     "120",
+  "Convert a pressure of 1.2 atmospheres into millimeters mercury": "912",
+  "In one cycle of alternating current, 180° is given to the point at what fractional amount of the way through the cycle?":
+    "1/2",
+  "If the speed of sound in a certain medium is 360 meters per second, what is the wavelength, in meters, of a sound-wave that has a frequency of 60 hertz?":
+    "6",
+  "Which of the following is closest to the conversion of 900 millibars into atmospheres? W) 0.09 X) 0.9 Y) 9.0 Z) 90.0":
+    "0.9",
 };
 
 HSMath = {
@@ -2220,8 +2224,7 @@ HSMath = {
     "2 to 1",
   "Find the coordinates of the center and the radius of the circle: x^2 + y^2 - 8x + 6y - 11 = 0":
     "Center = (4, -3); Radius = 6",
-  "State the quadrant in which θ lies if cot θ < 0 and sec θ > 0":
-    "IV",
+  "State the quadrant in which θ lies if cot θ < 0 and sec θ > 0": "IV",
   "Express the following quotient of complex numbers in simplest a + bi form: (4 + 3i) / (5 – 2i)":
     "14/29 + 23/29 i",
   "If (x-y)/(x+y) = 9/13, what is the value of x/y?": "11/2",
@@ -2254,8 +2257,7 @@ HSMath = {
     "-24",
   "What is the derivative evaluated at x = 7 of the fraction with numerator x^3 – 1 and denominator x – 1?":
     "15",
-  "Evaluate the following expression: log base 3 of 27 + log base 5 of 25":
-    "5",
+  "Evaluate the following expression: log base 3 of 27 + log base 5 of 25": "5",
   "What is the slope of the tangent line to the function F(x) = 1000 – 200x – 5x^2 at x = 4?":
     "-240",
   "What is the value of 60 factorial divided by (59 factorial times 3 factorial)?":
@@ -2386,6 +2388,9 @@ HSMath = {
     "4",
   "What is the derivative evaluated at x = 7 of the fraction with numerator x^3 + 27 and denominator x + 3?":
     "11",
+  "A hexadecimal number is a numeral system with a radix or a base of what?":
+    "16",
+  "Convert 2,000 meters per second into kilometers per hour": "7,200",
 };
 
 HSEarthSpace = {
@@ -2548,25 +2553,26 @@ HSEarthSpace = {
   "Which of the following is a sedimentary rock? W) Scoria X) Granite Y) Basalt Z) Shale":
     "Shale",
   "Identify all of the following three processes that remove nitrogen gas from Earth's atmosphere: 1) Nitrogen fixation; 2) Denitrification; 3) Forest fires":
-"1 only",
-"What star has the lowest apparent magnitude as observed from Earth?": "The Sun",
-"What type of star must be present prior to a Type One-A supernova?":
-"White dwarf",
-"What type of volcanic vent is Wizard Island, the only resurgent dome of Crater Lake that breaks the surface of the water line? W) Shield volcano X) Fissure Y) Cinder cone Z) Stratovolcano":
-"Cinder cone",
-"Joints are often formed in igneous rocks, such as basalt, during what stage of the rock's development?":
-"Cooling",
-"Which of the following rocks can be biogenic? W) Schist X) Basalt Y) Limestone Z) Gabbro":
-"Limestone",
-"What is the name of the geologic event recorded in sedimentary rocks showing the landward migration of the ocean's shoreline?":
-"Transgression",
-"Which of the following is NOT true regarding the moon? W) The dividing line between darkness and light on the moon is called the terminator X) The moon is tidally locked to the Earth Y) Maria are mostly composed of basaltic minerals Z) Many moon rock samples are sedimentary":
-"Many moon rock samples are sedimentary",
-"Which of the following surfaces has the lowest albedo? W) Ice X) Desert Sand Y) Ocean Z) Tundra":
-"Ocean",
-"Which of the following choices is an example of a transform plate boundary? W) Marianas Trench X) San Andreas Fault Y) Great Rift Valley Z) Ural Mountains":
-"San Andreas Fault",
-"What is the term for the lowest temperature that can be attained by evaporating water into the air? W) Minimum temperature X) Wind chill temperature Y) Wet bulb temperature Z) Dry bulb temperature":
+    "1 only",
+  "What star has the lowest apparent magnitude as observed from Earth?":
+    "The Sun",
+  "What type of star must be present prior to a Type One-A supernova?":
+    "White dwarf",
+  "What type of volcanic vent is Wizard Island, the only resurgent dome of Crater Lake that breaks the surface of the water line? W) Shield volcano X) Fissure Y) Cinder cone Z) Stratovolcano":
+    "Cinder cone",
+  "Joints are often formed in igneous rocks, such as basalt, during what stage of the rock's development?":
+    "Cooling",
+  "Which of the following rocks can be biogenic? W) Schist X) Basalt Y) Limestone Z) Gabbro":
+    "Limestone",
+  "What is the name of the geologic event recorded in sedimentary rocks showing the landward migration of the ocean's shoreline?":
+    "Transgression",
+  "Which of the following is NOT true regarding the moon? W) The dividing line between darkness and light on the moon is called the terminator X) The moon is tidally locked to the Earth Y) Maria are mostly composed of basaltic minerals Z) Many moon rock samples are sedimentary":
+    "Many moon rock samples are sedimentary",
+  "Which of the following surfaces has the lowest albedo? W) Ice X) Desert Sand Y) Ocean Z) Tundra":
+    "Ocean",
+  "Which of the following choices is an example of a transform plate boundary? W) Marianas Trench X) San Andreas Fault Y) Great Rift Valley Z) Ural Mountains":
+    "San Andreas Fault",
+  "What is the term for the lowest temperature that can be attained by evaporating water into the air? W) Minimum temperature X) Wind chill temperature Y) Wet bulb temperature Z) Dry bulb temperature":
     "Wet bulb temperature",
   "In South Africa sedimentary rocks of Archean age have been found with rounded pyrite pebbles, which are not found in sedimentary rocks today. What is the most likely reason for this? W) Pyrite is no longer formed on Earth's surface X) Liquid water was not present during the Archean Y) Atmospheric oxygen levels were very low in the Archean Z) Atmospheric pressure was lower in the Archean":
     "Atmospheric oxygen levels were very low in the Archean",
@@ -2620,6 +2626,16 @@ HSEarthSpace = {
     "Six",
   "Identify all of the following three moraine types that form perpendicular to the direction of glacial flow: 1) Lateral moraine; 2) End moraine; 3) Medial moraine":
     "2",
+  "The lush forest of the Pacific northwest is classified as what type of rain forest?":
+    "Temperate",
+  "Rounded to the nearest whole degree, what is the obliquity of the ecliptic?":
+    "23",
+  "What is the proper name for the closest spiral galaxy to the Milky Way?":
+    "Andromeda",
+  "What is the common name for the 88 sections into which the International Astronomical Society has divided the sky?":
+    "Constellations",
+  "What is the most common astronomical term for the interval of time between two successive passages of the Sun through the vernal equinox?":
+    "Tropical year",
 };
 
 HSEnergy = {
@@ -2871,31 +2887,4 @@ HSEnergy = {
     "Oxygen",
   "Researchers at Pacific Northwest National Lab are studying purple sulfur bacteria. Unlike in plants, their photosynthesis does not produce what gas?":
     "Oxygen",
-};
-
-HSGeneralScience = {
-  "A hexadecimal number is a numeral system with a radix or a base of what?":
-    "16",
-  "Convert a pressure of 1.2 atmospheres into millimeters mercury": "912",
-  "The lush forest of the Pacific northwest is classified as what type of rain forest?":
-    "Temperate",
-  "The reaction of lead oxide in the presence of what acid is fundamental to the operation of the lead-acid rechargeable battery found in most cars?":
-    "Sulfuric acid",
-  "Identify the following 3 fabrics as derived from animals or plants, respectively: jute; linen; wool":
-    "Jute = plants; linen = plants; wool = animals",
-  "Rounded to the nearest whole degree, what is the obliquity of the ecliptic?":
-    "23",
-  "What is the proper name for the closest spiral galaxy to the Milky Way?":
-    "Andromeda",
-  "What is the common name for the 88 sections into which the International Astronomical Society has divided the sky?":
-    "Constellations",
-  "In one cycle of alternating current, 180° is given to the point at what fractional amount of the way through the cycle?":
-    "1/2",
-  "If the speed of sound in a certain medium is 360 meters per second, what is the wavelength, in meters, of a sound-wave that has a frequency of 60 hertz?":
-    "6",
-  "Which of the following is closest to the conversion of 900 millibars into atmospheres? W) 0.09 X) 0.9 Y) 9.0 Z) 90.0":
-    "0.9",
-  "Convert 2,000 meters per second into kilometers per hour": "7,200",
-  "What is the most common astronomical term for the interval of time between two successive passages of the Sun through the vernal equinox?":
-    "Tropical year",
 };

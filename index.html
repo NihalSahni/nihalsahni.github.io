@@ -2,28 +2,378 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Science bowl practice</title>
+    <title>Science Bowl Command Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .hero {
+        text-align: center;
+        padding: 3rem 1rem 2rem;
+      }
+
+      .hero-tag {
+        font-size: 0.75rem;
+        letter-spacing: 0.35em;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 6vw, 4rem);
+        color: var(--cyan);
+        text-shadow:
+          0 0 30px var(--cyan),
+          0 0 60px var(--cyan) 44;
+        margin: 0.25rem 0;
+        line-height: 1.15;
+      }
+
+      .hero-sub {
+        font-size: clamp(0.85rem, 2vw, 1.1rem);
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        margin-top: 0.75rem;
+        min-height: 1.5em;
+      }
+
+      .briefing {
+        max-width: 680px;
+        margin: 2rem auto;
+      }
+
+      .briefing p {
+        color: var(--text);
+        line-height: 1.8;
+        font-size: 0.95rem;
+        margin: 0;
+      }
+
+      .briefing p span {
+        color: var(--cyan);
+        text-shadow: 0 0 8px var(--cyan) 88;
+      }
+
+      .missions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        max-width: 900px;
+        margin: 3rem auto 2rem;
+      }
+
+      .mission-card {
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--muted) 44;
+        border-radius: 4px;
+        padding: 2rem 1.5rem 1.5rem;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.2s;
+        cursor: pointer;
+      }
+
+      .mission-card::before {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 16px;
+        height: 16px;
+        border-top: 3px solid var(--accent, var(--cyan));
+        border-left: 3px solid var(--accent, var(--cyan));
+        transition:
+          width 0.2s,
+          height 0.2s;
+      }
+
+      .mission-card::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 16px;
+        height: 16px;
+        border-bottom: 3px solid var(--accent, var(--cyan));
+        border-right: 3px solid var(--accent, var(--cyan));
+        transition:
+          width 0.2s,
+          height 0.2s;
+      }
+
+      .mission-card:hover {
+        border-color: var(--accent, var(--cyan)) 88;
+        box-shadow: 0 0 24px var(--accent, var(--cyan)) 33;
+        transform: translateY(-3px);
+      }
+
+      .mission-card:hover::before,
+      .mission-card:hover::after {
+        width: 26px;
+        height: 26px;
+      }
+
+      .mission-icon {
+        font-size: 2.2rem;
+        line-height: 1;
+      }
+
+      .mission-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        color: var(--accent, var(--cyan));
+        text-shadow: 0 0 8px var(--accent, var(--cyan));
+      }
+
+      .mission-title {
+        font-size: 1.3rem;
+        color: var(--text);
+        margin: 0;
+        text-shadow: none;
+        line-height: 1.2;
+      }
+
+      .mission-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.6;
+        flex: 1;
+      }
+
+      .mission-enter {
+        display: inline-block;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        color: var(--accent, var(--cyan));
+        text-shadow: 0 0 6px var(--accent, var(--cyan));
+        margin-top: 0.5rem;
+      }
+
+      .stat-strip {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        flex-wrap: wrap;
+        max-width: 600px;
+        margin: 1rem auto 3rem;
+        padding: 1.2rem;
+        border-top: 1px solid var(--muted) 33;
+        border-bottom: 1px solid var(--muted) 33;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-num {
+        display: block;
+        font-size: 1.8rem;
+        color: var(--cyan);
+        text-shadow: 0 0 12px var(--cyan);
+      }
+
+      .stat-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+      }
+
+      footer {
+        text-align: center;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        color: var(--muted) 88;
+        padding-bottom: 2rem;
+      }
+    </style>
   </head>
   <body>
-    <h1>What is science bowl?</h1>
-    <h4>
-      Science Bowl is a fast-paced academic competition where students answer
-      challenging questions in subjects like nking, teamwork, and confidence as
-      players work together and buzz in as biology, chemistry, physics, math,
-      and earth science.Science Bowl is great for learning because it makes
-      studying exciting and motivates students to explore more science topics.
-    </h4>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
 
-    <h4>
-      Using this practice website helps students prepare more effectively by
-      giving them timed questions, instant feedback, and realistic practice
-      rounds. It lets players track their progress, improve weak areas, and
-      simulate real competition conditions, making practice easier, faster, and
-      more fun.
-    </h4>
-    <a href="Practice.html">Practice questions/Evaluation</a><br />
-    <a href="BuzzerHP.html">QuickBuzz practice</a><br />
-    <a href="LearnTopics.html">Learn topics</a><br />
+    <div class="hero">
+      <p class="hero-tag">
+        // CLASSIFIED TRAINING NETWORK — CLEARANCE GRANTED //
+      </p>
+      <h1 class="hero-title">SCIENCE BOWL<br />COMMAND NETWORK</h1>
+      <p class="hero-sub" id="hero-sub"></p>
+    </div>
+
+    <div class="briefing hud-panel">
+      <div class="panel-label">MISSION BRIEFING</div>
+      <p>
+        Science Bowl is a <span>fast-paced academic competition</span> where
+        teams race to answer questions in
+        <span>biology, chemistry, physics, math, earth science,</span> and
+        energy. The first team to buzz in with the right answer wins the round —
+        speed and accuracy both matter. This network gives you the tools to
+        <span>train like a pro</span> before you ever step onto the competition
+        floor.
+      </p>
+    </div>
+
+    <div class="missions">
+      <a
+        href="Practice.html"
+        class="mission-card"
+        style="--accent: var(--cyan)"
+      >
+        <div class="mission-icon">🧠</div>
+        <span class="mission-label">MODULE 01</span>
+        <h2 class="mission-title">NEURAL TRIALS</h2>
+        <p class="mission-desc">
+          Timed question drills across all subjects. Track your streaks, review
+          your misses, and get a full debrief after every session.
+        </p>
+        <span class="mission-enter">ENTER MISSION →</span>
+      </a>
+
+      <a
+        href="BuzzerHP.html"
+        class="mission-card"
+        style="--accent: var(--magenta)"
+      >
+        <div class="mission-icon">⚡</div>
+        <span
+          class="mission-label"
+          style="color: var(--magenta); text-shadow: 0 0 8px var(--magenta)"
+          >MODULE 02</span
+        >
+        <h2 class="mission-title">QUICK BUZZ</h2>
+        <p class="mission-desc">
+          Train your reaction time on the buzzer. Race against the clock, beat
+          your best time, and build the muscle memory you need in competition.
+        </p>
+        <span
+          class="mission-enter"
+          style="color: var(--magenta); text-shadow: 0 0 6px var(--magenta)"
+          >ENTER MISSION →</span
+        >
+      </a>
+
+      <a
+        href="LearnTopics.html"
+        class="mission-card"
+        style="--accent: var(--green)"
+      >
+        <div class="mission-icon">📡</div>
+        <span
+          class="mission-label"
+          style="color: var(--green); text-shadow: 0 0 8px var(--green)"
+          >MODULE 03</span
+        >
+        <h2 class="mission-title">INTEL DATABASE</h2>
+        <p class="mission-desc">
+          Study core concepts before you drill. Browse topics by subject and
+          build the knowledge base you need to answer with confidence.
+        </p>
+        <span
+          class="mission-enter"
+          style="color: var(--green); text-shadow: 0 0 6px var(--green)"
+          >ENTER MISSION →</span
+        >
+      </a>
+    </div>
+
+    <footer>
+      SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; TRAIN HARD. BUZZ FAST. WIN.
+    </footer>
+
+    <script src="question.js"></script>
+    <script>
+      // Starfield
+      (function () {
+        const canvas = document.getElementById("starfield");
+        const ctx = canvas.getContext("2d");
+        let stars = [];
+        function resize() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        function init() {
+          stars = Array.from({ length: 200 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.2 + 0.2,
+            speed: Math.random() * 0.25 + 0.04,
+            opacity: Math.random() * 0.6 + 0.2,
+          }));
+        }
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          stars.forEach((s) => {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(232,244,255,${s.opacity})`;
+            ctx.fill();
+            s.y += s.speed;
+            if (s.y > canvas.height) {
+              s.y = 0;
+              s.x = Math.random() * canvas.width;
+            }
+          });
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener("resize", () => {
+          resize();
+          init();
+        });
+        resize();
+        init();
+        draw();
+      })();
+
+      // Typing subtitle
+      const lines = [
+        "INITIALIZING TRAINING PROTOCOLS...",
+        "SELECT YOUR MISSION BELOW.",
+        "GOOD LUCK, OPERATIVE.",
+      ];
+      let li = 0,
+        ci = 0;
+      const el = document.getElementById("hero-sub");
+      function typeLine() {
+        if (ci <= lines[li].length) {
+          el.textContent =
+            lines[li].slice(0, ci) + (ci < lines[li].length ? "|" : "");
+          ci++;
+          setTimeout(typeLine, 45);
+        } else {
+          setTimeout(() => {
+            li = (li + 1) % lines.length;
+            ci = 0;
+            typeLine();
+          }, 2200);
+        }
+      }
+      typeLine();
+
+      // Question count stat
+      const allBanks = [
+        typeof MSBiology !== "undefined" ? MSBiology : {},
+        typeof MSPhysics !== "undefined" ? MSPhysics : {},
+        typeof MSChemistry !== "undefined" ? MSChemistry : {},
+        typeof MSEarthSpace !== "undefined" ? MSEarthSpace : {},
+        typeof MSEnergy !== "undefined" ? MSEnergy : {},
+        typeof MSMath !== "undefined" ? MSMath : {},
+        typeof HSBiology !== "undefined" ? HSBiology : {},
+        typeof HSPhysics !== "undefined" ? HSPhysics : {},
+        typeof HSChemistry !== "undefined" ? HSChemistry : {},
+        typeof HSEarthSpace !== "undefined" ? HSEarthSpace : {},
+        typeof HSEnergyQuestions !== "undefined" ? HSEnergyQuestions : {},
+        typeof HSMath !== "undefined" ? HSMath : {},
+      ];
+      const total = allBanks.reduce((s, b) => s + Object.keys(b).length, 0);
+      document.getElementById("stat-q").textContent = total;
+    </script>
   </body>
 </html>

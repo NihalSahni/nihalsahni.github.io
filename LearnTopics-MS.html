@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MS Intel Database — Science Bowl Command Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .page-wrap { max-width: 1040px; margin: 0 auto; }
+
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--muted); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+      .back-link:hover { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      /* ── MODE TABS ──────────────────────────────── */
+      .mode-tabs { display: flex; max-width: 720px; margin: 1.75rem auto 0; border: 1px solid var(--muted)44; border-radius: 4px; overflow: hidden; }
+      .mode-tab { flex: 1; background: transparent; border: none; border-right: 1px solid var(--muted)44; border-radius: 0; padding: 0.8rem 0.5rem; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
+      .mode-tab:last-child { border-right: none; }
+      .mode-tab:hover { background: var(--surface); color: var(--text); box-shadow: none; }
+      .mode-tab.active { background: var(--cyan)18; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: inset 0 -2px 0 var(--cyan); }
+
+      /* ── SUBJECT FILTER PILLS ───────────────────── */
+      .filter-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 1.5rem 0 1rem; }
+      .filter-pill { background: transparent; border: 1px solid var(--muted)55; border-radius: 2px; padding: 0.3rem 0.75rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+      .filter-pill:hover { border-color: var(--text); color: var(--text); background: transparent; box-shadow: none; }
+      .filter-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: var(--cyan)11; box-shadow: none; }
+
+      /* ── MODE PANELS ────────────────────────────── */
+      .mode-panel { display: none; }
+      .mode-panel.active { display: block; }
+
+      /* ══════════════════════════════════════════════
+         MODE A — SUBJECT TILES
+      ══════════════════════════════════════════════ */
+      #a-detail { display: none; }
+      .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.4rem; margin-top: 0.5rem; }
+
+      .subject-tile { position: relative; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; padding: 2rem 1.5rem 1.5rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.6rem; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+      .subject-tile::before { content: ''; position: absolute; top: -2px; left: -2px; width: 16px; height: 16px; border-top: 3px solid var(--c, var(--cyan)); border-left: 3px solid var(--c, var(--cyan)); transition: width 0.2s, height 0.2s; }
+      .subject-tile::after  { content: ''; position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px; border-bottom: 3px solid var(--c, var(--cyan)); border-right: 3px solid var(--c, var(--cyan)); transition: width 0.2s, height 0.2s; }
+      .subject-tile:hover { border-color: var(--c, var(--cyan))66; box-shadow: 0 0 24px var(--c, var(--cyan))33; transform: translateY(-3px); }
+      .subject-tile:hover::before, .subject-tile:hover::after { width: 26px; height: 26px; }
+
+      .tile-icon  { font-size: 2rem; line-height: 1; }
+      .tile-label { font-size: 0.6rem; letter-spacing: 0.25em; }
+      .tile-name  { font-size: 1.3rem; margin: 0; text-shadow: none; line-height: 1.2; }
+      .tile-enter { font-size: 0.72rem; letter-spacing: 0.18em; margin-top: 0.5rem; }
+
+      /* ── Subject detail view ──────────────────── */
+      .a-back-btn { background: transparent; border: none; padding: 0; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--muted); cursor: pointer; text-shadow: none; box-shadow: none; margin-bottom: 1.75rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
+      .a-back-btn:hover { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); background: transparent; box-shadow: none; }
+
+      .a-subject-header { display: flex; align-items: center; gap: 1.1rem; padding-bottom: 1.25rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--muted)33; }
+      .a-subject-icon { font-size: 2.5rem; }
+      .a-subject-name { font-size: clamp(1.6rem, 4vw, 2.5rem); margin: 0; text-shadow: none; }
+
+      .a-concepts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 0.7rem; }
+
+      .a-concept-card { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; overflow: hidden; transition: border-color 0.15s; }
+      .a-concept-card.open { border-color: var(--muted)66; }
+      .a-concept-term-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.7rem 1rem; cursor: pointer; transition: background 0.15s; user-select: none; }
+      .a-concept-term-row:hover { background: rgba(255,255,255,0.03); }
+      .a-concept-term-text { font-size: 0.85rem; letter-spacing: 0.08em; flex: 1; }
+      .a-concept-arrow { font-size: 0.62rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
+      .a-concept-card.open .a-concept-arrow { transform: rotate(90deg); }
+      .a-concept-def { display: none; padding: 0.4rem 1rem 0.8rem; font-size: 0.78rem; color: var(--muted); line-height: 1.72; border-top: 1px solid var(--muted)18; }
+      .a-concept-card.open .a-concept-def { display: block; }
+
+      /* ══════════════════════════════════════════════
+         MODE B
+      ══════════════════════════════════════════════ */
+      .concept-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.1rem; margin-top: 0.5rem; }
+      .concept-card { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; padding: 1.2rem; position: relative; overflow: hidden; }
+      .concept-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--c, var(--cyan)); }
+      .concept-card-subject { font-size: 0.58rem; letter-spacing: 0.22em; margin-bottom: 0.45rem; display: block; }
+      .concept-card-term { font-size: 1.05rem; letter-spacing: 0.1em; margin: 0 0 0.65rem; text-shadow: none; }
+      .concept-card-def { font-size: 0.78rem; color: var(--muted); line-height: 1.68; margin: 0; }
+      .example-divider { height: 1px; background: var(--muted)22; margin: 0.85rem 0 0.65rem; }
+      .example-label { font-size: 0.58rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 0.35rem; display: block; }
+      .example-q { font-size: 0.76rem; color: var(--text); line-height: 1.5; margin: 0 0 0.35rem; }
+      .example-ans { font-size: 0.78rem; margin: 0; }
+      .no-example { font-size: 0.73rem; color: var(--muted); font-style: italic; margin: 0; }
+
+      /* ══════════════════════════════════════════════
+         MODE C
+      ══════════════════════════════════════════════ */
+      .fc-top-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; max-width: 560px; margin-left: auto; margin-right: auto; }
+      .fc-progress-text { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.12em; }
+      .fc-shuffle-btn { padding: 0.3rem 0.85rem; font-size: 0.68rem; letter-spacing: 0.12em; border-color: var(--muted); color: var(--muted); text-shadow: none; box-shadow: none; }
+      .fc-shuffle-btn:hover { border-color: var(--text); color: var(--text); background: transparent; box-shadow: none; }
+      .fc-progress-bar-wrap { max-width: 560px; margin: 0 auto 1.5rem; height: 3px; background: var(--muted)22; border-radius: 2px; overflow: hidden; }
+      .fc-progress-bar-fill { height: 100%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); transition: width 0.3s ease, background 0.3s; }
+
+      .fc-card-wrap { perspective: 1000px; width: 100%; max-width: 560px; height: 300px; margin: 0 auto; cursor: pointer; }
+      .fc-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.45s ease; }
+      .fc-card-inner.flipped { transform: rotateY(180deg); }
+      .fc-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+      .fc-face-back { transform: rotateY(180deg); }
+      .fc-subject-badge { font-size: 0.58rem; letter-spacing: 0.22em; padding: 0.2rem 0.6rem; border: 1px solid currentColor; margin-bottom: 0.6rem; }
+      .fc-term { font-size: 1.55rem; letter-spacing: 0.1em; margin: 0 0 1rem; text-shadow: none; }
+      .fc-flip-hint { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--muted); margin-top: auto; }
+      .fc-definition { font-size: 0.83rem; color: var(--text); line-height: 1.72; max-width: 480px; }
+
+      .fc-nav { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
+      .fc-nav button { padding: 0.5rem 1.6rem; font-size: 0.72rem; letter-spacing: 0.15em; }
+      .fc-key-hint { text-align: center; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--muted); margin-top: 0.75rem; }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="LearnTopics.html" class="back-link">← SELECT DIVISION</a>
+        <h1 class="page-title">MS INTEL DATABASE</h1>
+        <p class="page-sub">MODULE 03A — MIDDLE SCHOOL CONCEPT REFERENCE &amp; STUDY TOOLS</p>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="A" onclick="switchMode('A')">A — TOPIC CARDS</button>
+        <button class="mode-tab" data-mode="B" onclick="switchMode('B')">B — CONCEPT + EXAMPLE</button>
+        <button class="mode-tab" data-mode="C" onclick="switchMode('C')">C — FLASHCARDS</button>
+      </div>
+
+      <!-- Subject filter pills -->
+      <div class="filter-bar">
+        <button class="filter-pill active" data-subj="ALL"            onclick="setSubject('ALL')">ALL</button>
+        <button class="filter-pill"         data-subj="Biology"        onclick="setSubject('Biology')">BIOLOGY</button>
+        <button class="filter-pill"         data-subj="Chemistry"      onclick="setSubject('Chemistry')">CHEMISTRY</button>
+        <button class="filter-pill"         data-subj="Physics"        onclick="setSubject('Physics')">PHYSICS</button>
+        <button class="filter-pill"         data-subj="Earth Science"  onclick="setSubject('Earth Science')">EARTH SCIENCE</button>
+        <button class="filter-pill"         data-subj="Energy"         onclick="setSubject('Energy')">ENERGY</button>
+        <button class="filter-pill"         data-subj="Math"           onclick="setSubject('Math')">MATH</button>
+      </div>
+
+      <!-- MODE A -->
+      <div id="panel-A" class="mode-panel active">
+        <div id="a-overview">
+          <div class="subject-grid" id="mode-a-grid"></div>
+        </div>
+        <div id="a-detail">
+          <button class="a-back-btn" onclick="closeSubject()">← ALL SUBJECTS</button>
+          <div class="a-subject-header" id="a-subject-header"></div>
+          <div id="a-concepts-grid"></div>
+        </div>
+      </div>
+
+      <!-- MODE B -->
+      <div id="panel-B" class="mode-panel">
+        <div class="concept-cards-grid" id="mode-b-grid"></div>
+      </div>
+
+      <!-- MODE C -->
+      <div id="panel-C" class="mode-panel">
+        <div class="fc-top-row">
+          <span class="fc-progress-text" id="fc-progress">Card 1 of —</span>
+          <button class="fc-shuffle-btn" onclick="shuffleDeck()">⟳ SHUFFLE</button>
+        </div>
+        <div class="fc-progress-bar-wrap">
+          <div class="fc-progress-bar-fill" id="fc-bar"></div>
+        </div>
+        <div class="fc-card-wrap" onclick="flipCard()">
+          <div class="fc-card-inner" id="fc-inner">
+            <div class="fc-face fc-face-front">
+              <span class="fc-subject-badge" id="fc-badge">BIOLOGY</span>
+              <h2 class="fc-term" id="fc-term">—</h2>
+              <span class="fc-flip-hint">CLICK CARD TO FLIP</span>
+            </div>
+            <div class="fc-face fc-face-back">
+              <p class="fc-definition" id="fc-def"></p>
+            </div>
+          </div>
+        </div>
+        <div class="fc-nav">
+          <button onclick="prevCard()">← PREV</button>
+          <button onclick="nextCard()">NEXT →</button>
+        </div>
+        <p class="fc-key-hint">[ ← → ] NAVIGATE &nbsp;·&nbsp; [ SPACE ] FLIP</p>
+      </div>
+
+      <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
+    </div>
+
+    <script src="question.js"></script>
+    <script src="Learn.js"></script>
+    <script>
+      var currentMode    = 'A';
+      var currentSubject = 'ALL';
+      var currentLevel   = 'MS';
+      var fcDeck = [], fcIndex = 0, fcFlipped = false;
+      var modeBBuilt = false;
+
+      function getSubjects() {
+        return currentSubject === 'ALL' ? Object.keys(CONCEPTS) : [currentSubject];
+      }
+
+      function getItems(subject) {
+        return CONCEPTS[subject].items.filter(function(c) { return c.level === 'MS'; });
+      }
+
+      // ── Mode switching ─────────────────────────────
+      function switchMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-tab').forEach(function(t) {
+          t.classList.toggle('active', t.dataset.mode === mode);
+        });
+        document.querySelectorAll('.mode-panel').forEach(function(p) { p.classList.remove('active'); });
+        document.getElementById('panel-' + mode).classList.add('active');
+        if (mode === 'B' && !modeBBuilt) { buildModeB(); modeBBuilt = true; }
+        if (mode === 'B') filterModeB();
+        if (mode === 'C') buildFCDeck();
+      }
+
+      // ── Subject filter ─────────────────────────────
+      function setSubject(subj) {
+        currentSubject = subj;
+        document.querySelectorAll('.filter-pill').forEach(function(p) {
+          p.classList.toggle('active', p.dataset.subj === subj);
+        });
+        if (currentMode === 'A') { closeSubject(); renderModeAOverview(); }
+        if (currentMode === 'B') filterModeB();
+        if (currentMode === 'C') buildFCDeck();
+      }
+
+      // ══════════════════════════════════════════════
+      //  MODE A
+      // ══════════════════════════════════════════════
+      function renderModeAOverview() {
+        var grid = document.getElementById('mode-a-grid');
+        grid.innerHTML = '';
+        getSubjects().forEach(function(subject) {
+          var data  = CONCEPTS[subject];
+          var items = getItems(subject);
+          if (!items.length) return;
+          var tile  = document.createElement('div');
+          tile.className = 'subject-tile';
+          tile.style.setProperty('--c', data.color);
+          tile.setAttribute('onclick', 'openSubject("' + subject.replace(/"/g, '\\"') + '")');
+          tile.innerHTML =
+            '<span class="tile-icon">' + data.icon + '</span>' +
+            '<span class="tile-label" style="color:' + data.color + ';text-shadow:0 0 6px ' + data.color + '">— SUBJECT —</span>' +
+            '<h3 class="tile-name"  style="color:' + data.color + ';text-shadow:0 0 10px ' + data.color + '">' + subject.toUpperCase() + '</h3>' +
+            '<span class="tile-enter" style="color:' + data.color + ';text-shadow:0 0 6px ' + data.color + '">EXPLORE TOPICS →</span>';
+          grid.appendChild(tile);
+        });
+      }
+
+      function openSubject(subject) {
+        var data = CONCEPTS[subject];
+        if (!data) return;
+        document.getElementById('a-subject-header').innerHTML =
+          '<span class="a-subject-icon">' + data.icon + '</span>' +
+          '<h2 class="a-subject-name" style="color:' + data.color + ';text-shadow:0 0 20px ' + data.color + '">' + subject.toUpperCase() + '</h2>';
+
+        var wrap = document.getElementById('a-concepts-grid');
+        wrap.innerHTML = '';
+        var grid = document.createElement('div');
+        grid.className = 'a-concepts-grid';
+        getItems(subject).forEach(function(concept, i) {
+          var uid  = 'ms' + i;
+          var card = document.createElement('div');
+          card.className = 'a-concept-card';
+          card.id = 'acd-' + uid;
+          card.innerHTML =
+            '<div class="a-concept-term-row" onclick="toggleACard(\'acd-' + uid + '\')">' +
+              '<span class="a-concept-term-text" style="color:' + data.color + '">' + concept.term.toUpperCase() + '</span>' +
+              '<span class="a-concept-arrow">▶</span>' +
+            '</div>' +
+            '<div class="a-concept-def">' + concept.def + '</div>';
+          grid.appendChild(card);
+        });
+        wrap.appendChild(grid);
+
+        document.getElementById('a-overview').style.display = 'none';
+        document.getElementById('a-detail').style.display   = 'block';
+        document.getElementById('panel-A').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      function closeSubject() {
+        document.getElementById('a-overview').style.display = '';
+        document.getElementById('a-detail').style.display   = 'none';
+      }
+
+      function toggleACard(id) {
+        document.getElementById(id).classList.toggle('open');
+      }
+
+      // ══════════════════════════════════════════════
+      //  MODE B
+      // ══════════════════════════════════════════════
+      function getMSBank(subject) {
+        var m = {
+          Biology:        typeof MSBiology    !== 'undefined' ? MSBiology    : {},
+          Chemistry:      typeof MSChemistry  !== 'undefined' ? MSChemistry  : {},
+          Physics:        typeof MSPhysics    !== 'undefined' ? MSPhysics    : {},
+          'Earth Science':typeof MSEarthSpace !== 'undefined' ? MSEarthSpace : {},
+          Energy:         typeof MSEnergy     !== 'undefined' ? MSEnergy     : {},
+          Math:           typeof MSMath       !== 'undefined' ? MSMath       : {}
+        };
+        return m[subject] || {};
+      }
+
+      function findExample(keywords, subject) {
+        var bank = getMSBank(subject);
+        var entries = Object.entries(bank);
+        for (var qi = 0; qi < entries.length; qi++) {
+          var qLow = entries[qi][0].toLowerCase();
+          for (var ki = 0; ki < keywords.length; ki++) {
+            if (qLow.indexOf(keywords[ki].toLowerCase()) !== -1) {
+              return { q: entries[qi][0], a: entries[qi][1] };
+            }
+          }
+        }
+        return null;
+      }
+
+      function buildModeB() {
+        var grid = document.getElementById('mode-b-grid');
+        grid.innerHTML = '';
+        Object.keys(CONCEPTS).forEach(function(subject) {
+          var data = CONCEPTS[subject];
+          getItems(subject).forEach(function(concept) {
+            var ex   = findExample(concept.keywords, subject);
+            var card = document.createElement('div');
+            card.className = 'concept-card';
+            card.dataset.subject = subject;
+            card.style.setProperty('--c', data.color);
+
+            var qHtml = '<p class="no-example">No matching question found in database.</p>';
+            if (ex) {
+              var qText = ex.q.length > 230 ? ex.q.slice(0, 227) + '…' : ex.q;
+              qHtml =
+                '<p class="example-q">' + escHtml(qText) + '</p>' +
+                '<p class="example-ans" style="color:' + data.color + ';text-shadow:0 0 6px ' + data.color + '">→ ' + escHtml(ex.a) + '</p>';
+            }
+            card.innerHTML =
+              '<span class="concept-card-subject" style="color:' + data.color + ';text-shadow:0 0 5px ' + data.color + '">' + subject.toUpperCase() + '</span>' +
+              '<h3 class="concept-card-term" style="color:' + data.color + ';text-shadow:0 0 8px ' + data.color + '">' + concept.term.toUpperCase() + '</h3>' +
+              '<p class="concept-card-def">' + concept.def + '</p>' +
+              '<div class="example-divider"></div>' +
+              '<span class="example-label">EXAMPLE FROM MIDDLE SCHOOL QUESTION BANK</span>' +
+              qHtml;
+            grid.appendChild(card);
+          });
+        });
+      }
+
+      function filterModeB() {
+        document.querySelectorAll('.concept-card').forEach(function(card) {
+          var sm = currentSubject === 'ALL' || card.dataset.subject === currentSubject;
+          card.style.display = sm ? '' : 'none';
+        });
+      }
+
+      function escHtml(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+      }
+
+      // ══════════════════════════════════════════════
+      //  MODE C
+      // ══════════════════════════════════════════════
+      function buildFCDeck() {
+        fcFlipped = false;
+        document.getElementById('fc-inner').classList.remove('flipped');
+        fcDeck = []; fcIndex = 0;
+        getSubjects().forEach(function(subject) {
+          getItems(subject).forEach(function(concept) {
+            fcDeck.push({ subject: subject, concept: concept, color: CONCEPTS[subject].color });
+          });
+        });
+        renderCard();
+      }
+
+      function renderCard() {
+        if (!fcDeck.length) return;
+        var card = fcDeck[fcIndex], color = card.color;
+
+        var badge = document.getElementById('fc-badge');
+        badge.textContent = card.subject.toUpperCase();
+        badge.style.color = color; badge.style.borderColor = color; badge.style.textShadow = '0 0 8px ' + color;
+
+        var term = document.getElementById('fc-term');
+        term.textContent = card.concept.term.toUpperCase();
+        term.style.color = color; term.style.textShadow = '0 0 14px ' + color;
+
+        document.getElementById('fc-def').textContent = card.concept.def;
+        document.getElementById('fc-progress').textContent = 'Card ' + (fcIndex + 1) + ' of ' + fcDeck.length;
+
+        var bar = document.getElementById('fc-bar');
+        bar.style.width = ((fcIndex + 1) / fcDeck.length * 100) + '%';
+        bar.style.background = color; bar.style.boxShadow = '0 0 6px ' + color;
+      }
+
+      function flipCard() {
+        fcFlipped = !fcFlipped;
+        document.getElementById('fc-inner').classList.toggle('flipped', fcFlipped);
+      }
+      function nextCard() {
+        fcFlipped = false; document.getElementById('fc-inner').classList.remove('flipped');
+        fcIndex = (fcIndex + 1) % fcDeck.length; renderCard();
+      }
+      function prevCard() {
+        fcFlipped = false; document.getElementById('fc-inner').classList.remove('flipped');
+        fcIndex = (fcIndex - 1 + fcDeck.length) % fcDeck.length; renderCard();
+      }
+      function shuffleDeck() {
+        for (var i = fcDeck.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1)), tmp = fcDeck[i]; fcDeck[i] = fcDeck[j]; fcDeck[j] = tmp;
+        }
+        fcIndex = 0; fcFlipped = false;
+        document.getElementById('fc-inner').classList.remove('flipped');
+        renderCard();
+      }
+
+      document.addEventListener('keydown', function(e) {
+        if (currentMode !== 'C') return;
+        if (e.key === 'ArrowRight') nextCard();
+        if (e.key === 'ArrowLeft')  prevCard();
+        if (e.key === ' ') { e.preventDefault(); flipCard(); }
+      });
+
+      // ── Init ──────────────────────────────────────
+      renderModeAOverview();
+      buildFCDeck();
+
+      // Starfield
+      (function() {
+        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
+      })();
+    </script>
+  </body>
+</html>

@@ -212,11 +212,43 @@ label.flash {
 
 #status-indicator {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  flex-direction: column;
+  gap: 0.35rem;
   margin: 1.2rem 0;
   font-size: 0.82rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.status-overall {
+  margin-top: 0.3rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--muted)33;
+}
+
+.status-check {
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green);
+  flex-shrink: 0;
+}
+
+.status-arrow {
+  color: var(--orange);
+  flex-shrink: 0;
+}
+
+.status-item {
+  color: var(--text);
+}
+
+.status-needed {
+  color: var(--orange);
+  font-style: italic;
 }
 
 .dot-offline, .dot-ready {

@@ -43,20 +43,18 @@
       <div class="option-divider"></div>
       <span class="option-group-label">QUESTION TYPE</span>
       <label><input type="radio" name="qtype" value="mixed" checked /> MIXED</label>
-      <label><input type="radio" name="qtype" value="mc" /> MC ONLY</label>
-      <label><input type="radio" name="qtype" value="oe" /> OE ONLY</label>
+      <label><input type="radio" name="qtype" value="mc" /> MULTIPLE CHOICE ONLY</label>
+      <label><input type="radio" name="qtype" value="oe" /> OPEN ENDED ONLY</label>
     </div>
 
-    <div id="status-indicator">
-      <span id="status-dot" class="dot-offline"></span>
-      <span id="status-text">SYSTEMS OFFLINE</span>
-    </div>
+    <div id="status-indicator"></div>
 
     <div id="streak-display" style="display:none"></div>
     <div id="key-hint" style="display:none" class="key-hint">W / X / Y / Z to select &nbsp;·&nbsp; ENTER to submit</div>
     <div id="QuestionContainer"></div>
     <h1 id="answer"></h1>
     <button onclick="AddMCQuestion()" id="Submit">&#9889; LAUNCH SEQUENCE</button>
+    <button onclick="showResults()" id="EndEarly" style="display:none">&#9632; END OPERATION EARLY</button>
 
     <script src="question.js"></script>
     <script src="Practice.js"></script>

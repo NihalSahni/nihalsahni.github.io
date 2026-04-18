@@ -13,7 +13,7 @@ const subjectMap = {
     Chemistry: HSChemistry,
     Biology: HSBiology,
     EarthSpace: HSEarthSpace,
-    Energy: HSEnergyQuestions,
+    Energy: HSEnergy,
   },
 };
 
@@ -98,6 +98,7 @@ function AddMCQuestion() {
 
   if (!sessionStarted) {
     sessionStarted = true;
+    submitBtn.style.display = "none";
     document.getElementById("ranks")?.remove();
     document.getElementById("SubjectContainer")?.remove();
     document.getElementById("CampaignLength")?.remove();
@@ -154,7 +155,9 @@ function loadQuestion() {
     questionType = "OE";
   }
 
+  submitBtn.style.display = "block";
   document.getElementById("key-hint").style.display = "block";
+  document.getElementById("EndEarly").style.display = "inline-block";
   typeText(document.getElementById("Title"), "MISSION ACTIVE");
 
   if (audioMode) {
@@ -264,6 +267,9 @@ function addSubject(subjectName, checkbox) {
 function showResults() {
   const container = document.getElementById("QuestionContainer");
   document.getElementById("answer").innerHTML = "";
+  document.getElementById("streak-display").style.display = "none";
+  document.getElementById("key-hint").style.display = "none";
+  document.getElementById("EndEarly").style.display = "none";
   submitBtn.style.display = "none";
 
   const totalAnswered = answeredQuestions.length;
@@ -401,7 +407,7 @@ function showResults() {
 // ── AUDIO BEEP ────────────────────────────────────────────────────────────────
 function beep(freq = 880, duration = 80) {
   try {
-    const ac = new (window.AudioContext || window.webkitAudioContext)();
+    const ac = new (window.AudioContext || window["webkitAudioContext"])();
     const osc = ac.createOscillator();
     const gain = ac.createGain();
     osc.connect(gain);
@@ -471,13 +477,32 @@ function typeText(el, text, speed = 50) {
 
 // ── STATUS INDICATOR ──────────────────────────────────────────────────────────
 function updateStatus() {
+  const indicator = document.getElementById("status-indicator");
+  if (!indicator) return;
+
   const ready = level !== "" && selectedSubjectNames.size > 0;
-  const dot  = document.getElementById("status-dot");
-  const text = document.getElementById("status-text");
-  if (!dot || !text) return;
-  dot.className    = ready ? "dot-ready" : "dot-offline";
-  text.textContent = ready ? "SYSTEMS READY" : "SYSTEMS OFFLINE";
-  text.style.color = ready ? "var(--green)" : "var(--orange)";
+  const levelText = level === "MS" ? "AGENT [ MIDDLE SCHOOL ]" : level === "HS" ? "COMMANDER [ HIGH SCHOOL ]" : null;
+  const subjectList = [...selectedSubjectNames].join(" · ");
+
+  const levelRow = levelText
+    ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${levelText}</span></div>`
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT OPERATIVE CLASS</span></div>`;
+
+  const subjectRow = selectedSubjectNames.size > 0
+    ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${subjectList}</span></div>`
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT AT LEAST ONE MODULE</span></div>`;
+
+  const dotClass = ready ? "dot-ready" : "dot-offline";
+  const statusColor = ready ? "var(--green)" : "var(--orange)";
+  const statusText = ready ? "SYSTEMS READY" : "SYSTEMS OFFLINE";
+
+  indicator.innerHTML = `
+    ${levelRow}
+    ${subjectRow}
+    <div class="status-row status-overall">
+      <span class="${dotClass}"></span>
+      <span style="color:${statusColor};text-shadow:0 0 8px ${statusColor}">${statusText}</span>
+    </div>`;
 }
 
 // ── COUNTDOWN ─────────────────────────────────────────────────────────────────
@@ -535,6 +560,7 @@ window.addEventListener("DOMContentLoaded", () => {
   typeText(document.getElementById("Title"), "COMMAND DECK");
   updateSliderTrail();
   document.getElementById("QuestionSlider").addEventListener("input", updateSliderTrail);
+  updateStatus();
   document.getElementById("TimedMode").addEventListener("change", e => { timedMode = e.target.checked; });
   document.getElementById("AudioMode").addEventListener("change", e => { audioMode = e.target.checked; });
   document.querySelectorAll('input[name="qtype"]').forEach(r =>
