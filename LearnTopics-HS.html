@@ -88,10 +88,19 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
       .fc-term { font-size: 1.55rem; letter-spacing: 0.1em; margin: 0 0 1rem; text-shadow: none; }
       .fc-flip-hint { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--muted); margin-top: auto; }
       .fc-definition { font-size: 0.83rem; color: var(--text); line-height: 1.72; max-width: 480px; }
+      .fc-known-btn { margin-top: 1.2rem; padding: 0.6rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.2em; border: 2px solid var(--muted)88; color: var(--muted); background: transparent; cursor: pointer; border-radius: 3px; font-family: 'Share Tech Mono', monospace; transition: all 0.2s; }
+      .fc-known-btn:hover { border-color: var(--green); color: var(--green); background: var(--green)11; box-shadow: 0 0 12px var(--green)44; }
+      .fc-known-btn.known { border-color: var(--green); color: var(--green); background: var(--green)18; text-shadow: 0 0 8px var(--green); box-shadow: 0 0 16px var(--green)55; }
 
       .fc-nav { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
       .fc-nav button { padding: 0.5rem 1.6rem; font-size: 0.72rem; letter-spacing: 0.15em; }
       .fc-key-hint { text-align: center; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--muted); margin-top: 0.75rem; }
+
+      .search-wrap { max-width: 560px; margin: 0.5rem auto 0; }
+      .search-input { width: 100%; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; padding: 0.55rem 1rem; font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--text); outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+      .search-input::placeholder { color: var(--muted); }
+      .search-input:focus { border-color: var(--magenta); box-shadow: 0 0 8px var(--magenta)44; }
+      .search-count { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 1rem; }
 
       footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
     </style>
@@ -103,6 +112,7 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
     <div class="page-wrap">
       <div class="page-header">
         <a href="LearnTopics.html" class="back-link">← SELECT DIVISION</a>
+        <a href="Progress.html" class="back-link" style="margin-left:1.5rem">VIEW PROGRESS →</a>
         <h1 class="page-title">HS INTEL DATABASE</h1>
         <p class="page-sub">MODULE 03B — HIGH SCHOOL CONCEPT REFERENCE &amp; STUDY TOOLS</p>
       </div>
@@ -111,6 +121,11 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
       <div class="mode-tabs">
         <button class="mode-tab active" data-mode="A" onclick="switchMode('A')">TOPIC CARDS</button>
         <button class="mode-tab" data-mode="C" onclick="switchMode('C')">FLASHCARDS</button>
+      </div>
+
+      <!-- Search bar (Mode A only) -->
+      <div class="search-wrap" id="search-wrap">
+        <input class="search-input" id="search-input" type="text" placeholder="SEARCH TOPICS..." oninput="doSearch(this.value)" autocomplete="off" />
       </div>
 
       <!-- Subject filter pills -->
@@ -126,6 +141,7 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
 
       <!-- MODE A -->
       <div id="panel-A" class="mode-panel active">
+        <div id="search-results" style="display:none"></div>
         <div id="a-overview">
           <div class="subject-grid" id="mode-a-grid"></div>
         </div>
@@ -140,7 +156,10 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
       <div id="panel-C" class="mode-panel">
         <div class="fc-top-row">
           <span class="fc-progress-text" id="fc-progress">Card 1 of —</span>
-          <button class="fc-shuffle-btn" onclick="shuffleDeck()">⟳ SHUFFLE</button>
+          <div style="display:flex;gap:0.5rem">
+            <button class="fc-shuffle-btn" id="fc-mode-btn" onclick="toggleDefFirst()">DEF → TERM</button>
+            <button class="fc-shuffle-btn" onclick="shuffleDeck()">⟳ SHUFFLE</button>
+          </div>
         </div>
         <div class="fc-progress-bar-wrap">
           <div class="fc-progress-bar-fill" id="fc-bar"></div>
@@ -154,6 +173,7 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
             </div>
             <div class="fc-face fc-face-back">
               <p class="fc-definition" id="fc-def"></p>
+              <button class="fc-known-btn" id="fc-known-btn" onclick="toggleKnown(event)">MARK AS KNOWN</button>
             </div>
           </div>
         </div>
@@ -174,7 +194,41 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
       var currentMode    = 'A';
       var currentSubject = 'ALL';
       var currentLevel   = 'HS';
-      var fcDeck = [], fcIndex = 0, fcFlipped = false;
+      var fcDeck = [], fcIndex = 0, fcFlipped = false, defFirst = false;
+      var searchQuery    = '';
+      var knownCards     = {};
+
+      function loadKnown() {
+        try { knownCards = JSON.parse(localStorage.getItem('sb_known_HS') || '{}'); } catch(e) { knownCards = {}; }
+      }
+      function saveKnown() {
+        try { localStorage.setItem('sb_known_HS', JSON.stringify(knownCards)); } catch(e) {}
+      }
+      function toggleKnown(e) {
+        e.stopPropagation();
+        var key = fcDeck[fcIndex].concept.term;
+        if (knownCards[key]) { delete knownCards[key]; } else { knownCards[key] = true; }
+        saveKnown();
+        updateKnownBtn();
+      }
+      function toggleDefFirst() {
+        defFirst = !defFirst;
+        var btn = document.getElementById('fc-mode-btn');
+        btn.textContent = defFirst ? 'TERM → DEF' : 'DEF → TERM';
+        btn.style.color = defFirst ? 'var(--magenta)' : '';
+        btn.style.borderColor = defFirst ? 'var(--magenta)' : '';
+        fcFlipped = false;
+        document.getElementById('fc-inner').classList.remove('flipped');
+        renderCard();
+      }
+
+      function updateKnownBtn() {
+        var key = fcDeck[fcIndex] ? fcDeck[fcIndex].concept.term : '';
+        var btn = document.getElementById('fc-known-btn');
+        var isKnown = !!knownCards[key];
+        btn.textContent = isKnown ? '✓ KNOWN' : 'MARK AS KNOWN';
+        btn.classList.toggle('known', isKnown);
+      }
 
       function getSubjects() {
         return currentSubject === 'ALL' ? Object.keys(CONCEPTS) : [currentSubject];
@@ -192,6 +246,15 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
         });
         document.querySelectorAll('.mode-panel').forEach(function(p) { p.classList.remove('active'); });
         document.getElementById('panel-' + mode).classList.add('active');
+        var sw = document.getElementById('search-wrap');
+        if (mode === 'A') {
+          sw.style.display = '';
+        } else {
+          sw.style.display = 'none';
+          document.getElementById('search-input').value = '';
+          searchQuery = '';
+          document.getElementById('search-results').style.display = 'none';
+        }
         if (mode === 'C') buildFCDeck();
       }
 
@@ -201,8 +264,55 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
         document.querySelectorAll('.filter-pill').forEach(function(p) {
           p.classList.toggle('active', p.dataset.subj === subj);
         });
-        if (currentMode === 'A') { closeSubject(); renderModeAOverview(); }
+        if (currentMode === 'A') {
+          document.getElementById('search-input').value = '';
+          searchQuery = '';
+          document.getElementById('search-results').style.display = 'none';
+          closeSubject(); renderModeAOverview();
+        }
         if (currentMode === 'C') buildFCDeck();
+      }
+
+      // ── Search ─────────────────────────────────────
+      function doSearch(q) {
+        searchQuery = q.trim().toLowerCase();
+        if (!searchQuery) {
+          document.getElementById('search-results').style.display = 'none';
+          document.getElementById('a-overview').style.display = '';
+          return;
+        }
+        closeSubject();
+        document.getElementById('a-overview').style.display = 'none';
+
+        var results = [];
+        Object.keys(CONCEPTS).forEach(function(subject) {
+          getItems(subject).forEach(function(concept) {
+            var hay = concept.term.toLowerCase() + ' ' + concept.def.toLowerCase();
+            if (concept.keywords) hay += ' ' + concept.keywords.join(' ').toLowerCase();
+            if (hay.indexOf(searchQuery) !== -1) results.push({ subject: subject, concept: concept, color: CONCEPTS[subject].color });
+          });
+        });
+
+        var wrap = document.getElementById('search-results');
+        wrap.style.display = 'block';
+        if (!results.length) {
+          wrap.innerHTML = '<p style="text-align:center;color:var(--muted);font-size:0.78rem;letter-spacing:0.15em;padding:2rem 0">NO MATCHES FOUND</p>';
+          return;
+        }
+        var html = '<p class="search-count">' + results.length + ' RESULT' + (results.length !== 1 ? 'S' : '') + '</p><div class="a-concepts-grid">';
+        results.forEach(function(r, i) {
+          var uid = 'sr' + i;
+          html += '<div class="a-concept-card" id="acd-' + uid + '">' +
+            '<div class="a-concept-term-row" onclick="toggleACard(\'acd-' + uid + '\')">' +
+              '<span class="a-concept-term-text" style="color:' + r.color + '">' + r.concept.term.toUpperCase() + '</span>' +
+              '<span style="font-size:0.58rem;letter-spacing:0.16em;color:' + r.color + ';opacity:0.75;flex-shrink:0">' + r.subject.toUpperCase() + '</span>' +
+              '<span class="a-concept-arrow">▶</span>' +
+            '</div>' +
+            '<div class="a-concept-def">' + r.concept.def + '</div>' +
+          '</div>';
+        });
+        html += '</div>';
+        wrap.innerHTML = html;
       }
 
       // ══════════════════════════════════════════════
@@ -282,6 +392,9 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
         source.forEach(function(card) {
           fcDeck.push({ subject: card.subject, concept: { term: card.term, def: card.def }, color: CONCEPTS[card.subject] ? CONCEPTS[card.subject].color : 'var(--magenta)' });
         });
+        for (var i = fcDeck.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1)), tmp = fcDeck[i]; fcDeck[i] = fcDeck[j]; fcDeck[j] = tmp;
+        }
         renderCard();
       }
 
@@ -293,16 +406,26 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
         badge.textContent = card.subject.toUpperCase();
         badge.style.color = color; badge.style.borderColor = color; badge.style.textShadow = '0 0 8px ' + color;
 
-        var term = document.getElementById('fc-term');
-        term.textContent = card.concept.term.toUpperCase();
-        term.style.color = color; term.style.textShadow = '0 0 14px ' + color;
+        var termEl = document.getElementById('fc-term');
+        var defEl  = document.getElementById('fc-def');
 
-        document.getElementById('fc-def').textContent = card.concept.def;
+        if (!defFirst) {
+          termEl.textContent = card.concept.term.toUpperCase();
+          termEl.style.fontSize = '1.55rem'; termEl.style.color = color; termEl.style.textShadow = '0 0 14px ' + color;
+          defEl.textContent = card.concept.def;
+          defEl.style.fontSize = '0.83rem'; defEl.style.color = 'var(--text)';
+        } else {
+          termEl.textContent = card.concept.def;
+          termEl.style.fontSize = '0.9rem'; termEl.style.color = 'var(--text)'; termEl.style.textShadow = 'none';
+          defEl.textContent = card.concept.term.toUpperCase();
+          defEl.style.fontSize = '1.4rem'; defEl.style.color = color;
+        }
         document.getElementById('fc-progress').textContent = 'Card ' + (fcIndex + 1) + ' of ' + fcDeck.length;
 
         var bar = document.getElementById('fc-bar');
         bar.style.width = ((fcIndex + 1) / fcDeck.length * 100) + '%';
         bar.style.background = color; bar.style.boxShadow = '0 0 6px ' + color;
+        updateKnownBtn();
       }
 
       function flipCard() {
@@ -334,6 +457,7 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
       });
 
       // ── Init ──────────────────────────────────────
+      loadKnown();
       renderModeAOverview();
       buildFCDeck();
 

@@ -4,7 +4,9 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git push *)",
-      "Bash(git config *)"
+      "Bash(git config *)",
+      "Bash(node -e \"const FLASHCARDS = require\\('./Flashcards.js'\\) || {}; const f = eval\\(require\\('fs'\\).readFileSync\\('./Flashcards.js','utf8'\\) + '; FLASHCARDS'\\); console.log\\('HS:', f.HS.length, 'MS:', f.MS.length\\);\")",
+      "Bash(node -e \"eval\\(require\\('fs'\\).readFileSync\\('./Flashcards.js','utf8'\\)\\); console.log\\('HS:', FLASHCARDS.HS.length, 'MS:', FLASHCARDS.MS.length\\);\")"
     ]
   }
 }

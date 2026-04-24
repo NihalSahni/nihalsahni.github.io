@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Progress — Science Bowl Command Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .page-wrap { max-width: 860px; margin: 0 auto; }
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--muted); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+      .back-link:hover { color: var(--green); text-shadow: 0 0 8px var(--green); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green)44; margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      /* ── Overall totals ── */
+      .totals-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 560px; margin: 2.5rem auto 2rem; }
+      .total-card { background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; padding: 1.4rem 1.2rem; text-align: center; position: relative; }
+      .total-card::before { content: ''; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px; border-top: 2px solid var(--c, var(--green)); border-left: 2px solid var(--c, var(--green)); }
+      .total-card::after  { content: ''; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px; border-bottom: 2px solid var(--c, var(--green)); border-right: 2px solid var(--c, var(--green)); }
+      .total-label { font-size: 0.6rem; letter-spacing: 0.28em; color: var(--muted); margin-bottom: 0.5rem; }
+      .total-num { font-size: 2rem; color: var(--c, var(--green)); text-shadow: 0 0 14px var(--c, var(--green)); }
+      .total-denom { font-size: 0.85rem; color: var(--muted); }
+      .total-pct { font-size: 0.68rem; letter-spacing: 0.15em; color: var(--c, var(--green)); margin-top: 0.25rem; opacity: 0.75; }
+
+      /* ── Level sections ── */
+      .level-section { margin-bottom: 3rem; }
+      .level-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .level-title { font-size: 1.2rem; letter-spacing: 0.15em; color: var(--c, var(--magenta)); text-shadow: 0 0 12px var(--c, var(--magenta)); margin: 0; }
+      .level-total { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--muted); }
+
+      /* ── Subject bars ── */
+      .subject-list { display: flex; flex-direction: column; gap: 0.9rem; }
+      .subject-row { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; padding: 0.9rem 1.1rem; }
+      .subject-row-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.55rem; }
+      .subject-name { font-size: 0.72rem; letter-spacing: 0.18em; }
+      .subject-count { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--muted); }
+      .bar-track { height: 4px; background: var(--muted)22; border-radius: 2px; overflow: hidden; }
+      .bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+
+      /* ── Reset button ── */
+      .reset-row { text-align: center; margin: 1rem 0 3rem; }
+      .reset-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; padding: 0.4rem 1.1rem; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
+      .reset-btn:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 2rem 0; }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="LearnTopics.html" class="back-link">← INTEL DATABASE</a>
+        <h1 class="page-title">PROGRESS REPORT</h1>
+        <p class="page-sub">MODULE 04 — FLASHCARD MASTERY TRACKING</p>
+      </div>
+
+      <div class="totals-row" id="totals-row"></div>
+
+      <div id="sections"></div>
+
+      <div class="reset-row">
+        <button class="reset-btn" onclick="confirmReset()">RESET ALL PROGRESS</button>
+      </div>
+
+      <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
+    </div>
+
+    <script src="Flashcards.js"></script>
+    <script>
+      var SUBJECTS = ['Biology', 'Chemistry', 'Physics', 'Earth Science', 'Energy', 'Math'];
+      var COLORS = {
+        Biology:       'var(--green)',
+        Chemistry:     'var(--cyan)',
+        Physics:       'var(--magenta)',
+        'Earth Science': 'var(--yellow, #f5c542)',
+        Energy:        'var(--orange, #f5a623)',
+        Math:          'var(--blue, #5b9cf6)'
+      };
+
+      function loadKnown(level) {
+        try { return JSON.parse(localStorage.getItem('sb_known_' + level) || '{}'); } catch(e) { return {}; }
+      }
+
+      function countKnown(level, subject) {
+        var known = loadKnown(level);
+        var cards = FLASHCARDS[level].filter(function(c) { return c.subject === subject; });
+        var count = 0;
+        cards.forEach(function(c) { if (known[c.term]) count++; });
+        return { known: count, total: cards.length };
+      }
+
+      function countKnownAll(level) {
+        var known = loadKnown(level);
+        var total = FLASHCARDS[level].length;
+        var count = 0;
+        FLASHCARDS[level].forEach(function(c) { if (known[c.term]) count++; });
+        return { known: count, total: total };
+      }
+
+      function pct(n, d) { return d ? Math.round(n / d * 100) : 0; }
+
+      function render() {
+        var hsAll = countKnownAll('HS');
+        var msAll = countKnownAll('MS');
+        var grandKnown = hsAll.known + msAll.known;
+        var grandTotal = hsAll.total + msAll.total;
+
+        // Totals row
+        var totalsHTML =
+          '<div class="total-card" style="--c:var(--magenta)">' +
+            '<div class="total-label">HIGH SCHOOL</div>' +
+            '<div class="total-num">' + hsAll.known + '<span class="total-denom"> / ' + hsAll.total + '</span></div>' +
+            '<div class="total-pct">' + pct(hsAll.known, hsAll.total) + '% MASTERED</div>' +
+          '</div>' +
+          '<div class="total-card" style="--c:var(--cyan)">' +
+            '<div class="total-label">MIDDLE SCHOOL</div>' +
+            '<div class="total-num">' + msAll.known + '<span class="total-denom"> / ' + msAll.total + '</span></div>' +
+            '<div class="total-pct">' + pct(msAll.known, msAll.total) + '% MASTERED</div>' +
+          '</div>';
+        document.getElementById('totals-row').innerHTML = totalsHTML;
+
+        // Level sections
+        var sectionsHTML = '';
+        [['HS', 'var(--magenta)', 'HIGH SCHOOL'], ['MS', 'var(--cyan)', 'MIDDLE SCHOOL']].forEach(function(lv) {
+          var level = lv[0], color = lv[1], label = lv[2];
+          var all = countKnownAll(level);
+          sectionsHTML += '<div class="level-section">';
+          sectionsHTML += '<div class="level-header" style="--c:' + color + '">' +
+            '<h2 class="level-title">' + label + '</h2>' +
+            '<span class="level-total">' + all.known + ' / ' + all.total + ' KNOWN</span>' +
+          '</div>';
+          sectionsHTML += '<div class="subject-list">';
+          SUBJECTS.forEach(function(subj) {
+            var c = countKnown(level, subj);
+            var subjColor = COLORS[subj] || color;
+            var width = pct(c.known, c.total);
+            sectionsHTML +=
+              '<div class="subject-row">' +
+                '<div class="subject-row-top">' +
+                  '<span class="subject-name" style="color:' + subjColor + ';text-shadow:0 0 6px ' + subjColor + '">' + subj.toUpperCase() + '</span>' +
+                  '<span class="subject-count">' + c.known + ' / ' + c.total + ' &nbsp;·&nbsp; ' + pct(c.known, c.total) + '%</span>' +
+                '</div>' +
+                '<div class="bar-track"><div class="bar-fill" style="width:' + width + '%;background:' + subjColor + ';box-shadow:0 0 6px ' + subjColor + '"></div></div>' +
+              '</div>';
+          });
+          sectionsHTML += '</div></div>';
+        });
+        document.getElementById('sections').innerHTML = sectionsHTML;
+      }
+
+      function confirmReset() {
+        if (confirm('Reset ALL progress for both HS and MS? This cannot be undone.')) {
+          localStorage.removeItem('sb_known_HS');
+          localStorage.removeItem('sb_known_MS');
+          render();
+        }
+      }
+
+      render();
+
+      // Starfield
+      (function() {
+        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
+      })();
+    </script>
+  </body>
+</html>
