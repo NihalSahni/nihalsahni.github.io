@@ -169,6 +169,7 @@
 
     <script src="question.js"></script>
     <script src="Learn.js"></script>
+    <script src="Flashcards.js"></script>
     <script>
       var currentMode    = 'A';
       var currentSubject = 'ALL';
@@ -275,10 +276,12 @@
         fcFlipped = false;
         document.getElementById('fc-inner').classList.remove('flipped');
         fcDeck = []; fcIndex = 0;
-        getSubjects().forEach(function(subject) {
-          getItems(subject).forEach(function(concept) {
-            fcDeck.push({ subject: subject, concept: concept, color: CONCEPTS[subject].color });
-          });
+        var source = FLASHCARDS['MS'];
+        if (currentSubject !== 'ALL') {
+          source = source.filter(function(c) { return c.subject === currentSubject; });
+        }
+        source.forEach(function(card) {
+          fcDeck.push({ subject: card.subject, concept: { term: card.term, def: card.def }, color: CONCEPTS[card.subject] ? CONCEPTS[card.subject].color : 'var(--magenta)' });
         });
         renderCard();
       }
