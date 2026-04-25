@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Intel Database — Science Bowl Command Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .page-wrap { max-width: 900px; margin: 0 auto; }
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--muted); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+      .back-link:hover { color: var(--green); text-shadow: 0 0 8px var(--green); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green)44; margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      .level-select-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 3.5rem auto 2rem;
+        max-width: 720px;
+      }
+
+      .level-card {
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--muted)44;
+        border-radius: 4px;
+        padding: 2.5rem 2rem 2rem;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        cursor: pointer;
+      }
+      .level-card::before {
+        content: '';
+        position: absolute;
+        top: -2px; left: -2px;
+        width: 20px; height: 20px;
+        border-top: 3px solid var(--c, var(--cyan));
+        border-left: 3px solid var(--c, var(--cyan));
+        transition: width 0.2s, height 0.2s;
+      }
+      .level-card::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; right: -2px;
+        width: 20px; height: 20px;
+        border-bottom: 3px solid var(--c, var(--cyan));
+        border-right: 3px solid var(--c, var(--cyan));
+        transition: width 0.2s, height 0.2s;
+      }
+      .level-card:hover {
+        border-color: var(--c, var(--cyan))88;
+        box-shadow: 0 0 32px var(--c, var(--cyan))33;
+        transform: translateY(-4px);
+      }
+      .level-card:hover::before, .level-card:hover::after { width: 32px; height: 32px; }
+
+      .level-card-icon { font-size: 2.8rem; line-height: 1; }
+      .level-card-tag {
+        font-size: 0.6rem;
+        letter-spacing: 0.28em;
+        color: var(--c, var(--cyan));
+        text-shadow: 0 0 8px var(--c, var(--cyan));
+      }
+      .level-card-title {
+        font-size: 1.6rem;
+        margin: 0;
+        color: var(--c, var(--cyan));
+        text-shadow: 0 0 14px var(--c, var(--cyan));
+        line-height: 1.2;
+      }
+      .level-card-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.65;
+        flex: 1;
+      }
+      .level-card-enter {
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        color: var(--c, var(--cyan));
+        text-shadow: 0 0 6px var(--c, var(--cyan));
+        margin-top: 0.5rem;
+      }
+
+      .divider-label {
+        text-align: center;
+        font-size: 0.62rem;
+        letter-spacing: 0.3em;
+        color: var(--muted)66;
+        margin: 0.5rem 0;
+      }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="index.html" class="back-link">← COMMAND NETWORK</a>
+        <h1 class="page-title">INTEL DATABASE</h1>
+        <p class="page-sub">MODULE 03 — SELECT YOUR DIVISION</p>
+      </div>
+
+      <p class="divider-label">// CHOOSE COMPETITION LEVEL //</p>
+
+      <div class="level-select-grid">
+        <a href="LearnTopics-MS.html" class="level-card" style="--c: var(--cyan)">
+          <div class="level-card-icon">🧬</div>
+          <span class="level-card-tag">— DIVISION —</span>
+          <h2 class="level-card-title">MIDDLE SCHOOL</h2>
+          <p class="level-card-desc">
+            Core concepts across Biology, Chemistry, Physics, Earth Science, Energy, and Math — calibrated for MS Science Bowl competition.
+          </p>
+          <span class="level-card-enter">ACCESS MS DATABASE →</span>
+        </a>
+
+        <a href="LearnTopics-HS.html" class="level-card" style="--c: var(--magenta)">
+          <div class="level-card-icon">⚗️</div>
+          <span class="level-card-tag" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta)">— DIVISION —</span>
+          <h2 class="level-card-title" style="color:var(--magenta);text-shadow:0 0 14px var(--magenta)">HIGH SCHOOL</h2>
+          <p class="level-card-desc">
+            Advanced concepts across Biology, Chemistry, Physics, Earth Science, Energy, and Math — calibrated for HS Science Bowl competition.
+          </p>
+          <span class="level-card-enter" style="color:var(--magenta);text-shadow:0 0 6px var(--magenta)">ACCESS HS DATABASE →</span>
+        </a>
+      </div>
+
+      <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
+    </div>
+
+    <script>
+      (function() {
+        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
+        function draw() {
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+          stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
+      })();
+    </script>
+  </body>
+</html>

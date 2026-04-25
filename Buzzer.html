@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Science Bowl Buzzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { max-width: 960px; margin: 0 auto; padding: 2rem; }
+
+    /* ── COUNTDOWN ── */
+    .countdown {
+      text-align: center;
+      font-size: 5rem;
+      color: var(--cyan);
+      text-shadow: 0 0 40px var(--cyan);
+      animation: count-pop 0.3s ease-out;
+    }
+    @keyframes count-pop {
+      0%   { transform: scale(1.4); opacity: 0.4; }
+      100% { transform: scale(1);   opacity: 1;   }
+    }
+
+    /* ── GAME AREA ── */
+    #game-area { display: none; }
+
+    /* ── SCORE BAR ── */
+    #score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border: 1px solid var(--muted);
+      background: linear-gradient(135deg, var(--cyan)08 0%, transparent 60%);
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+    #score-bar::before {
+      content: ''; position: absolute; top: -2px; left: -2px;
+      width: 18px; height: 18px;
+      border-top: 3px solid var(--cyan); border-left: 3px solid var(--cyan);
+    }
+    #score-bar::after {
+      content: ''; position: absolute; bottom: -2px; right: -2px;
+      width: 18px; height: 18px;
+      border-bottom: 3px solid var(--cyan); border-right: 3px solid var(--cyan);
+    }
+    .score-block { text-align: center; }
+    .score-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 0.2rem; }
+    .score-val { font-size: 2.8rem; line-height: 1; }
+    .score-val.my    { color: var(--green);   text-shadow: 0 0 20px var(--green); }
+    .score-val.enemy { color: var(--magenta); text-shadow: 0 0 20px var(--magenta); }
+    .score-vs { color: var(--muted); font-size: 1.1rem; }
+
+    #round-info {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── QUESTION AREA ── */
+    #question-area {
+      min-height: 130px;
+      padding: 1.4rem 1.6rem;
+      border: 1px solid var(--muted)44;
+      background: var(--surface);
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    #question-area::before {
+      content: ''; position: absolute; top: -2px; left: -2px;
+      width: 14px; height: 14px;
+      border-top: 2px solid var(--cyan)88; border-left: 2px solid var(--cyan)88;
+    }
+    #q-subject {
+      font-size: 0.65rem;
+      color: var(--orange);
+      letter-spacing: 0.25em;
+      margin-bottom: 0.7rem;
+      text-shadow: 0 0 6px var(--orange)66;
+    }
+    #q-text {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+    .q-opts { margin-top: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .q-opt { padding: 0.25rem 0; }
+    .q-opt-letter { color: var(--cyan); margin-right: 0.4rem; }
+
+    /* ── STATUS BANNERS ── */
+    #opp-chance-banner {
+      display: none;
+      text-align: center;
+      padding: 0.55rem 1rem;
+      border: 1px solid;
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+    }
+    #locked-banner {
+      display: none;
+      text-align: center;
+      padding: 0.4rem 1rem;
+      color: var(--magenta);
+      text-shadow: 0 0 8px var(--magenta);
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── BUZZ ZONE ── */
+    #buzz-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      margin: 0.5rem 0 1rem;
+    }
+
+    #BuzzBtn {
+      font-size: 2rem;
+      padding: 1.4rem 5rem;
+      border: 3px solid var(--magenta);
+      color: var(--magenta);
+      text-shadow: 0 0 20px var(--magenta);
+      box-shadow: 0 0 25px var(--magenta)55, inset 0 0 20px var(--magenta)0a;
+      animation: buzz-pulse 1.6s ease-in-out infinite;
+      letter-spacing: 0.2em;
+      transition: transform 0.08s, box-shadow 0.1s;
+    }
+    #BuzzBtn:hover {
+      background: var(--magenta)1a;
+      box-shadow: 0 0 55px var(--magenta), inset 0 0 30px var(--magenta)1a;
+      transform: scale(1.03);
+    }
+    #BuzzBtn:active  { transform: scale(0.96); }
+    #BuzzBtn:disabled {
+      opacity: 0.25; animation: none; transform: none; cursor: not-allowed;
+    }
+    @keyframes buzz-pulse {
+      0%,100% { box-shadow: 0 0 15px var(--magenta)44; }
+      50%      { box-shadow: 0 0 45px var(--magenta), 0 0 80px var(--magenta)33; }
+    }
+
+    /* ── BOT ANSWERING OVERLAY ── */
+    #bot-overlay {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1.4rem 2rem;
+      border: 2px solid var(--orange);
+      box-shadow: 0 0 30px var(--orange)55;
+      background: var(--surface);
+      min-width: 280px;
+    }
+    #bot-icon {
+      font-size: 3.2rem;
+      animation: icon-breathe 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes icon-breathe {
+      from { text-shadow: 0 0 8px var(--orange);  transform: scale(1);    }
+      to   { text-shadow: 0 0 28px var(--orange); transform: scale(1.12); }
+    }
+    #bot-name { font-size: 0.78rem; letter-spacing: 0.22em; color: var(--orange); }
+    #bot-msg  { font-size: 1rem; letter-spacing: 0.1em; }
+
+    /* ── PLAYER ANSWER PANEL ── */
+    #answer-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    /* Timer ring */
+    #timer-wrap { position: relative; width: 80px; height: 80px; }
+    #timer-wrap svg { transform: rotate(-90deg); }
+    .ring-bg   { fill: none; stroke: var(--surface); stroke-width: 7; }
+    .ring-arc  { fill: none; stroke: var(--cyan); stroke-width: 7; stroke-linecap: round;
+                 transition: stroke-dasharray 0.1s linear; }
+    .ring-arc.warn   { stroke: var(--orange); }
+    .ring-arc.danger { stroke: var(--magenta); }
+    #timer-num {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.9rem; color: var(--cyan); text-shadow: 0 0 10px var(--cyan);
+    }
+
+    /* MC buttons */
+    #mc-panel { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+    .mc-buzz-btn {
+      font-size: 1rem;
+      padding: 0.7rem 1.4rem;
+      border: 2px solid var(--muted)66;
+      color: var(--text);
+      min-width: 180px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 420px;
+    }
+    .mc-buzz-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .mc-buzz-btn.sel {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: var(--cyan)18;
+      box-shadow: 0 0 14px var(--cyan)55;
+    }
+
+    /* OE input */
+    #oe-panel { display: none; }
+    #BuzzerOE {
+      font-size: 1.15rem;
+      padding: 0.6rem 1.1rem;
+      width: 380px;
+      max-width: 90vw;
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 10px var(--cyan)44;
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+    }
+    #BuzzerOE:focus { outline: none; box-shadow: 0 0 20px var(--cyan)77; }
+
+    #ConfirmBtn {
+      font-size: 1.05rem;
+      padding: 0.65rem 2.4rem;
+      border-color: var(--green);
+      color: var(--green);
+      text-shadow: 0 0 8px var(--green);
+    }
+    #ConfirmBtn:hover { background: var(--green)18; box-shadow: 0 0 20px var(--green); }
+
+    /* ── AUDIO LISTEN INDICATOR ── */
+    .audio-listen {
+      display: block;
+      text-align: center;
+      padding: 1.2rem 0;
+      color: var(--orange);
+      text-shadow: 0 0 10px var(--orange)88;
+      letter-spacing: 0.2em;
+      font-size: 0.95rem;
+      animation: listen-pulse 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes listen-pulse {
+      from { opacity: 0.6; }
+      to   { opacity: 1; text-shadow: 0 0 20px var(--orange); }
+    }
+
+    /* ── 5-SECOND ANSWER COUNTDOWN ── */
+    .ans-cd {
+      font-size: 2.4rem;
+      color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan);
+      letter-spacing: 0.1em;
+      min-width: 2rem;
+      text-align: center;
+    }
+    .ans-cd.warn   { color: var(--orange); text-shadow: 0 0 12px var(--orange); }
+    .ans-cd.danger { color: var(--magenta); text-shadow: 0 0 16px var(--magenta); animation: cd-flash 0.4s step-end infinite; }
+    @keyframes cd-flash { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── ROUND RESULT ── */
+    #round-result {
+      text-align: center;
+      min-height: 1.8rem;
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
+      margin: 0.5rem 0;
+    }
+    #round-result.correct   { color: var(--green);   text-shadow: 0 0 14px var(--green); }
+    #round-result.incorrect { color: var(--magenta); text-shadow: 0 0 14px var(--magenta); }
+    #round-result.neutral   { color: var(--muted); }
+
+    #NextBtn {
+      display: none;
+      margin: 0.3rem auto 0;
+      font-size: 1rem;
+      padding: 0.55rem 2rem;
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    /* ── TEAMS PANEL ── */
+    #teams-panel {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--muted)44;
+      background: linear-gradient(135deg, var(--cyan)05 0%, transparent 60%);
+      margin-top: 1.2rem;
+      position: relative;
+    }
+    #teams-panel::before {
+      content: ''; position: absolute; top: -2px; left: -2px;
+      width: 18px; height: 18px;
+      border-top: 3px solid var(--cyan); border-left: 3px solid var(--cyan);
+    }
+    #teams-panel::after {
+      content: ''; position: absolute; bottom: -2px; right: -2px;
+      width: 18px; height: 18px;
+      border-bottom: 3px solid var(--cyan); border-right: 3px solid var(--cyan);
+    }
+    .t-col {
+      flex: 1;
+      padding: 1.1rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .t-col + .t-col { border-left: 1px solid var(--muted)33; }
+    .t-col-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      margin-bottom: 0.4rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--muted)22;
+    }
+    .t-col-label.friendly { color: var(--green); text-shadow: 0 0 6px var(--green)88; }
+    .t-col-label.enemy    { color: var(--magenta); text-shadow: 0 0 6px var(--magenta)88; }
+
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.38rem 0.6rem;
+      border: 1px solid var(--muted)18;
+      border-radius: 3px;
+      transition: all 0.25s;
+    }
+    .member.buzzing {
+      border-color: var(--orange);
+      box-shadow: 0 0 18px var(--orange)77;
+      animation: member-pop 0.35s ease-out;
+    }
+    @keyframes member-pop {
+      0%   { transform: scale(1.07); }
+      100% { transform: scale(1); }
+    }
+    .member.ok   { border-color: var(--green);   box-shadow: 0 0 12px var(--green)55; }
+    .member.fail { border-color: var(--magenta); box-shadow: 0 0 12px var(--magenta)55; }
+    .member.out  { opacity: 0.3; filter: grayscale(1); }
+
+    .m-icon { font-size: 1.3rem; width: 28px; text-align: center; flex-shrink: 0; }
+    .m-name { font-size: 0.76rem; letter-spacing: 0.08em; flex: 1; }
+    .m-name.you-label { color: var(--cyan); text-shadow: 0 0 6px var(--cyan)88; }
+    .m-status { font-size: 0.62rem; color: var(--muted); min-width: 55px; text-align: right; }
+
+    /* ── GAME OVER ── */
+    #game-over {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .go-result-txt {
+      font-size: 2.2rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+    }
+    .go-scores {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0 1.5rem;
+    }
+    .go-score-block { text-align: center; }
+    .go-score-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; }
+    .go-score-num { font-size: 4rem; line-height: 1.1; }
+    .go-stats { font-size: 0.82rem; color: var(--muted); line-height: 2; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <div id="scanlines"></div>
+
+  <h1 id="Title">BUZZER ARENA<span class="blink-cursor">|</span></h1>
+
+  <!-- ══ SETUP PANELS ══════════════════════════════════════════════════════════ -->
+  <div id="ranks" class="hud-panel">
+    <div class="panel-label">OPERATIVE CLASS</div>
+    <button id="Cadet" onclick="bzMS()">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
+    <button id="Lieutenant" onclick="bzHS()">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
+  </div>
+
+  <div id="SubjectContainer" class="hud-panel">
+    <div class="panel-label">MODULE SELECT</div>
+    <label><input id="Everything" type="checkbox" onclick="bzSubject('Everything',this)" /> ALL MODULES</label>
+    <label><input id="Biology"    type="checkbox" onclick="bzSubject('Biology',this)"    /> BIOLOGY</label>
+    <label><input id="Physics"    type="checkbox" onclick="bzSubject('Physics',this)"    /> PHYSICS</label>
+    <label><input id="Chemistry"  type="checkbox" onclick="bzSubject('Chemistry',this)"  /> CHEMISTRY</label>
+    <label><input id="EarthSpace" type="checkbox" onclick="bzSubject('EarthSpace',this)" /> EARTH &amp; SPACE</label>
+    <label><input id="Energy"     type="checkbox" onclick="bzSubject('Energy',this)"     /> ENERGY</label>
+    <label><input id="Math"       type="checkbox" onclick="bzSubject('Math',this)"       /> MATHEMATICS</label>
+  </div>
+
+  <div id="RoundCount" class="hud-panel">
+    <div class="panel-label">MATCH LENGTH</div>
+    <h3 id="RoundDisplay">20 TOSS-UPS</h3>
+    <input type="range" min="5" max="60" value="20" id="RoundSlider" oninput="bzUpdateRounds()" />
+  </div>
+
+  <div id="ModePanel" class="hud-panel">
+    <div class="panel-label">QUESTION DELIVERY</div>
+    <label><input type="radio" name="bzmode" value="audio" checked onchange="bzSetMode('audio')" /> AUDIO READOUT <span class="rank-sub">[ default ]</span></label>
+    <label><input type="radio" name="bzmode" value="display" onchange="bzSetMode('display')" /> DISPLAY TEXT</label>
+  </div>
+
+  <div id="bz-status"></div>
+  <button onclick="bzStart()" id="BzLaunch">&#9889; LAUNCH MATCH</button>
+
+  <!-- ══ GAME AREA ═════════════════════════════════════════════════════════════ -->
+  <div id="game-area">
+
+    <!-- Score bar -->
+    <div id="score-bar">
+      <div class="score-block">
+        <div class="score-label">YOUR TEAM</div>
+        <div class="score-val my" id="my-score">0</div>
+      </div>
+      <div class="score-vs">VS</div>
+      <div class="score-block">
+        <div class="score-label">OPPONENTS</div>
+        <div class="score-val enemy" id="en-score">0</div>
+      </div>
+    </div>
+
+    <div id="round-info">TOSS-UP 1</div>
+
+    <!-- Question -->
+    <div id="question-area">
+      <div id="q-subject"></div>
+      <div id="q-text"></div>
+    </div>
+
+    <!-- Status banners -->
+    <div id="opp-chance-banner"></div>
+    <div id="locked-banner">&#8856; YOUR TEAM IS LOCKED OUT</div>
+
+    <!-- Buzz zone -->
+    <div id="buzz-zone">
+
+      <!-- 7-second buzz window ring (hidden until question finishes) -->
+      <div id="timer-wrap" style="display:none">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle class="ring-bg"  cx="40" cy="40" r="33" />
+          <circle class="ring-arc" cx="40" cy="40" r="33" id="ring-arc"
+            stroke-dasharray="207.3 207.3" />
+        </svg>
+        <div id="timer-num">7</div>
+      </div>
+
+      <button id="BuzzBtn">&#9889; BUZZ IN</button>
+
+      <!-- Bot answering -->
+      <div id="bot-overlay">
+        <div id="bot-icon">◈</div>
+        <div id="bot-name">BOT ALPHA</div>
+        <div id="bot-msg">PROCESSING...</div>
+      </div>
+
+      <!-- Player answer panel (no ring — uses 5s text countdown) -->
+      <div id="answer-panel">
+        <div id="ans-countdown" class="ans-cd">5</div>
+
+        <div id="mc-panel">
+          <button class="mc-buzz-btn" onclick="bzPickMC(this,'W')" data-l="W">W)</button>
+          <button class="mc-buzz-btn" onclick="bzPickMC(this,'X')" data-l="X">X)</button>
+          <button class="mc-buzz-btn" onclick="bzPickMC(this,'Y')" data-l="Y">Y)</button>
+          <button class="mc-buzz-btn" onclick="bzPickMC(this,'Z')" data-l="Z">Z)</button>
+        </div>
+
+        <div id="oe-panel">
+          <input id="BuzzerOE" type="text" placeholder="TYPE YOUR ANSWER..." autocomplete="off" />
+        </div>
+
+        <!-- OE only — hidden for MC (auto-submits on pick) -->
+        <button id="ConfirmBtn" onclick="bzConfirm()">CONFIRM ›</button>
+      </div>
+    </div>
+
+    <!-- Round result -->
+    <div id="round-result"></div>
+    <button id="NextBtn" onclick="bzNext()">NEXT TOSS-UP ›</button>
+
+    <!-- Game over -->
+    <div id="game-over"></div>
+
+    <!-- Teams panel -->
+    <div id="teams-panel">
+      <div class="t-col" id="my-col">
+        <div class="t-col-label friendly">◈ YOUR TEAM</div>
+        <!-- injected by JS -->
+      </div>
+      <div class="t-col" id="en-col">
+        <div class="t-col-label enemy">▲ OPPONENTS</div>
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+  </div><!-- /game-area -->
+
+  <script src="question.js"></script>
+  <script src="Buzzer.js"></script>
+</body>
+</html>
