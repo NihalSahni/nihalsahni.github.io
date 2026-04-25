@@ -374,11 +374,21 @@
     .go-score-lbl { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; }
     .go-score-num { font-size: 4rem; line-height: 1.1; }
     .go-stats { font-size: 0.82rem; color: var(--muted); line-height: 2; letter-spacing: 0.05em; }
+
+    /* ── DIFFICULTY BUTTONS ── */
+    #DifficultyPanel { display: flex; flex-direction: column; gap: 0.5rem; }
+    .diff-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; letter-spacing: 0.15em; padding: 0.55rem 1rem; cursor: pointer; border-radius: 2px; text-align: left; transition: all 0.18s; }
+    .diff-btn:hover { border-color: var(--cyan)88; color: var(--cyan); }
+    .diff-btn.selected { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: 0 0 10px var(--cyan)33; background: var(--cyan)0d; }
   </style>
 </head>
 <body>
   <canvas id="starfield"></canvas>
   <div id="scanlines"></div>
+
+  <div style="text-align:center;margin-top:1.5rem">
+    <a href="index.html" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)';this.style.textShadow='0 0 12px var(--magenta)';this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='';this.style.textShadow='0 0 6px var(--magenta)99';this.style.borderColor='var(--magenta)55'">← HOME BASE</a>
+  </div>
 
   <h1 id="Title">BUZZER ARENA<span class="blink-cursor">|</span></h1>
 
@@ -410,6 +420,13 @@
     <div class="panel-label">QUESTION DELIVERY</div>
     <label><input type="radio" name="bzmode" value="audio" checked onchange="bzSetMode('audio')" /> AUDIO READOUT <span class="rank-sub">[ default ]</span></label>
     <label><input type="radio" name="bzmode" value="display" onchange="bzSetMode('display')" /> DISPLAY TEXT</label>
+  </div>
+
+  <div id="DifficultyPanel" class="hud-panel">
+    <div class="panel-label">BOT DIFFICULTY</div>
+    <button id="diff-cadet"    class="diff-btn selected" onclick="bzSetDifficulty('cadet')">CADET <span class="rank-sub">[ easy ]</span></button>
+    <button id="diff-standard" class="diff-btn"          onclick="bzSetDifficulty('standard')">STANDARD <span class="rank-sub">[ normal ]</span></button>
+    <button id="diff-elite"    class="diff-btn"          onclick="bzSetDifficulty('elite')">ELITE <span class="rank-sub">[ hard ]</span></button>
   </div>
 
   <div id="bz-status"></div>
@@ -488,6 +505,10 @@
     <!-- Round result -->
     <div id="round-result"></div>
     <button id="NextBtn" onclick="bzNext()">NEXT TOSS-UP ›</button>
+
+    <div style="text-align:center;margin-top:0.75rem">
+      <button onclick="if(confirm('Abandon match and return to Home Base?'))location.href='index.html'" style="background:transparent;border:1px solid var(--muted)55;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.borderColor='#ff4444';this.style.color='#ff4444'" onmouseout="this.style.borderColor='';this.style.color=''">✕ ABANDON MATCH</button>
+    </div>
 
     <!-- Game over -->
     <div id="game-over"></div>

@@ -42,6 +42,18 @@ const askedQuestions = new Set();
 const stats = {};
 const answeredQuestions = [];
 
+let reviewMode = false;
+let reviewQueue = [];
+let sessionReviewQueue = [];
+let newlyQueued = 0;
+
+function loadReviewQueue() {
+  try { return JSON.parse(localStorage.getItem('sb_review_queue') || '[]'); } catch(e) { return []; }
+}
+function saveReviewQueue(q) {
+  localStorage.setItem('sb_review_queue', JSON.stringify(q));
+}
+
 const submitBtn = document.getElementById("Submit");
 
 function rebuildSelectedSubjects() {
@@ -104,6 +116,7 @@ function AddMCQuestion() {
     document.getElementById("CampaignLength")?.remove();
     document.getElementById("OptionsPanel")?.remove();
     document.getElementById("status-indicator")?.remove();
+    document.getElementById("home-link-wrap")?.remove();
     startCountdown(loadQuestion);
     return;
   }
@@ -116,17 +129,24 @@ function loadQuestion() {
   maxQuestions--;
   submitBtn.innerHTML = maxQuestions === 0 ? "FINISH OPERATION" : "ADVANCE >";
 
-  const available = selectedSubjects
-    .map(s => ({ ...s, keys: Object.keys(s.data).filter(k => !askedQuestions.has(k) && matchesFilter(k)) }))
-    .filter(s => s.keys.length > 0);
-
-  if (available.length === 0) { showResults(); return; }
-
-  const pick = available[Math.floor(Math.random() * available.length)];
-  currentSubjectName = pick.name;
-  currentSubject = pick.data;
-  currentQuestion = pick.keys[Math.floor(Math.random() * pick.keys.length)];
-  askedQuestions.add(currentQuestion);
+  if (reviewMode) {
+    if (sessionReviewQueue.length === 0) { showResults(); return; }
+    const idx = Math.floor(Math.random() * sessionReviewQueue.length);
+    const item = sessionReviewQueue.splice(idx, 1)[0];
+    currentSubjectName = item.subjectName;
+    currentSubject = { [item.question]: item.correctAnswer };
+    currentQuestion = item.question;
+  } else {
+    const available = selectedSubjects
+      .map(s => ({ ...s, keys: Object.keys(s.data).filter(k => !askedQuestions.has(k) && matchesFilter(k)) }))
+      .filter(s => s.keys.length > 0);
+    if (available.length === 0) { showResults(); return; }
+    const pick = available[Math.floor(Math.random() * available.length)];
+    currentSubjectName = pick.name;
+    currentSubject = pick.data;
+    currentQuestion = pick.keys[Math.floor(Math.random() * pick.keys.length)];
+    askedQuestions.add(currentQuestion);
+  }
 
   const container = document.getElementById("QuestionContainer");
   container.innerHTML = "";
@@ -158,7 +178,8 @@ function loadQuestion() {
   submitBtn.style.display = "block";
   document.getElementById("key-hint").style.display = "block";
   document.getElementById("EndEarly").style.display = "inline-block";
-  typeText(document.getElementById("Title"), "MISSION ACTIVE");
+  document.getElementById("AbandonBtn").style.display = "inline-block";
+  typeText(document.getElementById("Title"), reviewMode ? "REVIEW ACTIVE" : "MISSION ACTIVE");
 
   if (audioMode) {
     speakQuestion(currentQuestion, timedMode ? startTimer : null);
@@ -214,6 +235,11 @@ function checkAndShowAnswer() {
   if (isCorrect) stats[currentSubjectName].correct++;
   if (timeTaken !== null) stats[currentSubjectName].totalTime += timeTaken;
 
+  if (reviewMode && isCorrect) {
+    reviewQueue = reviewQueue.filter(item => item.question !== currentQuestion);
+    saveReviewQueue(reviewQueue);
+  }
+
   answeredQuestions.push({
     question: currentQuestion,
     subjectName: currentSubjectName,
@@ -264,12 +290,63 @@ function addSubject(subjectName, checkbox) {
   updateStatus();
 }
 
+function savePracticeStats() {
+  const key = "sb_practice_" + level;
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch(e) { saved = {}; }
+
+  for (const [subj, data] of Object.entries(stats)) {
+    if (!saved[subj]) saved[subj] = { correct: 0, total: 0 };
+    saved[subj].correct += data.correct;
+    saved[subj].total   += data.total;
+  }
+
+  const totalAnswered = answeredQuestions.length;
+  const totalCorrect  = Object.values(stats).reduce((s, v) => s + v.correct, 0);
+  saved._sessions  = (saved._sessions  || 0) + 1;
+  saved._total     = (saved._total     || 0) + totalAnswered;
+  saved._correct   = (saved._correct   || 0) + totalCorrect;
+  saved._bestStreak = Math.max(saved._bestStreak || 0, bestStreak);
+
+  localStorage.setItem(key, JSON.stringify(saved));
+
+  if (!reviewMode) {
+    const existing = loadReviewQueue();
+    const existingSet = new Set(existing.map(i => i.question));
+    const newMissed = answeredQuestions
+      .filter(q => !q.wasCorrect && !existingSet.has(q.question))
+      .map(q => ({ question: q.question, correctAnswer: q.correctAnswer, subjectName: q.subjectName, level }));
+    newlyQueued = newMissed.length;
+    if (newMissed.length > 0) saveReviewQueue([...existing, ...newMissed]);
+  }
+}
+
+function startReviewMode() {
+  reviewQueue = loadReviewQueue();
+  if (reviewQueue.length === 0) { beep(200, 200); return; }
+  reviewMode = true;
+  sessionReviewQueue = [...reviewQueue];
+  maxQuestions = sessionReviewQueue.length;
+  sessionStarted = true;
+  submitBtn.style.display = "none";
+  document.getElementById("ranks")?.remove();
+  document.getElementById("SubjectContainer")?.remove();
+  document.getElementById("CampaignLength")?.remove();
+  document.getElementById("OptionsPanel")?.remove();
+  document.getElementById("status-indicator")?.remove();
+  document.getElementById("home-link-wrap")?.remove();
+  document.getElementById("review-launch")?.remove();
+  startCountdown(loadQuestion);
+}
+
 function showResults() {
+  savePracticeStats();
   const container = document.getElementById("QuestionContainer");
   document.getElementById("answer").innerHTML = "";
   document.getElementById("streak-display").style.display = "none";
   document.getElementById("key-hint").style.display = "none";
   document.getElementById("EndEarly").style.display = "none";
+  document.getElementById("AbandonBtn").style.display = "none";
   submitBtn.style.display = "none";
 
   const totalAnswered = answeredQuestions.length;
@@ -342,7 +419,7 @@ function showResults() {
 
   container.innerHTML = `
     <div class="results-screen">
-      <h2>MISSION DEBRIEF</h2>
+      <h2>${reviewMode ? "REVIEW DEBRIEF" : "MISSION DEBRIEF"}</h2>
       <div class="overall-score">
         <svg class="score-ring" viewBox="0 0 120 120">
           <circle class="ring-bg"   cx="60" cy="60" r="50"/>
@@ -363,6 +440,13 @@ function showResults() {
       <div class="subject-breakdown">${subjectBarsHTML}</div>
       <h3>MISSED QUESTIONS (${missed.length})</h3>
       <div class="missed-list">${missedHTML}</div>
+      ${reviewMode
+        ? `<p class="review-note">⚑ ${Object.values(stats).reduce((s,v)=>s+v.correct,0)} cleared from queue — ${reviewQueue.length} still pending.</p>`
+        : newlyQueued > 0 ? `<p class="review-note">⚑ ${newlyQueued} missed question${newlyQueued !== 1 ? 's' : ''} added to your Review Queue.</p>` : ''}
+      <div class="debrief-actions">
+        <button class="debrief-btn" onclick="location.reload()">PRACTICE AGAIN</button>
+        <button class="debrief-btn debrief-btn-secondary" onclick="location.href='index.html'">HOME BASE</button>
+      </div>
     </div>`;
 }
 
@@ -559,6 +643,28 @@ function matchesFilter(key) {
 window.addEventListener("DOMContentLoaded", () => {
   typeText(document.getElementById("Title"), "COMMAND DECK");
   updateSliderTrail();
+
+  // Review queue UI
+  const rq = loadReviewQueue();
+  const rlEl = document.getElementById("review-launch");
+  if (rlEl) {
+    if (rq.length > 0) {
+      rlEl.innerHTML = `<button class="review-queue-btn" onclick="startReviewMode()">⚑ DRILL REVIEW QUEUE <span class="review-queue-count">${rq.length}</span></button>`;
+    } else {
+      rlEl.innerHTML = `<p class="review-queue-empty">Review queue is empty — missed questions appear here after practice.</p>`;
+    }
+  }
+
+  // URL param auto-select (from weak spot link on Progress page)
+  const params = new URLSearchParams(location.search);
+  const pLevel = params.get('level');
+  const pSubject = params.get('subject');
+  if (pLevel === 'MS') MSSelect();
+  else if (pLevel === 'HS') HSSelect();
+  if (pSubject) {
+    const cb = document.getElementById(pSubject);
+    if (cb) { cb.checked = true; addSubject(pSubject, cb); }
+  }
   document.getElementById("QuestionSlider").addEventListener("input", updateSliderTrail);
   updateStatus();
   document.getElementById("TimedMode").addEventListener("change", e => { timedMode = e.target.checked; });

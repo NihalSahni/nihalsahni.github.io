@@ -18,6 +18,31 @@ const EN_BOTS = [
   { id: 'eta',     name: 'ETA',     icon: '●', accuracy: 0.59, buzzRate: 0.09, team: 'en' },
 ];
 
+// ── DIFFICULTY ────────────────────────────────────────────────────────────────
+let bzDifficulty = 'cadet';
+const BZ_DIFF = {
+  cadet:    { buzzMult: 0.45, accMult: 0.60 },
+  standard: { buzzMult: 1.00, accMult: 1.00 },
+  elite:    { buzzMult: 2.00, accMult: 1.20 },
+};
+
+function bzSetDifficulty(level) {
+  bzDifficulty = level;
+  ['cadet','standard','elite'].forEach(d => {
+    const btn = $('diff-' + d);
+    if (btn) btn.classList.toggle('selected', d === level);
+  });
+  beep(level === 'cadet' ? 440 : level === 'standard' ? 660 : 880, 60);
+}
+
+function bzEffective(bot) {
+  const d = BZ_DIFF[bzDifficulty];
+  return {
+    buzzRate: Math.min(0.95, bot.buzzRate * d.buzzMult),
+    accuracy: Math.min(0.98, bot.accuracy * d.accMult),
+  };
+}
+
 // ── SETUP STATE ───────────────────────────────────────────────────────────────
 let bzLevel = '';
 const bzSubjectNames = new Set();
@@ -123,7 +148,7 @@ function bzStatus() {
 
 function bzStart() {
   if (!bzLevel || bzSubjectNames.size === 0) { beep(200, 200); return; }
-  ['ranks','SubjectContainer','RoundCount','ModePanel','bz-status','BzLaunch']
+  ['ranks','SubjectContainer','RoundCount','ModePanel','DifficultyPanel','bz-status','BzLaunch']
     .forEach(id => $(id)?.remove());
   $('game-area').style.display = 'block';
   bzBuildTeams();
@@ -292,7 +317,7 @@ function bzEstimateSpeechMs(text) {
 
 function bzScheduleBots(bots, readMs) {
   bots.forEach(bot => {
-    if (Math.random() > bot.buzzRate) return;
+    if (Math.random() > bzEffective(bot).buzzRate) return;
 
     // Buzz between 40% through reading and 2s after reading finishes
     // (within the 7s buzz window)
@@ -384,7 +409,7 @@ function bzBotBuzz(bot) {
   // Slow, human-like think time: 2.5 – 7 seconds
   const thinkMs = 2500 + Math.random() * 4500;
   setTimeout(() => {
-    const correct = Math.random() < bot.accuracy;
+    const correct = Math.random() < bzEffective(bot).accuracy;
     bzBotAnswer(bot, correct);
   }, thinkMs);
 }

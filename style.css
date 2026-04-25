@@ -110,6 +110,23 @@ button.selected {
   box-shadow: 0 0 30px var(--magenta);
 }
 
+#AbandonBtn {
+  border-color: var(--muted)66;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  padding: 0.4rem 1rem;
+  margin-left: 0.5rem;
+}
+
+#AbandonBtn:hover {
+  border-color: var(--red, #ff4444);
+  color: var(--red, #ff4444);
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 0 8px var(--red, #ff4444);
+}
+
 @keyframes launch-pulse {
   0%, 100% { box-shadow: 0 0 10px var(--magenta)66; }
   50%       { box-shadow: 0 0 30px var(--magenta), 0 0 60px var(--magenta)44; }
@@ -501,6 +518,92 @@ label.flash {
 .missed-yours span   { color: var(--orange); text-shadow: 0 0 6px var(--orange); }
 .missed-correct span { color: var(--green);  text-shadow: 0 0 6px var(--green); font-weight: bold; }
 .missed-subject      { color: var(--muted); font-style: italic; }
+
+.review-queue-btn {
+  background: transparent;
+  border: 1px solid var(--orange, #f5a623);
+  color: var(--orange, #f5a623);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  padding: 0.55rem 1.4rem;
+  cursor: pointer;
+  border-radius: 2px;
+  text-shadow: 0 0 8px var(--orange, #f5a623)88;
+  box-shadow: 0 0 10px var(--orange, #f5a623)22;
+  transition: all 0.2s;
+  margin-top: 0.75rem;
+  display: inline-block;
+}
+.review-queue-btn:hover {
+  background: var(--orange, #f5a623)15;
+  box-shadow: 0 0 18px var(--orange, #f5a623)55;
+}
+.review-queue-count {
+  background: var(--orange, #f5a623);
+  color: #000;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  margin-left: 0.4rem;
+}
+.review-queue-empty {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-top: 0.75rem;
+}
+.review-note {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: var(--orange, #f5a623);
+  text-shadow: 0 0 6px var(--orange, #f5a623)88;
+  margin: 1.2rem 0 0.5rem;
+  text-align: center;
+}
+
+.debrief-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.debrief-btn {
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  padding: 0.65rem 1.6rem;
+  cursor: pointer;
+  border-radius: 2px;
+  text-shadow: 0 0 8px var(--cyan);
+  box-shadow: 0 0 10px var(--cyan)33;
+  transition: all 0.2s;
+}
+
+.debrief-btn:hover {
+  background: var(--cyan)22;
+  box-shadow: 0 0 18px var(--cyan)66;
+}
+
+.debrief-btn-secondary {
+  border-color: var(--muted);
+  color: var(--muted);
+  text-shadow: none;
+  box-shadow: none;
+}
+
+.debrief-btn-secondary:hover {
+  border-color: var(--green);
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green);
+  box-shadow: 0 0 10px var(--green)33;
+  background: var(--green)11;
+}
 
 .question-text {
   white-space: normal;

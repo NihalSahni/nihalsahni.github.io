@@ -11,6 +11,10 @@
     <canvas id="starfield"></canvas>
     <div id="scanlines"></div>
 
+    <div id="home-link-wrap" style="text-align:center;margin-top:1.5rem">
+      <a href="index.html" class="debrief-btn debrief-btn-secondary" style="font-size:0.72rem;letter-spacing:0.22em;text-decoration:none;display:inline-block">← HOME BASE</a>
+    </div>
+
     <h1 id="Title">COMMAND DECK<span class="blink-cursor">|</span></h1>
 
     <div id="ranks" class="hud-panel">
@@ -48,6 +52,7 @@
     </div>
 
     <div id="status-indicator"></div>
+    <div id="review-launch"></div>
 
     <div id="streak-display" style="display:none"></div>
     <div id="key-hint" style="display:none" class="key-hint">W / X / Y / Z to select &nbsp;·&nbsp; ENTER to submit</div>
@@ -55,6 +60,7 @@
     <h1 id="answer"></h1>
     <button onclick="AddMCQuestion()" id="Submit">&#9889; LAUNCH SEQUENCE</button>
     <button onclick="showResults()" id="EndEarly" style="display:none">&#9632; END OPERATION EARLY</button>
+    <button onclick="location.href='index.html'" id="AbandonBtn" style="display:none">✕ ABANDON</button>
 
     <script src="question.js"></script>
     <script src="Practice.js"></script>

@@ -9,10 +9,20 @@
     <style>
       .page-wrap { max-width: 860px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
-      .back-link { display: inline-block; font-size: 0.72rem; letter-spacing: 0.25em; color: var(--muted); text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
-      .back-link:hover { color: var(--green); text-shadow: 0 0 8px var(--green); }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--green); text-shadow: 0 0 6px var(--green)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--green)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--green); text-shadow: 0 0 12px var(--green); border-color: var(--green); background: var(--green)11; }
       .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green)44; margin: 0.25rem 0; }
       .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      /* ── Weak spot ── */
+      .weak-spot { max-width: 560px; margin: 1.8rem auto 0; background: var(--surface); border: 1px solid var(--magenta)55; border-radius: 4px; padding: 1.2rem 1.4rem; position: relative; }
+      .weak-spot::before { content: ''; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px; border-top: 2px solid var(--magenta); border-left: 2px solid var(--magenta); }
+      .weak-spot::after  { content: ''; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px; border-bottom: 2px solid var(--magenta); border-right: 2px solid var(--magenta); }
+      .ws-label { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--magenta); text-shadow: 0 0 6px var(--magenta); margin-bottom: 0.4rem; }
+      .ws-subject { font-size: 1.3rem; letter-spacing: 0.1em; margin: 0.25rem 0; }
+      .ws-stats { font-size: 0.68rem; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.9rem; }
+      .ws-drill-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--magenta); border: 1px solid var(--magenta)77; padding: 0.35rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+      .ws-drill-btn:hover { background: var(--magenta)11; border-color: var(--magenta); text-shadow: 0 0 8px var(--magenta); }
 
       /* ── Overall totals ── */
       .totals-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 560px; margin: 2.5rem auto 2rem; }
@@ -39,8 +49,16 @@
       .bar-track { height: 4px; background: var(--muted)22; border-radius: 2px; overflow: hidden; }
       .bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
 
+      /* ── Practice stats ── */
+      .practice-section { margin-bottom: 3rem; }
+      .practice-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .practice-title { font-size: 1.2rem; letter-spacing: 0.15em; color: var(--orange, #f5a623); text-shadow: 0 0 12px var(--orange, #f5a623); margin: 0; }
+      .practice-meta { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--muted); }
+      .practice-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 560px; margin: 0 auto 1.8rem; }
+      .practice-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.8rem; }
+
       /* ── Reset button ── */
-      .reset-row { text-align: center; margin: 1rem 0 3rem; }
+      .reset-row { text-align: center; margin: 1rem 0 3rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
       .reset-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; padding: 0.4rem 1.1rem; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
       .reset-btn:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); }
 
@@ -53,17 +71,21 @@
 
     <div class="page-wrap">
       <div class="page-header">
-        <a href="LearnTopics.html" class="back-link">← INTEL DATABASE</a>
+        <a href="index.html" class="back-link">← HOME BASE</a>
         <h1 class="page-title">PROGRESS REPORT</h1>
-        <p class="page-sub">MODULE 04 — FLASHCARD MASTERY TRACKING</p>
+        <p class="page-sub">MODULE 04 — FLASHCARD &amp; PRACTICE TRACKING</p>
       </div>
 
+      <div id="weak-spot" class="weak-spot" style="display:none"></div>
       <div class="totals-row" id="totals-row"></div>
 
       <div id="sections"></div>
 
+      <div id="practice-sections"></div>
+
       <div class="reset-row">
-        <button class="reset-btn" onclick="confirmReset()">RESET ALL PROGRESS</button>
+        <button class="reset-btn" onclick="confirmReset()">RESET FLASHCARD PROGRESS</button>
+        <button class="reset-btn" onclick="confirmResetPractice()">RESET PRACTICE STATS</button>
       </div>
 
       <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
@@ -152,15 +174,118 @@
         document.getElementById('sections').innerHTML = sectionsHTML;
       }
 
+      var PRACTICE_SUBJECTS = ['Math', 'Physics', 'Chemistry', 'Biology', 'EarthSpace', 'Energy'];
+      var PRACTICE_LABELS   = { Math: 'MATHEMATICS', Physics: 'PHYSICS', Chemistry: 'CHEMISTRY', Biology: 'BIOLOGY', EarthSpace: 'EARTH & SPACE', Energy: 'ENERGY' };
+      var PRACTICE_COLORS   = { Math: 'var(--blue, #5b9cf6)', Physics: 'var(--magenta)', Chemistry: 'var(--cyan)', Biology: 'var(--green)', EarthSpace: 'var(--yellow, #f5c542)', Energy: 'var(--orange, #f5a623)' };
+
+      function loadPracticeStats(level) {
+        try { return JSON.parse(localStorage.getItem('sb_practice_' + level) || 'null'); } catch(e) { return null; }
+      }
+
+      function renderPractice() {
+        var html = '';
+        var hasPractice = false;
+
+        [['HS', 'HIGH SCHOOL'], ['MS', 'MIDDLE SCHOOL']].forEach(function(lv) {
+          var level = lv[0], label = lv[1];
+          var data = loadPracticeStats(level);
+          if (!data || !data._total) return;
+          hasPractice = true;
+
+          var overallPct = data._total ? Math.round(data._correct / data._total * 100) : 0;
+          var scoreColor = overallPct >= 70 ? 'var(--green)' : overallPct >= 40 ? 'var(--orange, #f5a623)' : 'var(--magenta)';
+
+          html += '<div class="practice-section">';
+          html += '<div class="practice-header">' +
+            '<h2 class="practice-title">PRACTICE — ' + label + '</h2>' +
+            '<span class="practice-meta">' + (data._sessions || 0) + ' SESSION' + (data._sessions !== 1 ? 'S' : '') + ' &nbsp;·&nbsp; BEST CHAIN: ' + (data._bestStreak || 0) + '</span>' +
+          '</div>';
+
+          html += '<div class="practice-totals">' +
+            '<div class="total-card" style="--c:' + scoreColor + '">' +
+              '<div class="total-label">OVERALL ACCURACY</div>' +
+              '<div class="total-num" style="color:' + scoreColor + ';text-shadow:0 0 14px ' + scoreColor + '">' + overallPct + '<span class="total-denom">%</span></div>' +
+              '<div class="total-pct">' + data._correct + ' / ' + data._total + ' CORRECT</div>' +
+            '</div>' +
+            '<div class="total-card" style="--c:var(--orange,#f5a623)">' +
+              '<div class="total-label">SESSIONS COMPLETED</div>' +
+              '<div class="total-num" style="color:var(--orange,#f5a623);text-shadow:0 0 14px var(--orange,#f5a623)">' + (data._sessions || 0) + '</div>' +
+              '<div class="total-pct">BEST STREAK: ' + (data._bestStreak || 0) + '</div>' +
+            '</div>' +
+          '</div>';
+
+          html += '<div class="practice-list">';
+          PRACTICE_SUBJECTS.forEach(function(subj) {
+            if (!data[subj] || !data[subj].total) return;
+            var c = data[subj].correct, t = data[subj].total;
+            var p = Math.round(c / t * 100);
+            var color = PRACTICE_COLORS[subj];
+            var barColor = p >= 70 ? 'var(--green)' : p >= 40 ? 'var(--orange,#f5a623)' : 'var(--magenta)';
+            html +=
+              '<div class="subject-row">' +
+                '<div class="subject-row-top">' +
+                  '<span class="subject-name" style="color:' + color + ';text-shadow:0 0 6px ' + color + '">' + PRACTICE_LABELS[subj] + '</span>' +
+                  '<span class="subject-count">' + c + ' / ' + t + ' &nbsp;·&nbsp; ' + p + '%</span>' +
+                '</div>' +
+                '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%;background:' + barColor + ';box-shadow:0 0 6px ' + barColor + '"></div></div>' +
+              '</div>';
+          });
+          html += '</div></div>';
+        });
+
+        if (!hasPractice) {
+          html = '<div class="practice-section"><div class="practice-header"><h2 class="practice-title">PRACTICE STATS</h2></div>' +
+            '<p style="color:var(--muted);font-size:0.72rem;letter-spacing:0.15em;text-align:center;padding:1.5rem 0">No practice sessions recorded yet. Complete a session on the Practice page to see stats here.</p></div>';
+        }
+        document.getElementById('practice-sections').innerHTML = html;
+      }
+
       function confirmReset() {
-        if (confirm('Reset ALL progress for both HS and MS? This cannot be undone.')) {
+        if (confirm('Reset ALL flashcard progress for both HS and MS? This cannot be undone.')) {
           localStorage.removeItem('sb_known_HS');
           localStorage.removeItem('sb_known_MS');
           render();
         }
       }
 
+      function confirmResetPractice() {
+        if (confirm('Reset ALL practice stats for both HS and MS? This cannot be undone.')) {
+          localStorage.removeItem('sb_practice_HS');
+          localStorage.removeItem('sb_practice_MS');
+          renderPractice();
+        }
+      }
+
+      function findWeakSpot() {
+        var MIN_Q = 8, worst = null;
+        [['HS', 'HIGH SCHOOL'], ['MS', 'MIDDLE SCHOOL']].forEach(function(lv) {
+          var data = loadPracticeStats(lv[0]);
+          if (!data) return;
+          PRACTICE_SUBJECTS.forEach(function(subj) {
+            if (!data[subj] || data[subj].total < MIN_Q) return;
+            var p = Math.round(data[subj].correct / data[subj].total * 100);
+            if (!worst || p < worst.pct) worst = { subj: subj, level: lv[0], label: lv[1], pct: p, correct: data[subj].correct, total: data[subj].total };
+          });
+        });
+        return worst;
+      }
+
+      function renderWeakSpot() {
+        var el = document.getElementById('weak-spot');
+        var ws = findWeakSpot();
+        if (!ws) { el.style.display = 'none'; return; }
+        var color = ws.pct >= 70 ? 'var(--green)' : ws.pct >= 40 ? 'var(--orange,#f5a623)' : 'var(--magenta)';
+        el.style.display = 'block';
+        el.innerHTML =
+          '<div class="ws-label">⚠ WEAK SPOT DETECTED</div>' +
+          '<div class="ws-subject" style="color:' + color + ';text-shadow:0 0 10px ' + color + '">' + PRACTICE_LABELS[ws.subj] + ' &nbsp;—&nbsp; ' + ws.label + '</div>' +
+          '<div class="ws-stats">' + ws.correct + ' / ' + ws.total + ' correct &nbsp;·&nbsp; ' + ws.pct + '% accuracy</div>' +
+          '<a href="Practice.html?level=' + ws.level + '&subject=' + ws.subj + '" class="ws-drill-btn">DRILL THIS SUBJECT →</a>';
+      }
+
       render();
+      renderPractice();
+      renderWeakSpot();
 
       // Starfield
       (function() {
