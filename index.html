@@ -299,6 +299,17 @@
       </a>
     </div>
 
+    <div id="streak-banner" style="display:none;text-align:center;margin:0 auto 2.5rem;padding:1.4rem 2rem;max-width:400px;border:1px solid var(--cyan)44;border-radius:4px;background:var(--surface);position:relative">
+      <div style="font-size:0.6rem;letter-spacing:0.3em;color:var(--muted);margin-bottom:0.4rem">TRAINING STREAK</div>
+      <div id="streak-count" style="font-size:3rem;color:var(--cyan);text-shadow:0 0 30px var(--cyan)"></div>
+      <div style="font-size:0.65rem;letter-spacing:0.22em;color:var(--cyan);opacity:0.8">CONSECUTIVE DAYS</div>
+      <div id="streak-best" style="font-size:0.6rem;letter-spacing:0.18em;color:var(--muted);margin-top:0.5rem"></div>
+    </div>
+
+    <div id="no-streak-banner" style="display:none;text-align:center;margin:0 auto 2.5rem">
+      <p style="font-size:0.68rem;letter-spacing:0.2em;color:var(--muted)">Complete a session to start your streak.</p>
+    </div>
+
     <footer>
       SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; TRAIN HARD. BUZZ FAST. WIN.
     </footer>
@@ -388,7 +399,25 @@
         typeof HSMath !== "undefined" ? HSMath : {},
       ];
       const total = allBanks.reduce((s, b) => s + Object.keys(b).length, 0);
-      document.getElementById("stat-q").textContent = total;
+      try { document.getElementById("stat-q").textContent = total; } catch(e) {}
+
+      // Streak display
+      (function() {
+        let s; try { s = JSON.parse(localStorage.getItem('sb_streak') || 'null'); } catch(e) { s = null; }
+        if (s && s.count > 0) {
+          document.getElementById('streak-banner').style.display = 'block';
+          document.getElementById('streak-count').textContent = s.count;
+          if (s.best > 1) document.getElementById('streak-best').textContent = 'BEST: ' + s.best + ' DAYS';
+          const today = new Date().toISOString().slice(0, 10);
+          if (s.lastDate !== today) {
+            document.getElementById('streak-count').style.color = 'var(--orange, #f5a623)';
+            document.getElementById('streak-count').style.textShadow = '0 0 30px var(--orange, #f5a623)';
+            document.getElementById('streak-best').textContent = (s.best > 1 ? 'BEST: ' + s.best + ' DAYS  ·  ' : '') + 'PRACTICE TODAY TO KEEP IT ALIVE';
+          }
+        } else {
+          document.getElementById('no-streak-banner').style.display = 'block';
+        }
+      })();
     </script>
   </body>
 </html>

@@ -25,8 +25,13 @@
 
     <div id="CampaignLength" class="hud-panel">
       <div class="panel-label">OPERATION SCALE</div>
+      <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
+        <button id="standard-btn" class="diff-btn" onclick="setSurvivalMode(false)">STANDARD</button>
+        <button id="survival-btn" class="diff-btn" onclick="setSurvivalMode(true)">SURVIVAL <span class="rank-sub">[ 3 lives ]</span></button>
+      </div>
       <h3 id="AmountQuestions">30 QUESTIONS</h3>
       <input type="range" min="10" max="100" value="30" id="QuestionSlider" oninput="UpdateQuestions()" />
+      <p id="survival-label" style="display:none;font-size:0.72rem;letter-spacing:0.15em;color:var(--magenta);text-shadow:0 0 8px var(--magenta);margin:0">3 LIVES — WRONG ANSWERS COST A LIFE</p>
     </div>
 
     <div id="SubjectContainer" class="hud-panel">
@@ -44,6 +49,7 @@
       <div class="panel-label">MISSION OPTIONS</div>
       <label><input id="TimedMode" type="checkbox" /> TIMED MODE</label>
       <label><input id="AudioMode" type="checkbox" /> AUDIO READOUT</label>
+      <label><input id="HideAnswers" type="checkbox" /> HIDE ANSWERS IN DEBRIEF</label>
       <div class="option-divider"></div>
       <span class="option-group-label">QUESTION TYPE</span>
       <label><input type="radio" name="qtype" value="mixed" checked /> MIXED</label>
@@ -54,6 +60,8 @@
     <div id="status-indicator"></div>
     <div id="review-launch"></div>
 
+    <div id="question-counter" style="display:none"></div>
+    <div id="lives-display" style="display:none"></div>
     <div id="streak-display" style="display:none"></div>
     <div id="key-hint" style="display:none" class="key-hint">W / X / Y / Z to select &nbsp;·&nbsp; ENTER to submit</div>
     <div id="QuestionContainer"></div>

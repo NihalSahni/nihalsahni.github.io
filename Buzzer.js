@@ -683,7 +683,39 @@ function bzMember(id, state) {
 
 // ══ GAME OVER ════════════════════════════════════════════════════════════════
 
+function bzUpdateStreak() {
+  const today = new Date().toISOString().slice(0, 10);
+  let s; try { s = JSON.parse(localStorage.getItem('sb_streak') || '{}'); } catch(e) { s = {}; }
+  if (s.lastDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  s.count = s.lastDate === yesterday ? (s.count || 0) + 1 : 1;
+  s.lastDate = today;
+  s.best = Math.max(s.best || 0, s.count);
+  localStorage.setItem('sb_streak', JSON.stringify(s));
+}
+
+function bzSaveStats() {
+  bzUpdateStreak();
+  const won = bzMyScore > bzEnScore, tied = bzMyScore === bzEnScore;
+  let s; try { s = JSON.parse(localStorage.getItem('sb_buzzer_stats') || '{}'); } catch(e) { s = {}; }
+  s.sessions = (s.sessions || 0) + 1;
+  s.wins     = (s.wins    || 0) + (won  ? 1 : 0);
+  s.losses   = (s.losses  || 0) + (!won && !tied ? 1 : 0);
+  s.draws    = (s.draws   || 0) + (tied ? 1 : 0);
+  s.buzzed   = (s.buzzed  || 0) + bzStats.buzzed;
+  s.correct  = (s.correct || 0) + bzStats.correct;
+  s.wrong    = (s.wrong   || 0) + bzStats.wrong;
+  const date = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'});
+  const history = s.history || [];
+  const acc = bzStats.buzzed ? Math.round(bzStats.correct / bzStats.buzzed * 100) : 0;
+  history.push({ date, won: won ? 1 : tied ? 0.5 : 0, myScore: bzMyScore, enScore: bzEnScore, acc });
+  if (history.length > 20) history.splice(0, history.length - 20);
+  s.history = history;
+  localStorage.setItem('sb_buzzer_stats', JSON.stringify(s));
+}
+
 function bzGameOver() {
+  bzSaveStats();
   bzPhase = 'DONE';
   bzCancelTimers();
   bzStopBuzzWindow();

@@ -518,6 +518,7 @@ label.flash {
 .missed-yours span   { color: var(--orange); text-shadow: 0 0 6px var(--orange); }
 .missed-correct span { color: var(--green);  text-shadow: 0 0 6px var(--green); font-weight: bold; }
 .missed-subject      { color: var(--muted); font-style: italic; }
+.missed-queued       { color: var(--orange, #f5a623); font-size: 0.8rem; letter-spacing: 0.08em; margin: 0.15rem 0; }
 
 .review-queue-btn {
   background: transparent;
@@ -722,6 +723,24 @@ label.flash {
   letter-spacing: 0.15em;
   display: block;
   margin-bottom: 0.3rem;
+}
+
+#lives-display {
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0.4rem 0 0.2rem;
+}
+.heart { font-size: 1.8rem; transition: all 0.2s; }
+.heart-full  { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); }
+.heart-empty { color: var(--muted); opacity: 0.35; }
+
+#question-counter {
+  text-align: center;
+  font-size: 1.3rem;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  text-shadow: 0 0 12px var(--cyan);
+  margin: 0.6rem 0 0.2rem;
 }
 
 #streak-display {

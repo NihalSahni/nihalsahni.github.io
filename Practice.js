@@ -30,6 +30,12 @@ let selectedSubjects = [];
 let sessionStarted = false;
 let timedMode = false;
 let audioMode = false;
+let hideAnswersMode = false;
+let survivalMode = false;
+let lives = 3;
+const MAX_LIVES = 3;
+let questionNumber = 0;
+let totalQuestions = 0;
 let questionStartTime = 0;
 let timerInterval = null;
 let timerStartTimeout = null;
@@ -47,6 +53,17 @@ let reviewQueue = [];
 let sessionReviewQueue = [];
 let newlyQueued = 0;
 
+function updateStreak() {
+  const today = new Date().toISOString().slice(0, 10);
+  let s; try { s = JSON.parse(localStorage.getItem('sb_streak') || '{}'); } catch(e) { s = {}; }
+  if (s.lastDate === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  s.count = s.lastDate === yesterday ? (s.count || 0) + 1 : 1;
+  s.lastDate = today;
+  s.best = Math.max(s.best || 0, s.count);
+  localStorage.setItem('sb_streak', JSON.stringify(s));
+}
+
 function loadReviewQueue() {
   try { return JSON.parse(localStorage.getItem('sb_review_queue') || '[]'); } catch(e) { return []; }
 }
@@ -60,6 +77,26 @@ function rebuildSelectedSubjects() {
   selectedSubjects = [...selectedSubjectNames]
     .map(n => ({ name: n, data: subjectMap[level][n] }))
     .filter(s => s.data);
+}
+
+function setSurvivalMode(on) {
+  survivalMode = on;
+  document.getElementById("survival-btn").classList.toggle("selected", on);
+  document.getElementById("standard-btn").classList.toggle("selected", !on);
+  document.getElementById("QuestionSlider").style.display = on ? "none" : "";
+  document.getElementById("AmountQuestions").style.display = on ? "none" : "";
+  document.getElementById("survival-label").style.display = on ? "block" : "none";
+  beep(on ? 880 : 660, 60);
+}
+
+function updateLivesDisplay() {
+  const el = document.getElementById("lives-display");
+  if (!el) return;
+  if (!survivalMode) { el.style.display = "none"; return; }
+  el.style.display = "flex";
+  el.innerHTML = Array.from({ length: MAX_LIVES }, (_, i) =>
+    `<span class="heart ${i < lives ? "heart-full" : "heart-empty"}">${i < lives ? "♥" : "♡"}</span>`
+  ).join("");
 }
 
 function MSSelect() {
@@ -99,7 +136,7 @@ function getSelectedAnswer(question) {
 }
 
 function AddMCQuestion() {
-  if (level === "" || selectedSubjects.length === 0) return;
+  if (!reviewMode && (level === "" || selectedSubjects.length === 0)) return;
 
   if (currentQuestion !== "") checkAndShowAnswer();
 
@@ -110,6 +147,9 @@ function AddMCQuestion() {
 
   if (!sessionStarted) {
     sessionStarted = true;
+    if (survivalMode) { lives = MAX_LIVES; maxQuestions = 9999; }
+    totalQuestions = survivalMode ? 0 : maxQuestions;
+    questionNumber = 0;
     submitBtn.style.display = "none";
     document.getElementById("ranks")?.remove();
     document.getElementById("SubjectContainer")?.remove();
@@ -117,6 +157,7 @@ function AddMCQuestion() {
     document.getElementById("OptionsPanel")?.remove();
     document.getElementById("status-indicator")?.remove();
     document.getElementById("home-link-wrap")?.remove();
+    document.getElementById("review-launch")?.remove();
     startCountdown(loadQuestion);
     return;
   }
@@ -127,7 +168,14 @@ function AddMCQuestion() {
 function loadQuestion() {
   stopTimer();
   maxQuestions--;
-  submitBtn.innerHTML = maxQuestions === 0 ? "FINISH OPERATION" : "ADVANCE >";
+  questionNumber++;
+  submitBtn.innerHTML = (!survivalMode && maxQuestions === 0) ? "FINISH OPERATION" : "ADVANCE >";
+  const ctr = document.getElementById("question-counter");
+  if (ctr) {
+    ctr.textContent = survivalMode ? `Q ${questionNumber}` : `${questionNumber} / ${totalQuestions}`;
+    ctr.style.display = "block";
+  }
+  updateLivesDisplay();
 
   if (reviewMode) {
     if (sessionReviewQueue.length === 0) { showResults(); return; }
@@ -239,6 +287,11 @@ function checkAndShowAnswer() {
     reviewQueue = reviewQueue.filter(item => item.question !== currentQuestion);
     saveReviewQueue(reviewQueue);
   }
+  if (survivalMode && !isCorrect) {
+    lives--;
+    updateLivesDisplay();
+    if (lives <= 0) setTimeout(showResults, 1200);
+  }
 
   answeredQuestions.push({
     question: currentQuestion,
@@ -253,9 +306,10 @@ function checkAndShowAnswer() {
 
   const answerEl = document.getElementById("answer");
   answerEl.className = isCorrect ? "correct" : "incorrect";
+  const timeTag = timeTaken !== null ? ` <span class="time-tag">${timeTaken.toFixed(1)}s</span>` : "";
   answerEl.innerHTML = isCorrect
-    ? "Correct!" + (timeTaken !== null ? ` <span class="time-tag">${timeTaken.toFixed(1)}s</span>` : "")
-    : `Incorrect. The correct answer was: ${correctAnswer}` + (timeTaken !== null ? ` <span class="time-tag">${timeTaken.toFixed(1)}s</span>` : "");
+    ? "Correct!" + timeTag
+    : (hideAnswersMode ? "Incorrect." : `Incorrect. The correct answer was: ${correctAnswer}`) + timeTag;
 }
 
 function UpdateQuestions() {
@@ -291,6 +345,7 @@ function addSubject(subjectName, checkbox) {
 }
 
 function savePracticeStats() {
+  updateStreak();
   const key = "sb_practice_" + level;
   let saved;
   try { saved = JSON.parse(localStorage.getItem(key) || "{}"); } catch(e) { saved = {}; }
@@ -311,6 +366,14 @@ function savePracticeStats() {
   localStorage.setItem(key, JSON.stringify(saved));
 
   if (!reviewMode) {
+    const pct = totalAnswered ? Math.round(totalCorrect / totalAnswered * 100) : 0;
+    const history = JSON.parse(localStorage.getItem('sb_session_history') || '[]');
+    history.push({ date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}), ts: Date.now(), pct, correct: totalCorrect, total: totalAnswered, level, survival: survivalMode });
+    if (history.length > 20) history.splice(0, history.length - 20);
+    localStorage.setItem('sb_session_history', JSON.stringify(history));
+  }
+
+  if (!reviewMode) {
     const existing = loadReviewQueue();
     const existingSet = new Set(existing.map(i => i.question));
     const newMissed = answeredQuestions
@@ -327,6 +390,7 @@ function startReviewMode() {
   reviewMode = true;
   sessionReviewQueue = [...reviewQueue];
   maxQuestions = sessionReviewQueue.length;
+  totalQuestions = maxQuestions;
   sessionStarted = true;
   submitBtn.style.display = "none";
   document.getElementById("ranks")?.remove();
@@ -344,6 +408,8 @@ function showResults() {
   const container = document.getElementById("QuestionContainer");
   document.getElementById("answer").innerHTML = "";
   document.getElementById("streak-display").style.display = "none";
+  document.getElementById("lives-display").style.display = "none";
+  document.getElementById("question-counter").style.display = "none";
   document.getElementById("key-hint").style.display = "none";
   document.getElementById("EndEarly").style.display = "none";
   document.getElementById("AbandonBtn").style.display = "none";
@@ -413,7 +479,9 @@ function showResults() {
       <div class="missed-card">
         <p class="missed-q">${q.question}</p>
         <p class="missed-yours">Your answer: <span>${q.userAnswer || "(no answer)"}</span></p>
-        <p class="missed-correct">Correct answer: <span>${q.correctAnswer}</span></p>
+        ${hideAnswersMode
+          ? `<p class="missed-queued">⚑ Added to Review Queue — answer revealed when drilled</p>`
+          : `<p class="missed-correct">Correct answer: <span>${q.correctAnswer}</span></p>`}
         <p class="missed-subject">Subject: ${q.subjectName}${q.timeTaken !== null ? ` · ${q.timeTaken.toFixed(1)}s` : ""}</p>
       </div>`).join("");
 
@@ -669,6 +737,8 @@ window.addEventListener("DOMContentLoaded", () => {
   updateStatus();
   document.getElementById("TimedMode").addEventListener("change", e => { timedMode = e.target.checked; });
   document.getElementById("AudioMode").addEventListener("change", e => { audioMode = e.target.checked; });
+  document.getElementById("HideAnswers").addEventListener("change", e => { hideAnswersMode = e.target.checked; });
+  document.getElementById("standard-btn").classList.add("selected");
   document.querySelectorAll('input[name="qtype"]').forEach(r =>
     r.addEventListener("change", e => { questionFilter = e.target.value; })
   );

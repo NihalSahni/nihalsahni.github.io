@@ -57,6 +57,29 @@
       .practice-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; max-width: 560px; margin: 0 auto 1.8rem; }
       .practice-list { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.8rem; }
 
+      /* ── Session history ── */
+      .history-section { max-width: 860px; margin: 0 auto 3rem; }
+      .history-header { border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; }
+      .history-title { font-size: 1.2rem; letter-spacing: 0.15em; color: var(--cyan); text-shadow: 0 0 12px var(--cyan); margin: 0; }
+      .history-bars { display: flex; align-items: flex-end; gap: 0.6rem; height: 100px; }
+      .h-bar-col { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; }
+      .h-bar-track { width: 100%; background: var(--muted)22; border-radius: 2px; flex: 1; display:flex; align-items:flex-end; }
+      .h-bar-fill { width: 100%; border-radius: 2px; transition: height 0.5s ease; }
+      .h-bar-pct { font-size: 0.62rem; letter-spacing: 0.08em; }
+      .h-bar-date { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.05em; white-space:nowrap; }
+      .h-bar-badge { font-size: 0.5rem; letter-spacing: 0.08em; padding: 0.1rem 0.3rem; border-radius: 2px; margin-bottom:0.15rem; }
+
+      /* ── Buzzer stats ── */
+      .buzzer-section { max-width: 860px; margin: 0 auto 3rem; }
+      .buzzer-header { border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .buzzer-title { font-size: 1.2rem; letter-spacing: 0.15em; color: var(--magenta); text-shadow: 0 0 12px var(--magenta); margin: 0; }
+      .buzzer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.9rem; margin-bottom: 1.4rem; }
+      .bz-card { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; padding: 0.9rem; text-align: center; }
+      .bz-card-num { font-size: 1.6rem; }
+      .bz-card-label { font-size: 0.58rem; letter-spacing: 0.18em; color: var(--muted); margin-top: 0.2rem; }
+      .bz-history { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+      .bz-pip { width: 14px; height: 14px; border-radius: 2px; }
+
       /* ── Reset button ── */
       .reset-row { text-align: center; margin: 1rem 0 3rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
       .reset-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; padding: 0.4rem 1.1rem; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
@@ -77,11 +100,15 @@
       </div>
 
       <div id="weak-spot" class="weak-spot" style="display:none"></div>
+      <div id="streak-card" class="total-card" style="display:none;max-width:560px;margin:1.2rem auto 0;--c:var(--cyan)"></div>
       <div class="totals-row" id="totals-row"></div>
 
       <div id="sections"></div>
 
       <div id="practice-sections"></div>
+
+      <div id="history-section" class="history-section" style="display:none"></div>
+      <div id="buzzer-section" class="buzzer-section" style="display:none"></div>
 
       <div class="reset-row">
         <button class="reset-btn" onclick="confirmReset()">RESET FLASHCARD PROGRESS</button>
@@ -283,9 +310,79 @@
           '<a href="Practice.html?level=' + ws.level + '&subject=' + ws.subj + '" class="ws-drill-btn">DRILL THIS SUBJECT →</a>';
       }
 
+      function renderSessionHistory() {
+        var history = [];
+        try { history = JSON.parse(localStorage.getItem('sb_session_history') || '[]'); } catch(e) {}
+        var el = document.getElementById('history-section');
+        if (!history.length) { el.style.display = 'none'; return; }
+        el.style.display = 'block';
+        var recent = history.slice(-10);
+        var barsHTML = recent.map(function(s) {
+          var color = s.pct >= 70 ? 'var(--green)' : s.pct >= 40 ? 'var(--orange,#f5a623)' : 'var(--magenta)';
+          var badge = s.survival ? '<div class="h-bar-badge" style="background:var(--magenta)33;color:var(--magenta)">♥</div>' : '';
+          var lvBadge = s.level ? '<div class="h-bar-badge" style="background:' + (s.level==='HS'?'var(--magenta)':'var(--cyan)') + '33;color:' + (s.level==='HS'?'var(--magenta)':'var(--cyan)') + '">' + s.level + '</div>' : '';
+          return '<div class="h-bar-col">' +
+            badge + lvBadge +
+            '<span class="h-bar-pct" style="color:' + color + ';text-shadow:0 0 6px ' + color + '">' + s.pct + '%</span>' +
+            '<div class="h-bar-track"><div class="h-bar-fill" style="height:' + s.pct + '%;background:' + color + ';box-shadow:0 0 6px ' + color + '33"></div></div>' +
+            '<span class="h-bar-date">' + s.date + '</span>' +
+          '</div>';
+        }).join('');
+        el.innerHTML = '<div class="history-header"><h2 class="history-title">SESSION HISTORY</h2><span style="font-size:0.68rem;letter-spacing:0.18em;color:var(--muted)">LAST ' + recent.length + ' SESSIONS</span></div>' +
+          '<div class="history-bars">' + barsHTML + '</div>';
+      }
+
+      function renderBuzzerStats() {
+        var s = null;
+        try { s = JSON.parse(localStorage.getItem('sb_buzzer_stats') || 'null'); } catch(e) {}
+        var el = document.getElementById('buzzer-section');
+        if (!s || !s.sessions) { el.style.display = 'none'; return; }
+        el.style.display = 'block';
+        var acc = s.buzzed ? Math.round(s.correct / s.buzzed * 100) : 0;
+        var wl = s.sessions > s.draws ? Math.round((s.wins / (s.sessions - s.draws)) * 100) : 0;
+        var cards = [
+          { num: s.sessions, label: 'MATCHES', color: 'var(--cyan)' },
+          { num: s.wins,     label: 'WINS',    color: 'var(--green)' },
+          { num: s.losses,   label: 'LOSSES',  color: 'var(--magenta)' },
+          { num: s.draws,    label: 'DRAWS',   color: 'var(--muted)' },
+          { num: acc + '%',  label: 'BUZZ ACC', color: acc >= 70 ? 'var(--green)' : acc >= 40 ? 'var(--orange,#f5a623)' : 'var(--magenta)' },
+          { num: wl + '%',   label: 'WIN RATE', color: wl >= 60 ? 'var(--green)' : wl >= 40 ? 'var(--orange,#f5a623)' : 'var(--magenta)' },
+        ].map(function(c) {
+          return '<div class="bz-card"><div class="bz-card-num" style="color:' + c.color + ';text-shadow:0 0 12px ' + c.color + '">' + c.num + '</div><div class="bz-card-label">' + c.label + '</div></div>';
+        }).join('');
+        var history = s.history || [];
+        var pips = history.slice(-20).map(function(h) {
+          var c = h.won === 1 ? 'var(--green)' : h.won === 0.5 ? 'var(--cyan)' : 'var(--magenta)';
+          return '<div class="bz-pip" style="background:' + c + ';box-shadow:0 0 4px ' + c + '" title="' + h.date + ' ' + h.myScore + '-' + h.enScore + '"></div>';
+        }).join('');
+        el.innerHTML = '<div class="buzzer-header"><h2 class="buzzer-title">BUZZER ARENA RECORD</h2></div>' +
+          '<div class="buzzer-grid">' + cards + '</div>' +
+          (pips ? '<div style="font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);margin-bottom:0.5rem">RECENT MATCHES</div><div class="bz-history">' + pips + '</div>' : '');
+      }
+
+      function renderStreak() {
+        var el = document.getElementById('streak-card');
+        if (!el) return;
+        var s = null; try { s = JSON.parse(localStorage.getItem('sb_streak') || 'null'); } catch(e) {}
+        if (!s || !s.count) { el.style.display = 'none'; return; }
+        el.style.display = 'block';
+        var today = new Date().toISOString().slice(0, 10);
+        var active = s.lastDate === today;
+        var color = active ? 'var(--cyan)' : 'var(--orange,#f5a623)';
+        var note = active ? 'TRAINED TODAY ✓' : 'PRACTICE TODAY TO KEEP YOUR STREAK';
+        el.innerHTML =
+          '<div class="total-label">TRAINING STREAK</div>' +
+          '<div class="total-num" style="color:' + color + ';text-shadow:0 0 20px ' + color + '">' + s.count + '<span class="total-denom"> DAYS</span></div>' +
+          '<div class="total-pct" style="color:' + color + '">' + note + '</div>' +
+          (s.best > 1 ? '<div class="total-pct" style="opacity:0.6">BEST: ' + s.best + ' DAYS</div>' : '');
+      }
+
       render();
       renderPractice();
       renderWeakSpot();
+      renderSessionHistory();
+      renderBuzzerStats();
+      renderStreak();
 
       // Starfield
       (function() {
