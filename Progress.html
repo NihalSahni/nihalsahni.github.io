@@ -5,7 +5,9 @@
     <title>Progress — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css" />
+    <script src="settings.js"></script>
     <style>
       .page-wrap { max-width: 860px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
@@ -80,6 +82,21 @@
       .bz-history { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
       .bz-pip { width: 14px; height: 14px; border-radius: 2px; }
 
+      /* ── Review queue ── */
+      .rq-section { margin: 0 auto 3rem; max-width: 860px; }
+      .rq-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .rq-title { font-size: 1.2rem; letter-spacing: 0.15em; color: var(--cyan); text-shadow: 0 0 12px var(--cyan); margin: 0; }
+      .rq-count { font-size: 0.68rem; letter-spacing: 0.18em; color: var(--muted); }
+      .rq-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.2rem; }
+      .rq-item { display: flex; align-items: center; gap: 0.75rem; background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; padding: 0.75rem 1rem; }
+      .rq-subject { font-size: 0.6rem; letter-spacing: 0.22em; padding: 0.2rem 0.5rem; border-radius: 2px; white-space: nowrap; }
+      .rq-question { flex: 1; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .rq-remove { background: transparent; border: 1px solid var(--muted)44; color: var(--muted); font-size: 0.6rem; padding: 0.15rem 0.45rem; border-radius: 2px; cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: all 0.2s; }
+      .rq-remove:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); background: transparent; box-shadow: none; }
+      .rq-drill-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--cyan); border: 1px solid var(--cyan)77; padding: 0.35rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+      .rq-drill-btn:hover { background: var(--cyan)11; border-color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+      .rq-empty { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--muted); text-align: center; padding: 1.5rem 0; }
+
       /* ── Reset button ── */
       .reset-row { text-align: center; margin: 1rem 0 3rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
       .reset-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; letter-spacing: 0.18em; padding: 0.4rem 1.1rem; cursor: pointer; border-radius: 2px; transition: all 0.2s; }
@@ -109,6 +126,7 @@
 
       <div id="history-section" class="history-section" style="display:none"></div>
       <div id="buzzer-section" class="buzzer-section" style="display:none"></div>
+      <div id="review-queue-section" class="rq-section"></div>
 
       <div class="reset-row">
         <button class="reset-btn" onclick="confirmReset()">RESET FLASHCARD PROGRESS</button>
@@ -377,12 +395,64 @@
           (s.best > 1 ? '<div class="total-pct" style="opacity:0.6">BEST: ' + s.best + ' DAYS</div>' : '');
       }
 
+      var RQ_SUBJECT_COLORS = {
+        Biology: 'var(--green)', Chemistry: 'var(--cyan)', Physics: 'var(--magenta)',
+        EarthSpace: 'var(--yellow,#f5c542)', Energy: 'var(--orange,#f5a623)', Math: 'var(--blue,#5b9cf6)'
+      };
+      var RQ_SUBJECT_LABELS = {
+        Biology: 'BIO', Chemistry: 'CHEM', Physics: 'PHYS',
+        EarthSpace: 'EARTH', Energy: 'ENERGY', Math: 'MATH'
+      };
+
+      function loadRQ() {
+        try { return JSON.parse(localStorage.getItem('sb_review_queue') || '[]'); } catch(e) { return []; }
+      }
+      function saveRQ(q) { localStorage.setItem('sb_review_queue', JSON.stringify(q)); }
+
+      function removeRQItem(idx) {
+        var q = loadRQ();
+        q.splice(idx, 1);
+        saveRQ(q);
+        renderRQ();
+      }
+
+      function renderRQ() {
+        var el = document.getElementById('review-queue-section');
+        if (!el) return;
+        var q = loadRQ();
+        var html = '<div class="rq-header"><h2 class="rq-title">REVIEW QUEUE</h2>' +
+          '<span class="rq-count">' + q.length + ' QUESTION' + (q.length !== 1 ? 'S' : '') + '</span></div>';
+        if (q.length === 0) {
+          html += '<p class="rq-empty">Review queue is empty — missed questions are added here after practice.</p>';
+        } else {
+          html += '<div class="rq-list">';
+          q.forEach(function(item, i) {
+            var color = RQ_SUBJECT_COLORS[item.subjectName] || 'var(--muted)';
+            var label = RQ_SUBJECT_LABELS[item.subjectName] || item.subjectName;
+            var raw = item.question || '';
+            var wIdx = raw.indexOf('W) ');
+            var display = (wIdx > 0 ? raw.slice(0, wIdx).trim() : raw);
+            if (display.length > 90) display = display.slice(0, 90) + '…';
+            html +=
+              '<div class="rq-item">' +
+                '<span class="rq-subject" style="color:' + color + ';border:1px solid ' + color + '55;text-shadow:0 0 6px ' + color + '">' + label + '</span>' +
+                '<span class="rq-question">' + display + '</span>' +
+                '<button class="rq-remove" onclick="removeRQItem(' + i + ')">✕</button>' +
+              '</div>';
+          });
+          html += '</div>';
+          html += '<a href="Practice.html" class="rq-drill-btn">DRILL ALL →</a>';
+        }
+        el.innerHTML = html;
+      }
+
       render();
       renderPractice();
       renderWeakSpot();
       renderSessionHistory();
       renderBuzzerStats();
       renderStreak();
+      renderRQ();
 
       // Starfield
       (function() {
@@ -397,5 +467,6 @@
         window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
       })();
     </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
   </body>
 </html>

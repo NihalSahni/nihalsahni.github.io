@@ -5,10 +5,11 @@
     <title>HS Intel Database — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css" />
+    <script src="settings.js"></script>
     <style>
       .page-wrap { max-width: 1040px; margin: 0 auto; }
-https://github.com/NihalSahni/sciencebowlwebsite.git
       .page-header { padding: 2rem 0 1rem; text-align: center; }
       .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--magenta); text-shadow: 0 0 6px var(--magenta)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--magenta)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
       .back-link:hover { color: var(--magenta); text-shadow: 0 0 12px var(--magenta); border-color: var(--magenta); background: var(--magenta)11; }
@@ -474,5 +475,6 @@ https://github.com/NihalSahni/sciencebowlwebsite.git
         window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
       })();
     </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
   </body>
 </html>

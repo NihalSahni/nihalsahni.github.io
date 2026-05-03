@@ -813,6 +813,7 @@ function bzLev(a, b) {
 // ══ BEEP ═════════════════════════════════════════════════════════════════════
 
 function beep(freq=880, dur=80) {
+  if (window.SBSettings && !window.SBSettings.get('sound')) return;
   try {
     const AC = window.AudioContext || /** @type {any} */(window).webkitAudioContext;
     const ac = new AC();

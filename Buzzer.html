@@ -5,7 +5,9 @@
   <title>Science Bowl Buzzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
+  <script src="settings.js"></script>
   <style>
     body { max-width: 960px; margin: 0 auto; padding: 2rem; }
 
@@ -529,5 +531,6 @@
 
   <script src="question.js"></script>
   <script src="Buzzer.js"></script>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
 </body>
 </html>

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Settings — Science Bowl Command Network</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="settings.js"></script>
+    <style>
+      .page-wrap { max-width: 640px; margin: 0 auto; }
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--muted); text-shadow: none; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--muted)44; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--cyan); border-color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      .settings-section { margin-bottom: 2.8rem; }
+      .settings-heading { font-size: 0.6rem; letter-spacing: 0.35em; color: var(--muted); border-bottom: 1px solid var(--muted)33; padding-bottom: 0.6rem; margin-bottom: 1.1rem; }
+
+      .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.95rem 1.1rem; background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; margin-bottom: 0.6rem; }
+      .setting-row.col { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .setting-row-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+      .setting-info { flex: 1; }
+      .setting-label { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--text); }
+      .setting-desc { font-size: 0.6rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.25rem; }
+
+      .toggle-wrap { display: flex; border: 1px solid var(--muted)44; border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+      .toggle-btn { background: transparent; border: none; border-radius: 0; padding: 0.3rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: background 0.15s, color 0.15s; box-shadow: none; text-shadow: none; }
+      .toggle-sep { width: 1px; background: var(--muted)44; flex-shrink: 0; }
+      .toggle-btn.is-on  { background: var(--green)22;   color: var(--green);   text-shadow: 0 0 6px var(--green); }
+      .toggle-btn.is-off { background: var(--magenta)22; color: var(--magenta); text-shadow: 0 0 6px var(--magenta); }
+      .toggle-btn.is-sel { background: var(--cyan)22;    color: var(--cyan);    text-shadow: 0 0 6px var(--cyan); }
+
+      /* Color swatches */
+      .swatches { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+      .swatch { width: 2.2rem; height: 2.2rem; border-radius: 3px; border: 2px solid transparent; cursor: pointer; transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; }
+      .swatch:hover { transform: scale(1.12); }
+      .swatch.active { border-color: #fff; box-shadow: 0 0 12px var(--sw-c, #fff); }
+
+      /* Default count slider */
+      .def-count-num { font-size: 1.1rem; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); flex-shrink: 0; }
+      .def-slider { width: 100%; cursor: pointer; }
+
+      /* Subject pills */
+      .subj-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .subj-pill { background: transparent; border: 1px solid var(--muted)44; border-radius: 2px; padding: 0.3rem 0.7rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: all 0.15s; box-shadow: none; text-shadow: none; }
+      .subj-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: var(--cyan)11; }
+
+      /* Reset grid */
+      .reset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+      .r-btn { background: transparent; border: 1px solid var(--muted)44; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.13em; padding: 0.65rem 0.85rem; cursor: pointer; border-radius: 2px; transition: border-color 0.2s, color 0.2s; text-align: left; line-height: 1.5; box-shadow: none; text-shadow: none; }
+      .r-btn:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); background: transparent; box-shadow: none; }
+      .r-btn .r-level { display: block; font-size: 0.52rem; letter-spacing: 0.22em; opacity: 0.55; margin-bottom: 0.15rem; }
+      .r-btn.r-confirmed { border-color: var(--green) !important; color: var(--green) !important; }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="index.html" class="back-link">← HOME BASE</a>
+        <h1 class="page-title">SETTINGS</h1>
+        <p class="page-sub">SYSTEM CONFIGURATION</p>
+      </div>
+
+      <!-- DISPLAY -->
+      <div class="settings-section">
+        <div class="settings-heading">// DISPLAY</div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">SCANLINES</div>
+            <div class="setting-desc">CRT scanline overlay — disable for cleaner look</div>
+          </div>
+          <div class="toggle-wrap">
+            <button id="scanlines-on"  class="toggle-btn" onclick="toggle('scanlines', true)">ON</button>
+            <div class="toggle-sep"></div>
+            <button id="scanlines-off" class="toggle-btn" onclick="toggle('scanlines', false)">OFF</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">STARFIELD</div>
+            <div class="setting-desc">Animated background particles — disable to improve performance</div>
+          </div>
+          <div class="toggle-wrap">
+            <button id="starfield-on"  class="toggle-btn" onclick="toggle('starfield', true)">ON</button>
+            <div class="toggle-sep"></div>
+            <button id="starfield-off" class="toggle-btn" onclick="toggle('starfield', false)">OFF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCENT COLOR -->
+      <div class="settings-section">
+        <div class="settings-heading">// ACCENT COLOR</div>
+        <div class="setting-row col">
+          <div class="setting-info">
+            <div class="setting-label">PRIMARY COLOR</div>
+            <div class="setting-desc">Changes the main accent color across all pages</div>
+          </div>
+          <div class="swatches" id="swatches"></div>
+        </div>
+      </div>
+
+      <!-- AUDIO -->
+      <div class="settings-section">
+        <div class="settings-heading">// AUDIO</div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">SOUND EFFECTS</div>
+            <div class="setting-desc">Beeps and tones during practice and buzzer drills</div>
+          </div>
+          <div class="toggle-wrap">
+            <button id="sound-on"  class="toggle-btn" onclick="toggle('sound', true)">ON</button>
+            <div class="toggle-sep"></div>
+            <button id="sound-off" class="toggle-btn" onclick="toggle('sound', false)">OFF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRACTICE DEFAULTS -->
+      <div class="settings-section">
+        <div class="settings-heading">// PRACTICE DEFAULTS</div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">DEFAULT LEVEL</div>
+            <div class="setting-desc">Auto-select when Practice opens</div>
+          </div>
+          <div class="toggle-wrap">
+            <button id="deflvl-"   class="toggle-btn" onclick="setDefaultLevel('')">NONE</button>
+            <div class="toggle-sep"></div>
+            <button id="deflvl-MS" class="toggle-btn" onclick="setDefaultLevel('MS')">MS</button>
+            <div class="toggle-sep"></div>
+            <button id="deflvl-HS" class="toggle-btn" onclick="setDefaultLevel('HS')">HS</button>
+          </div>
+        </div>
+
+        <div class="setting-row col">
+          <div class="setting-row-top">
+            <div class="setting-info">
+              <div class="setting-label">DEFAULT QUESTION COUNT</div>
+              <div class="setting-desc">Starting value for the question slider</div>
+            </div>
+            <span id="def-count-num" class="def-count-num">30</span>
+          </div>
+          <input type="range" min="10" max="100" value="30" id="def-count-slider" class="def-slider"
+            oninput="setDefaultCount(this.value)" />
+        </div>
+
+        <div class="setting-row col">
+          <div class="setting-info">
+            <div class="setting-label">DEFAULT SUBJECTS</div>
+            <div class="setting-desc">Pre-check these subjects when Practice opens</div>
+          </div>
+          <div class="subj-pills" id="subj-pills"></div>
+        </div>
+      </div>
+
+      <!-- DATA -->
+      <div class="settings-section">
+        <div class="settings-heading">// DATA MANAGEMENT</div>
+        <div class="reset-grid">
+          <button class="r-btn" onclick="confirmReset(this, 'sb_known_HS',        'HS flashcard progress')"><span class="r-level">HIGH SCHOOL</span>RESET FLASHCARDS</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_known_MS',        'MS flashcard progress')"><span class="r-level">MIDDLE SCHOOL</span>RESET FLASHCARDS</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_practice_HS',     'HS practice stats')"><span class="r-level">HIGH SCHOOL</span>RESET PRACTICE STATS</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_practice_MS',     'MS practice stats')"><span class="r-level">MIDDLE SCHOOL</span>RESET PRACTICE STATS</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_review_queue',    'review queue')"><span class="r-level">PRACTICE</span>CLEAR REVIEW QUEUE</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_session_history', 'session history')"><span class="r-level">PRACTICE</span>CLEAR SESSION HISTORY</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_streak',          'training streak')"><span class="r-level">STREAK</span>RESET STREAK</button>
+          <button class="r-btn" onclick="confirmReset(this, 'sb_buzzer_stats',    'buzzer stats')"><span class="r-level">BUZZER</span>RESET BUZZER STATS</button>
+        </div>
+      </div>
+
+      <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; SYSTEM CONFIGURATION</footer>
+    </div>
+
+    <script>
+      var ACCENTS = [
+        { name: 'CYAN',   value: '#00e5ff' },
+        { name: 'LIME',   value: '#39ff14' },
+        { name: 'PINK',   value: '#f72585' },
+        { name: 'ORANGE', value: '#f5a623' },
+        { name: 'BLUE',   value: '#5b9cf6' },
+        { name: 'PURPLE', value: '#a78bfa' },
+      ];
+
+      var SUBJECTS     = ['Biology', 'Chemistry', 'Physics', 'EarthSpace', 'Energy', 'Math'];
+      var SUBJ_DISPLAY = { Biology: 'BIO', Chemistry: 'CHEM', Physics: 'PHYS', EarthSpace: 'EARTH', Energy: 'ENERGY', Math: 'MATH' };
+
+      // ── ON/OFF toggles (display + audio) ─────────────────────────────────────
+      function toggle(key, val) {
+        SBSettings.set(key, val);
+        refreshAll();
+        if (key === 'scanlines') { var el = document.getElementById('scanlines'); if (el) el.style.display = val ? '' : 'none'; }
+        if (key === 'starfield') { var el = document.getElementById('starfield'); if (el) el.style.display = val ? '' : 'none'; }
+      }
+
+      // ── Accent color ─────────────────────────────────────────────────────────
+      function setAccent(color) {
+        SBSettings.set('accent', color);
+        document.documentElement.style.setProperty('--cyan', color);
+        refreshAll();
+      }
+
+      // ── Practice defaults ─────────────────────────────────────────────────────
+      function setDefaultLevel(val) {
+        SBSettings.set('defaultLevel', val);
+        refreshAll();
+      }
+
+      function setDefaultCount(val) {
+        SBSettings.set('defaultCount', Number(val));
+        document.getElementById('def-count-num').textContent = val;
+      }
+
+      function toggleDefaultSubject(subj) {
+        var subs = SBSettings.get('defaultSubjects') || [];
+        var idx = subs.indexOf(subj);
+        if (idx === -1) subs.push(subj); else subs.splice(idx, 1);
+        SBSettings.set('defaultSubjects', subs);
+        renderSubjectPills();
+      }
+
+      // ── Data resets ───────────────────────────────────────────────────────────
+      function confirmReset(btn, storageKey, label) {
+        if (!confirm('Reset ' + label + '? This cannot be undone.')) return;
+        localStorage.removeItem(storageKey);
+        btn.classList.add('r-confirmed');
+        var orig = btn.innerHTML;
+        btn.innerHTML = btn.innerHTML.replace(/RESET.*|CLEAR.*/, 'CLEARED ✓');
+        setTimeout(function () { btn.classList.remove('r-confirmed'); btn.innerHTML = orig; }, 1500);
+      }
+
+      // ── Render helpers ────────────────────────────────────────────────────────
+      function renderSwatches() {
+        var current = SBSettings.get('accent') || '#00e5ff';
+        document.getElementById('swatches').innerHTML = ACCENTS.map(function (a) {
+          var active = a.value === current;
+          return '<button class="swatch' + (active ? ' active' : '') + '" ' +
+            'style="background:' + a.value + ';--sw-c:' + a.value + (active ? ';box-shadow:0 0 12px ' + a.value : '') + '" ' +
+            'onclick="setAccent(\'' + a.value + '\')" title="' + a.name + '"></button>';
+        }).join('');
+      }
+
+      function renderSubjectPills() {
+        var subs = SBSettings.get('defaultSubjects') || [];
+        document.getElementById('subj-pills').innerHTML = SUBJECTS.map(function (s) {
+          var active = subs.indexOf(s) !== -1;
+          return '<button class="subj-pill' + (active ? ' active' : '') + '" onclick="toggleDefaultSubject(\'' + s + '\')">' + SUBJ_DISPLAY[s] + '</button>';
+        }).join('');
+      }
+
+      function refreshAll() {
+        var s = SBSettings.all();
+
+        // ON/OFF toggles
+        ['sound', 'scanlines', 'starfield'].forEach(function (key) {
+          var on  = document.getElementById(key + '-on');
+          var off = document.getElementById(key + '-off');
+          if (!on || !off) return;
+          on.className  = 'toggle-btn' + (s[key] ? ' is-on'  : '');
+          off.className = 'toggle-btn' + (s[key] ? ''        : ' is-off');
+        });
+
+        // Level buttons
+        ['', 'MS', 'HS'].forEach(function (v) {
+          var btn = document.getElementById('deflvl-' + v);
+          if (btn) btn.className = 'toggle-btn' + ((s.defaultLevel || '') === v ? ' is-sel' : '');
+        });
+
+        // Count slider + display
+        var count = s.defaultCount != null ? s.defaultCount : 30;
+        var slider = document.getElementById('def-count-slider');
+        if (slider) slider.value = count;
+        var numEl = document.getElementById('def-count-num');
+        if (numEl) numEl.textContent = count;
+
+        renderSwatches();
+        renderSubjectPills();
+      }
+
+      refreshAll();
+
+      // Starfield
+      (function () {
+        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() { stars = Array.from({length: 200}, function () { return { x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.2, speed: Math.random() * 0.25 + 0.04, opacity: Math.random() * 0.6 + 0.2 }; }); }
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          stars.forEach(function (s) { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(232,244,255,' + s.opacity + ')'; ctx.fill(); s.y += s.speed; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; } });
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', function () { resize(); init(); }); resize(); init(); draw();
+      })();
+    </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+  </body>
+</html>

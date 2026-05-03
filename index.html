@@ -8,7 +8,9 @@
       href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css" />
+    <script src="settings.js"></script>
     <style>
       .hero {
         text-align: center;
@@ -27,7 +29,7 @@
         color: var(--cyan);
         text-shadow:
           0 0 30px var(--cyan),
-          0 0 60px var(--cyan) 44;
+          0 0 60px var(--cyan)44;
         margin: 0.25rem 0;
         line-height: 1.15;
       }
@@ -54,16 +56,21 @@
 
       .briefing p span {
         color: var(--cyan);
-        text-shadow: 0 0 8px var(--cyan) 88;
+        text-shadow: 0 0 8px var(--cyan)88;
       }
 
       .missions {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(6, 1fr);
         gap: 1.5rem;
-        max-width: 900px;
+        max-width: 1100px;
         margin: 3rem auto 2rem;
       }
+
+      .mission-card { grid-column: span 2; }
+
+      .missions .mission-card:nth-child(4) { grid-column: 2 / 4; }
+      .missions .mission-card:nth-child(5) { grid-column: 4 / 6; }
 
       .mission-card {
         position: relative;
@@ -297,11 +304,26 @@
         </p>
         <span class="mission-enter" style="color:#f5c542;text-shadow:0 0 6px #f5c54288">VIEW PROGRESS →</span>
       </a>
+
+      <a
+        href="Settings.html"
+        class="mission-card"
+        style="--accent: #a78bfa"
+      >
+        <div class="mission-icon">⚙️</div>
+        <span class="mission-label" style="color:#a78bfa;text-shadow:0 0 8px #a78bfa88">MODULE 05</span>
+        <h2 class="mission-title">SETTINGS</h2>
+        <p class="mission-desc">
+          Toggle sound, scanlines, and starfield. Reset individual HS or MS stats, flashcards, streak, and more.
+        </p>
+        <span class="mission-enter" style="color:#a78bfa;text-shadow:0 0 6px #a78bfa88">CONFIGURE →</span>
+      </a>
     </div>
 
     <div id="streak-banner" style="display:none;text-align:center;margin:0 auto 2.5rem;padding:1.4rem 2rem;max-width:400px;border:1px solid var(--cyan)44;border-radius:4px;background:var(--surface);position:relative">
       <div style="font-size:0.6rem;letter-spacing:0.3em;color:var(--muted);margin-bottom:0.4rem">TRAINING STREAK</div>
       <div id="streak-count" style="font-size:3rem;color:var(--cyan);text-shadow:0 0 30px var(--cyan)"></div>
+      <div style="font-size:1.6rem;line-height:1;margin:0.2rem 0">🔥</div>
       <div style="font-size:0.65rem;letter-spacing:0.22em;color:var(--cyan);opacity:0.8">CONSECUTIVE DAYS</div>
       <div id="streak-best" style="font-size:0.6rem;letter-spacing:0.18em;color:var(--muted);margin-top:0.5rem"></div>
     </div>
@@ -395,11 +417,10 @@
         typeof HSPhysics !== "undefined" ? HSPhysics : {},
         typeof HSChemistry !== "undefined" ? HSChemistry : {},
         typeof HSEarthSpace !== "undefined" ? HSEarthSpace : {},
-        typeof HSEnergyQuestions !== "undefined" ? HSEnergyQuestions : {},
+        typeof HSEnergy !== "undefined" ? HSEnergy : {},
         typeof HSMath !== "undefined" ? HSMath : {},
       ];
       const total = allBanks.reduce((s, b) => s + Object.keys(b).length, 0);
-      try { document.getElementById("stat-q").textContent = total; } catch(e) {}
 
       // Streak display
       (function() {
@@ -419,5 +440,6 @@
         }
       })();
     </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
   </body>
 </html>

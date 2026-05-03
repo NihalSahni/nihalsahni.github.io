@@ -165,6 +165,24 @@ function AddMCQuestion() {
   loadQuestion();
 }
 
+function showKeyboardTip() {
+  if (localStorage.getItem('sb_kb_tip_shown')) return;
+  localStorage.setItem('sb_kb_tip_shown', '1');
+  const tip = document.createElement('div');
+  tip.id = 'kb-tip';
+  tip.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--cyan)55;border-radius:4px;padding:0.9rem 1.6rem 0.9rem 1.4rem;text-align:center;z-index:999;opacity:1;transition:opacity 0.5s;max-width:90vw;white-space:nowrap';
+  tip.innerHTML =
+    '<div style="font-size:0.58rem;letter-spacing:0.28em;color:var(--muted);margin-bottom:0.4rem">KEYBOARD SHORTCUTS</div>' +
+    '<div style="font-size:0.72rem;letter-spacing:0.1em;color:var(--cyan);text-shadow:0 0 6px var(--cyan)">W / X / Y / Z &nbsp;·&nbsp; select answer &nbsp;&nbsp;|&nbsp;&nbsp; ENTER &nbsp;·&nbsp; submit</div>' +
+    '<button onclick="(function(){var t=document.getElementById(\'kb-tip\');t.style.opacity=0;setTimeout(function(){t&&t.remove();},500);})()" ' +
+      'style="position:absolute;top:0.3rem;right:0.5rem;background:transparent;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;font-family:inherit;padding:0;line-height:1">✕</button>';
+  document.body.appendChild(tip);
+  setTimeout(() => {
+    tip.style.opacity = '0';
+    setTimeout(() => tip.remove(), 500);
+  }, 5000);
+}
+
 function loadQuestion() {
   stopTimer();
   maxQuestions--;
@@ -228,6 +246,7 @@ function loadQuestion() {
   document.getElementById("EndEarly").style.display = "inline-block";
   document.getElementById("AbandonBtn").style.display = "inline-block";
   typeText(document.getElementById("Title"), reviewMode ? "REVIEW ACTIVE" : "MISSION ACTIVE");
+  if (questionNumber === 1) showKeyboardTip();
 
   if (audioMode) {
     speakQuestion(currentQuestion, timedMode ? startTimer : null);
@@ -558,6 +577,7 @@ function showResults() {
 
 // ── AUDIO BEEP ────────────────────────────────────────────────────────────────
 function beep(freq = 880, duration = 80) {
+  if (window.SBSettings && !window.SBSettings.get('sound')) return;
   try {
     const ac = new (window.AudioContext || window["webkitAudioContext"])();
     const osc = ac.createOscillator();
@@ -732,6 +752,25 @@ window.addEventListener("DOMContentLoaded", () => {
   if (pSubject) {
     const cb = document.getElementById(pSubject);
     if (cb) { cb.checked = true; addSubject(pSubject, cb); }
+  }
+
+  // Apply practice defaults from Settings (URL params take priority)
+  if (window.SBSettings) {
+    const ds = window.SBSettings.all();
+    if (!pLevel && ds.defaultLevel) {
+      if (ds.defaultLevel === 'MS') MSSelect();
+      else if (ds.defaultLevel === 'HS') HSSelect();
+    }
+    if (ds.defaultCount != null) {
+      const slider = document.getElementById('QuestionSlider');
+      if (slider) { slider.value = ds.defaultCount; UpdateQuestions(); }
+    }
+    if (!pSubject && ds.defaultSubjects && ds.defaultSubjects.length) {
+      ds.defaultSubjects.forEach(subj => {
+        const cb = document.getElementById(subj);
+        if (cb) { cb.checked = true; addSubject(subj, cb); }
+      });
+    }
   }
   document.getElementById("QuestionSlider").addEventListener("input", updateSliderTrail);
   updateStatus();
