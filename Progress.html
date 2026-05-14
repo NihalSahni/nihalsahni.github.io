@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Progress — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -103,6 +104,21 @@
       .reset-btn:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); }
 
       footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 2rem 0; }
+
+      @media (max-width: 600px) {
+        .totals-row { grid-template-columns: 1fr; }
+        .practice-totals { grid-template-columns: 1fr; }
+        .reset-row { flex-direction: column; align-items: center; }
+        .reset-btn { width: 100%; max-width: 320px; text-align: center; }
+        .buzzer-grid { grid-template-columns: repeat(3, 1fr); }
+        .rq-question { white-space: normal; }
+        .rq-item { flex-wrap: wrap; }
+        .history-bars { gap: 0.3rem; overflow-x: auto; padding-bottom: 0.5rem; }
+        .h-bar-date { font-size: 0.5rem; }
+        .page-header { padding: 1.5rem 0 0.75rem; }
+        .back-link { font-size: 0.68rem; }
+        .level-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+      }
     </style>
   </head>
   <body>

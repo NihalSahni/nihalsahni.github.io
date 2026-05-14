@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -200,6 +201,40 @@
         letter-spacing: 0.15em;
         color: var(--muted) 88;
         padding-bottom: 2rem;
+      }
+
+      @media (max-width: 900px) {
+        .missions {
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1rem;
+          margin: 2rem auto 1.5rem;
+        }
+        .missions .mission-card:nth-child(4),
+        .missions .mission-card:nth-child(5) { grid-column: span 2; }
+      }
+
+      @media (max-width: 600px) {
+        .missions {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem;
+          margin: 1.5rem auto 1rem;
+        }
+        .mission-card,
+        .missions .mission-card:nth-child(4),
+        .missions .mission-card:nth-child(5) { grid-column: span 1; }
+        .mission-card { padding: 1.4rem 1rem 1rem; }
+        .mission-icon { font-size: 1.8rem; }
+        .mission-title { font-size: 1.1rem; }
+        .mission-desc { font-size: 0.78rem; }
+
+        .stat-strip { gap: 1.5rem; padding: 1rem; }
+        .stat-num { font-size: 1.4rem; }
+
+        .hero { padding: 2rem 0.5rem 1.5rem; }
+      }
+
+      @media (max-width: 380px) {
+        .missions { grid-template-columns: 1fr; }
       }
     </style>
   </head>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Science Bowl Buzzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -221,8 +222,8 @@
     #BuzzerOE {
       font-size: 1.15rem;
       padding: 0.6rem 1.1rem;
-      width: 380px;
-      max-width: 90vw;
+      width: 100%;
+      max-width: 380px;
       border: 2px solid var(--cyan);
       box-shadow: 0 0 10px var(--cyan)44;
       background: var(--surface);
@@ -382,6 +383,37 @@
     .diff-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; letter-spacing: 0.15em; padding: 0.55rem 1rem; cursor: pointer; border-radius: 2px; text-align: left; transition: all 0.18s; }
     .diff-btn:hover { border-color: var(--cyan)88; color: var(--cyan); }
     .diff-btn.selected { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: 0 0 10px var(--cyan)33; background: var(--cyan)0d; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      body { padding: 0.85rem; }
+
+      #BuzzBtn { padding: 1rem 2rem; font-size: 1.5rem; }
+
+      #mc-panel { gap: 0.4rem; }
+      .mc-buzz-btn {
+        min-width: 0;
+        width: calc(50% - 0.2rem);
+        font-size: 0.85rem;
+        padding: 0.55rem 0.5rem;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        max-width: none;
+      }
+
+      #score-bar { padding: 0.75rem 1rem; }
+      .score-val { font-size: 2rem; }
+      .score-vs { font-size: 0.85rem; }
+
+      .go-result-txt { font-size: 1.5rem; }
+      .go-scores { gap: 1.5rem; }
+      .go-score-num { font-size: 2.5rem; }
+
+      .t-col { padding: 0.75rem; }
+
+      #question-area { padding: 1rem 1.1rem; }
+    }
   </style>
 </head>
 <body>

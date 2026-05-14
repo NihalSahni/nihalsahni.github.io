@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Settings — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -56,6 +57,16 @@
       .r-btn.r-confirmed { border-color: var(--green) !important; color: var(--green) !important; }
 
       footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+
+      @media (max-width: 600px) {
+        .reset-grid { grid-template-columns: 1fr; }
+        .setting-row { padding: 0.75rem; }
+        .toggle-btn { padding: 0.3rem 0.6rem; font-size: 0.58rem; }
+        .page-header { padding: 1.5rem 0 0.75rem; }
+        .back-link { font-size: 0.68rem; }
+        .swatches { gap: 0.5rem; }
+        .swatch { width: 2rem; height: 2rem; }
+      }
     </style>
   </head>
   <body>

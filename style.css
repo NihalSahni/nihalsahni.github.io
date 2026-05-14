@@ -780,3 +780,43 @@ label.flash {
   font-weight: bold;
   font-size: 1.1rem;
 }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+
+@media (max-width: 768px) {
+  body { padding: 1.25rem; }
+
+  .overall-score { flex-direction: column; align-items: flex-start; }
+  .score-ring { width: 90px; height: 90px; }
+
+  .subject-row {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+  }
+  .subject-score { grid-row: 1; grid-column: 2; }
+  .bar-track { grid-column: 1 / -1; }
+  .subject-feedback { grid-column: 1 / -1; }
+
+  .bar-chart { gap: 0.5rem; height: 150px; }
+  .bar-col-label { font-size: 0.6rem; }
+  .bar-col-track { height: 100px; }
+
+  .debrief-actions { flex-direction: column; align-items: center; }
+  .debrief-btn { width: 100%; max-width: 320px; text-align: center; }
+
+  .missed-card { padding: 0.6rem 0.75rem; }
+
+  #Submit { padding: 0.75rem 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  body { padding: 0.85rem; }
+
+  .countdown { font-size: 4rem; }
+
+  .hud-panel { padding: 1.2rem 1rem 1rem; }
+
+  button { font-size: 0.9rem; }
+
+  .timing-row { flex-direction: column; gap: 0.2rem; }
+}
