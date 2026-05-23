@@ -1,16 +1,23 @@
 ---
-name: Incorrect question
-about: Report a incorrect question
-title: ''
-labels: ''
-assignees: ''
-
+name: Incorrect Question
+about: Report a wrong answer or bad question in the practice set
+title: '[QUESTION] '
+labels: incorrect-question
+assignees: NihalSahni
 ---
 
-Copy and paste question or describe it:
+**Which question set?**
+- [ ] Middle School
+- [ ] High School
 
-Copy and paste the answer or describe it:
+**Subject**
+Biology / Physics / Chemistry / Earth & Space / Energy / Math
 
-Optional*what the correct answer should be:
+**Copy or describe the question**
 
-Anything more:
+**What the site says the answer is**
+
+**What the correct answer should be**
+
+**Source (optional but helpful)**
+e.g. a textbook, DOE official question set, or other reference

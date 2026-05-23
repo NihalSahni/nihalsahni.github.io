@@ -5,6 +5,17 @@
     <link rel="icon" href="favicon.ico" />
     <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Free Science Bowl practice for middle school and high school students. Quiz yourself on biology, physics, chemistry, earth &amp; space science, energy, and math — or browse study topics to prep for your next competition." />
+    <meta name="keywords" content="science bowl practice, science bowl questions, science bowl study, NSB, NSBE, NESA, science bowl prep, MSBE, HSBE, middle school science bowl, high school science bowl, science bowl quiz, free science bowl" />
+    <link rel="canonical" href="https://sciencebowlpractice.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/" />
+    <meta property="og:site_name" content="Science Bowl Command Network" />
+    <meta property="og:title" content="Science Bowl Command Network — Free Science Bowl Practice" />
+    <meta property="og:description" content="Free Science Bowl practice for middle school and high school students. Quiz yourself on biology, physics, chemistry, earth &amp; space science, energy, and math." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Science Bowl Command Network — Free Science Bowl Practice" />
+    <meta name="twitter:description" content="Free Science Bowl practice for middle school and high school students. Quiz yourself on biology, physics, chemistry, earth &amp; space science, energy, and math." />
     <title>Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -205,6 +216,25 @@
         padding-bottom: 2rem;
       }
 
+      .report-link {
+        display: inline-block;
+        margin-top: 1rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+        text-decoration: none;
+        border: 1px solid transparent;
+        border-color: color-mix(in srgb, var(--muted) 30%, transparent);
+        padding: 0.3rem 0.9rem;
+        border-radius: 2px;
+        transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
+      }
+      .report-link:hover {
+        color: var(--magenta);
+        border-color: color-mix(in srgb, var(--magenta) 40%, transparent);
+        text-shadow: 0 0 8px var(--magenta);
+      }
+
       @media (max-width: 900px) {
         .missions {
           grid-template-columns: repeat(4, 1fr);
@@ -371,6 +401,14 @@
 
     <footer>
       SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; TRAIN HARD. BUZZ FAST. WIN.
+      <div>
+        <a
+          href="https://github.com/NihalSahni/nihalsahni.github.io/issues/new"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="report-link"
+        >⚑ REPORT AN ISSUE</a>
+      </div>
     </footer>
 
     <script src="question.js"></script>
