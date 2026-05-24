@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse the full Science Bowl question bank. Filter by middle school or high school level and subject, then tap any question to reveal the answer." />
+  <meta name="keywords" content="science bowl questions list, browse science bowl questions, science bowl question bank, science bowl answer key" />
+  <link rel="canonical" href="https://sciencebowlpractice.org/Browse.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sciencebowlpractice.org/Browse.html" />
+  <meta property="og:site_name" content="Science Bowl Command Network" />
+  <meta property="og:title" content="Browse Questions — Science Bowl Command Network" />
+  <meta property="og:description" content="Browse the full Science Bowl question bank filtered by level and subject." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Browse Questions — Science Bowl Command Network" />
+  <meta name="twitter:description" content="Browse the full Science Bowl question bank filtered by level and subject." />
+  <title>Browse Questions — Science Bowl Command Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="settings.js"></script>
+  <style>
+    .page-wrap { max-width: 860px; margin: 0 auto; padding: 0 1rem 4rem; }
+
+    .page-header { padding: 2rem 0 1.5rem; text-align: center; }
+    .back-link {
+      display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em;
+      color: var(--orange, #f5a623); text-shadow: 0 0 6px #f5a62399;
+      text-decoration: none; margin-bottom: 1rem;
+      border: 1px solid #f5a62344; padding: 0.3rem 0.8rem; border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .back-link:hover { text-shadow: 0 0 12px #f5a623; border-color: #f5a623; background: #f5a62311; }
+    .page-title { font-size: clamp(1.8rem, 5vw, 2.8rem); color: #f5a623; text-shadow: 0 0 30px #f5a623, 0 0 60px #f5a62344; margin: 0.25rem 0; }
+    .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+    .filter-panel { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.5rem; }
+
+    .filter-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .filter-label { font-size: 0.6rem; letter-spacing: 0.28em; color: var(--muted); }
+
+    .level-btns { display: flex; gap: 0.4rem; }
+    .level-btn {
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.18em;
+      padding: 0.35rem 0.9rem; border-radius: 2px; cursor: pointer;
+      background: transparent; border: 1px solid var(--muted); color: var(--muted);
+      transition: all 0.2s;
+    }
+    .level-btn.active { border-color: #f5a623; color: #f5a623; text-shadow: 0 0 8px #f5a623; background: #f5a62311; }
+
+    .subject-btns { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .subj-btn {
+      font-family: inherit; font-size: 0.68rem; letter-spacing: 0.14em;
+      padding: 0.28rem 0.7rem; border-radius: 2px; cursor: pointer;
+      background: transparent; border: 1px solid var(--muted)66; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .subj-btn.active { border-color: #f5a623; color: #f5a623; background: #f5a62311; }
+
+    .search-wrap { flex: 1; min-width: 180px; }
+    .search-input {
+      width: 100%; box-sizing: border-box;
+      font-family: inherit; font-size: 0.78rem; letter-spacing: 0.08em;
+      background: var(--surface); border: 1px solid var(--muted)55; color: var(--text);
+      padding: 0.45rem 0.8rem; border-radius: 2px; outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: #f5a623; }
+    .search-input::placeholder { color: var(--muted); }
+
+    .count-line {
+      font-size: 0.62rem; letter-spacing: 0.22em; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .count-line span { color: #f5a623; }
+
+    .q-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+    .q-card {
+      background: var(--surface); border: 1px solid var(--muted)33;
+      border-radius: 3px; padding: 1rem 1.2rem; cursor: pointer;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .q-card:hover { border-color: #f5a62366; }
+    .q-card.open { border-color: #f5a62388; }
+
+    .q-subject-tag {
+      font-size: 0.58rem; letter-spacing: 0.22em; color: #f5a623;
+      margin-bottom: 0.4rem; opacity: 0.8;
+    }
+    .q-text {
+      font-size: 0.84rem; color: var(--text); line-height: 1.65;
+      white-space: pre-wrap;
+    }
+    .q-answer {
+      display: none; margin-top: 0.75rem; padding-top: 0.75rem;
+      border-top: 1px solid var(--muted)22;
+      font-size: 0.8rem; color: #f5a623;
+      text-shadow: 0 0 8px #f5a62388; letter-spacing: 0.06em;
+    }
+    .q-card.open .q-answer { display: block; }
+    .q-toggle {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.6rem; letter-spacing: 0.18em; color: var(--muted);
+    }
+    .q-card.open .q-toggle { color: #f5a623; }
+
+    .empty-msg {
+      text-align: center; color: var(--muted);
+      font-size: 0.78rem; letter-spacing: 0.18em;
+      padding: 3rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .filter-panel { gap: 1rem; }
+      .search-wrap { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <div id="scanlines"></div>
+  <a href="Settings.html" style="position:fixed;top:1rem;right:1.2rem;font-size:0.62rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid var(--muted);padding:0.3rem 0.75rem;border-radius:2px;background:var(--surface);z-index:100">⚙ SETTINGS</a>
+
+  <div class="page-wrap">
+    <div class="page-header">
+      <a href="index.html" class="back-link">← HOME BASE</a>
+      <h1 class="page-title">BROWSE QUESTIONS</h1>
+      <p class="page-sub">// TAP A QUESTION TO REVEAL THE ANSWER //</p>
+    </div>
+
+    <div class="hud-panel" style="margin-bottom:1.5rem">
+      <div class="panel-label">FILTERS</div>
+
+      <div class="filter-panel">
+        <div class="filter-group">
+          <div class="filter-label">LEVEL</div>
+          <div class="level-btns">
+            <button class="level-btn active" data-level="MS">MIDDLE SCHOOL</button>
+            <button class="level-btn" data-level="HS">HIGH SCHOOL</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">SUBJECT</div>
+          <div class="subject-btns">
+            <button class="subj-btn active" data-subj="All">ALL</button>
+            <button class="subj-btn" data-subj="Biology">BIOLOGY</button>
+            <button class="subj-btn" data-subj="Physics">PHYSICS</button>
+            <button class="subj-btn" data-subj="Chemistry">CHEMISTRY</button>
+            <button class="subj-btn" data-subj="EarthSpace">EARTH &amp; SPACE</button>
+            <button class="subj-btn" data-subj="Energy">ENERGY</button>
+            <button class="subj-btn" data-subj="Math">MATH</button>
+          </div>
+        </div>
+
+        <div class="filter-group search-wrap">
+          <div class="filter-label">SEARCH</div>
+          <input type="text" class="search-input" id="search-input" placeholder="Filter by keyword..." />
+        </div>
+      </div>
+    </div>
+
+    <div class="count-line" id="count-line">SHOWING <span id="count-num">0</span> QUESTIONS</div>
+
+    <div class="q-list" id="q-list"></div>
+  </div>
+
+  <script src="question.js"></script>
+  <script>
+    const banks = {
+      MS: {
+        Biology: typeof MSBiology !== 'undefined' ? MSBiology : {},
+        Physics: typeof MSPhysics !== 'undefined' ? MSPhysics : {},
+        Chemistry: typeof MSChemistry !== 'undefined' ? MSChemistry : {},
+        EarthSpace: typeof MSEarthSpace !== 'undefined' ? MSEarthSpace : {},
+        Energy: typeof MSEnergy !== 'undefined' ? MSEnergy : {},
+        Math: typeof MSMath !== 'undefined' ? MSMath : {},
+      },
+      HS: {
+        Biology: typeof HSBiology !== 'undefined' ? HSBiology : {},
+        Physics: typeof HSPhysics !== 'undefined' ? HSPhysics : {},
+        Chemistry: typeof HSChemistry !== 'undefined' ? HSChemistry : {},
+        EarthSpace: typeof HSEarthSpace !== 'undefined' ? HSEarthSpace : {},
+        Energy: typeof HSEnergy !== 'undefined' ? HSEnergy : {},
+        Math: typeof HSMath !== 'undefined' ? HSMath : {},
+      }
+    };
+
+    const subjLabels = { Biology:'BIOLOGY', Physics:'PHYSICS', Chemistry:'CHEMISTRY', EarthSpace:'EARTH & SPACE', Energy:'ENERGY', Math:'MATH' };
+
+    let activeLevel = 'MS';
+    let activeSubj = 'All';
+    let searchTerm = '';
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function formatQuestion(q) {
+      return q.replace(/ ([WXYZ]\))/g, '\n$1');
+    }
+
+    function render() {
+      const list = document.getElementById('q-list');
+      list.innerHTML = '';
+      let count = 0;
+      const subjects = activeSubj === 'All' ? Object.keys(banks[activeLevel]) : [activeSubj];
+
+      let allEntries = [];
+      subjects.forEach(subj => {
+        const bank = banks[activeLevel][subj];
+        Object.entries(bank).forEach(([q, a]) => allEntries.push({ q, a, subj }));
+      });
+      shuffle(allEntries);
+
+      allEntries.forEach(({ q, a, subj }) => {
+          if (searchTerm && !q.toLowerCase().includes(searchTerm) && !a.toLowerCase().includes(searchTerm)) return;
+          count++;
+          const card = document.createElement('div');
+          card.className = 'q-card';
+          card.innerHTML = `
+            <div class="q-subject-tag">${activeLevel} · ${subjLabels[subj]}</div>
+            <div class="q-text">${formatQuestion(q)}</div>
+            <div class="q-answer">▶ ${a}</div>
+            <div class="q-toggle">REVEAL</div>
+          `;
+          card.addEventListener('click', () => {
+            card.classList.toggle('open');
+            card.querySelector('.q-toggle').textContent = card.classList.contains('open') ? 'HIDE' : 'REVEAL';
+          });
+          list.appendChild(card);
+      });
+
+      document.getElementById('count-num').textContent = count;
+      if (count === 0) {
+        list.innerHTML = '<div class="empty-msg">NO QUESTIONS MATCH YOUR FILTERS.</div>';
+      }
+    }
+
+    document.querySelectorAll('.level-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeLevel = btn.dataset.level;
+        render();
+      });
+    });
+
+    document.querySelectorAll('.subj-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.subj-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeSubj = btn.dataset.subj;
+        render();
+      });
+    });
+
+    document.getElementById('search-input').addEventListener('input', e => {
+      searchTerm = e.target.value.toLowerCase().trim();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

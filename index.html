@@ -83,8 +83,26 @@
 
       .mission-card { grid-column: span 2; }
 
-      .missions .mission-card:nth-child(4) { grid-column: 2 / 4; }
-      .missions .mission-card:nth-child(5) { grid-column: 4 / 6; }
+      .settings-gear {
+        position: fixed;
+        top: 1rem;
+        right: 1.2rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+        color: var(--muted);
+        text-decoration: none;
+        border: 1px solid var(--muted);
+        padding: 0.3rem 0.75rem;
+        border-radius: 2px;
+        background: var(--surface);
+        z-index: 100;
+        transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
+      }
+      .settings-gear:hover {
+        color: var(--cyan);
+        border-color: var(--cyan);
+        text-shadow: 0 0 8px var(--cyan);
+      }
 
       .mission-card {
         position: relative;
@@ -241,8 +259,6 @@
           gap: 1rem;
           margin: 2rem auto 1.5rem;
         }
-        .missions .mission-card:nth-child(4),
-        .missions .mission-card:nth-child(5) { grid-column: span 2; }
       }
 
       @media (max-width: 600px) {
@@ -251,9 +267,7 @@
           gap: 0.75rem;
           margin: 1.5rem auto 1rem;
         }
-        .mission-card,
-        .missions .mission-card:nth-child(4),
-        .missions .mission-card:nth-child(5) { grid-column: span 1; }
+        .mission-card { grid-column: span 1; }
         .mission-card { padding: 1.4rem 1rem 1rem; }
         .mission-icon { font-size: 1.8rem; }
         .mission-title { font-size: 1.1rem; }
@@ -273,6 +287,7 @@
   <body>
     <canvas id="starfield"></canvas>
     <div id="scanlines"></div>
+    <a href="Settings.html" class="settings-gear">⚙ SETTINGS</a>
 
     <div class="hero">
       <p class="hero-tag">
@@ -296,11 +311,7 @@
     </div>
 
     <div class="missions">
-      <a
-        href="Practice.html"
-        class="mission-card"
-        style="--accent: var(--cyan)"
-      >
+      <a href="Practice.html" class="mission-card" style="--accent: var(--cyan)">
         <div class="mission-icon">🧠</div>
         <span class="mission-label">MODULE 01</span>
         <h2 class="mission-title">NEURAL TRIALS</h2>
@@ -311,59 +322,42 @@
         <span class="mission-enter">ENTER MISSION →</span>
       </a>
 
-      <a
-        href="BuzzerHP.html"
-        class="mission-card"
-        style="--accent: var(--magenta)"
-      >
+      <a href="BuzzerHP.html" class="mission-card" style="--accent: var(--magenta)">
         <div class="mission-icon">⚡</div>
-        <span
-          class="mission-label"
-          style="color: var(--magenta); text-shadow: 0 0 8px var(--magenta)"
-          >MODULE 02</span
-        >
+        <span class="mission-label" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta)">MODULE 02</span>
         <h2 class="mission-title">QUICK BUZZ</h2>
         <p class="mission-desc">
           Train your reaction time on the buzzer. Race against the clock, beat
           your best time, and build the muscle memory you need in competition.
         </p>
-        <span
-          class="mission-enter"
-          style="color: var(--magenta); text-shadow: 0 0 6px var(--magenta)"
-          >ENTER MISSION →</span
-        >
+        <span class="mission-enter" style="color:var(--magenta);text-shadow:0 0 6px var(--magenta)">ENTER MISSION →</span>
       </a>
 
-      <a
-        href="LearnTopics.html"
-        class="mission-card"
-        style="--accent: var(--green)"
-      >
+      <a href="LearnTopics.html" class="mission-card" style="--accent: var(--green)">
         <div class="mission-icon">📡</div>
-        <span
-          class="mission-label"
-          style="color: var(--green); text-shadow: 0 0 8px var(--green)"
-          >MODULE 03</span
-        >
+        <span class="mission-label" style="color:var(--green);text-shadow:0 0 8px var(--green)">MODULE 03</span>
         <h2 class="mission-title">INTEL DATABASE</h2>
         <p class="mission-desc">
           Study core concepts before you drill. Browse topics by subject and
           build the knowledge base you need to answer with confidence.
         </p>
-        <span
-          class="mission-enter"
-          style="color: var(--green); text-shadow: 0 0 6px var(--green)"
-          >ENTER MISSION →</span
-        >
+        <span class="mission-enter" style="color:var(--green);text-shadow:0 0 6px var(--green)">ENTER MISSION →</span>
       </a>
 
-      <a
-        href="Progress.html"
-        class="mission-card"
-        style="--accent: #f5c542"
-      >
+      <a href="Browse.html" class="mission-card" style="--accent: #f5a623">
+        <div class="mission-icon">🔍</div>
+        <span class="mission-label" style="color:#f5a623;text-shadow:0 0 8px #f5a62388">MODULE 04</span>
+        <h2 class="mission-title">BROWSE QUESTIONS</h2>
+        <p class="mission-desc">
+          Scroll through the full question bank filtered by level and subject.
+          Tap any question to reveal the answer.
+        </p>
+        <span class="mission-enter" style="color:#f5a623;text-shadow:0 0 6px #f5a62388">BROWSE →</span>
+      </a>
+
+      <a href="Progress.html" class="mission-card" style="--accent: #f5c542">
         <div class="mission-icon">📊</div>
-        <span class="mission-label" style="color:#f5c542;text-shadow:0 0 8px #f5c54288">MODULE 04</span>
+        <span class="mission-label" style="color:#f5c542;text-shadow:0 0 8px #f5c54288">MODULE 05</span>
         <h2 class="mission-title">PROGRESS REPORT</h2>
         <p class="mission-desc">
           Track your flashcard mastery across HS and MS. See how many cards
@@ -372,18 +366,15 @@
         <span class="mission-enter" style="color:#f5c542;text-shadow:0 0 6px #f5c54288">VIEW PROGRESS →</span>
       </a>
 
-      <a
-        href="Settings.html"
-        class="mission-card"
-        style="--accent: #a78bfa"
-      >
-        <div class="mission-icon">⚙️</div>
-        <span class="mission-label" style="color:#a78bfa;text-shadow:0 0 8px #a78bfa88">MODULE 05</span>
-        <h2 class="mission-title">SETTINGS</h2>
+      <a href="PrintableTest.html" class="mission-card" style="--accent: #a78bfa">
+        <div class="mission-icon">🖨️</div>
+        <span class="mission-label" style="color:#a78bfa;text-shadow:0 0 8px #a78bfa88">MODULE 06</span>
+        <h2 class="mission-title">PRINTABLE TEST</h2>
         <p class="mission-desc">
-          Toggle sound, scanlines, and starfield. Reset individual HS or MS stats, flashcards, streak, and more.
+          Pick your level, subjects, and question count. Generate a formatted
+          test you can print and hand out to your team.
         </p>
-        <span class="mission-enter" style="color:#a78bfa;text-shadow:0 0 6px #a78bfa88">CONFIGURE →</span>
+        <span class="mission-enter" style="color:#a78bfa;text-shadow:0 0 6px #a78bfa88">GENERATE →</span>
       </a>
     </div>
 

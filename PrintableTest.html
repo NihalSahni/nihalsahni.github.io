@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Generate a printable Science Bowl practice test. Choose your level, subjects, and question count, then print a formatted test with an answer key." />
+  <meta name="keywords" content="printable science bowl test, science bowl worksheet, science bowl practice test printable, science bowl answer key" />
+  <link rel="canonical" href="https://sciencebowlpractice.org/PrintableTest.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sciencebowlpractice.org/PrintableTest.html" />
+  <meta property="og:site_name" content="Science Bowl Command Network" />
+  <meta property="og:title" content="Printable Test Generator — Science Bowl Command Network" />
+  <meta property="og:description" content="Generate a printable Science Bowl practice test with a custom subject mix and answer key." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Printable Test Generator — Science Bowl Command Network" />
+  <meta name="twitter:description" content="Generate a printable Science Bowl practice test with a custom subject mix and answer key." />
+  <title>Printable Test — Science Bowl Command Network</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="settings.js"></script>
+  <style>
+    .page-wrap { max-width: 760px; margin: 0 auto; padding: 0 1rem 4rem; }
+
+    .page-header { padding: 2rem 0 1.5rem; text-align: center; }
+    .back-link {
+      display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em;
+      color: #a78bfa; text-shadow: 0 0 6px #a78bfa99;
+      text-decoration: none; margin-bottom: 1rem;
+      border: 1px solid #a78bfa44; padding: 0.3rem 0.8rem; border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .back-link:hover { text-shadow: 0 0 12px #a78bfa; border-color: #a78bfa; background: #a78bfa11; }
+    .page-title { font-size: clamp(1.8rem, 5vw, 2.8rem); color: #a78bfa; text-shadow: 0 0 30px #a78bfa, 0 0 60px #a78bfa44; margin: 0.25rem 0; }
+    .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+    .config-section { display: flex; flex-direction: column; gap: 1.2rem; }
+    .config-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .config-row-label { font-size: 0.6rem; letter-spacing: 0.28em; color: var(--muted); min-width: 90px; }
+
+    .level-btn, .subj-btn {
+      font-family: inherit; letter-spacing: 0.16em; border-radius: 2px;
+      cursor: pointer; background: transparent; transition: all 0.2s;
+    }
+    .level-btn { font-size: 0.72rem; padding: 0.35rem 0.9rem; border: 1px solid var(--muted); color: var(--muted); }
+    .level-btn.active { border-color: #a78bfa; color: #a78bfa; text-shadow: 0 0 8px #a78bfa; background: #a78bfa11; }
+    .subj-btn { font-size: 0.68rem; padding: 0.28rem 0.7rem; border: 1px solid var(--muted)66; color: var(--muted); }
+    .subj-btn.active { border-color: #a78bfa; color: #a78bfa; background: #a78bfa11; }
+
+    .count-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .count-row input[type=range] { flex: 1; min-width: 120px; accent-color: #a78bfa; }
+    .count-display { font-size: 1.1rem; color: #a78bfa; text-shadow: 0 0 8px #a78bfa88; min-width: 3ch; text-align: right; }
+
+    .gen-btn {
+      font-family: inherit; font-size: 0.78rem; letter-spacing: 0.22em;
+      padding: 0.7rem 2rem; border-radius: 2px; cursor: pointer;
+      background: transparent; border: 1px solid #a78bfa; color: #a78bfa;
+      text-shadow: 0 0 8px #a78bfa88; transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .gen-btn:hover { background: #a78bfa22; box-shadow: 0 0 20px #a78bfa44; }
+    .gen-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .error-msg { font-size: 0.72rem; color: var(--magenta); letter-spacing: 0.1em; margin-top: 0.5rem; display: none; }
+
+    /* Print output */
+    #test-output { display: none; margin-top: 2rem; }
+
+    .print-controls {
+      display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .print-btn {
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.2em;
+      padding: 0.5rem 1.4rem; border-radius: 2px; cursor: pointer;
+      background: #a78bfa22; border: 1px solid #a78bfa; color: #a78bfa;
+      transition: all 0.2s;
+    }
+    .print-btn:hover { background: #a78bfa33; }
+    .reset-btn {
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.2em;
+      padding: 0.5rem 1.4rem; border-radius: 2px; cursor: pointer;
+      background: transparent; border: 1px solid var(--muted)66; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .reset-btn:hover { border-color: var(--muted); color: var(--text); }
+
+    .test-header-block { text-align: center; margin-bottom: 2rem; }
+    .test-title-text { font-size: 1.4rem; color: var(--text); letter-spacing: 0.12em; }
+    .test-meta { font-size: 0.65rem; letter-spacing: 0.22em; color: var(--muted); margin-top: 0.4rem; }
+
+    .q-item { margin-bottom: 1.4rem; }
+    .q-num { font-size: 0.6rem; letter-spacing: 0.22em; color: #a78bfa; margin-bottom: 0.3rem; }
+    .q-body { font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-wrap; }
+
+    .answer-key-section { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--muted)33; }
+    .answer-key-title { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 1.2rem; }
+    .answer-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem 1.5rem;
+    }
+    .answer-item { font-size: 0.8rem; color: var(--text); line-height: 1.5; }
+    .answer-item span { color: #a78bfa; }
+
+    /* Print styles */
+    @media print {
+      canvas, #scanlines, .settings-gear, .back-link, .page-header,
+      #config-panel, .print-controls { display: none !important; }
+
+      body { background: white; color: black; font-family: 'Courier New', monospace; }
+      #test-output { display: block !important; margin: 0; }
+      .test-title-text { color: black; }
+      .test-meta { color: #555; }
+      .q-num { color: #555; }
+      .q-body { color: black; }
+      .answer-key-section { border-top: 1px solid #ccc; }
+      .answer-key-title { color: #555; }
+      .answer-item { color: black; }
+      .answer-item span { color: #333; font-weight: bold; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <div id="scanlines"></div>
+  <a href="Settings.html" style="position:fixed;top:1rem;right:1.2rem;font-size:0.62rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid var(--muted);padding:0.3rem 0.75rem;border-radius:2px;background:var(--surface);z-index:100">⚙ SETTINGS</a>
+
+  <div class="page-wrap">
+    <div class="page-header">
+      <a href="index.html" class="back-link">← HOME BASE</a>
+      <h1 class="page-title">PRINTABLE TEST</h1>
+      <p class="page-sub">// CONFIGURE YOUR TEST THEN PRINT //</p>
+    </div>
+
+    <div id="config-panel" class="hud-panel">
+      <div class="panel-label">TEST CONFIGURATION</div>
+
+      <div class="config-section">
+        <div>
+          <div class="config-row-label" style="margin-bottom:0.5rem">LEVEL</div>
+          <div style="display:flex;gap:0.5rem">
+            <button class="level-btn active" data-level="MS">MIDDLE SCHOOL</button>
+            <button class="level-btn" data-level="HS">HIGH SCHOOL</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="config-row-label" style="margin-bottom:0.5rem">SUBJECTS</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            <button class="subj-btn active" data-subj="Biology">BIOLOGY</button>
+            <button class="subj-btn active" data-subj="Physics">PHYSICS</button>
+            <button class="subj-btn active" data-subj="Chemistry">CHEMISTRY</button>
+            <button class="subj-btn active" data-subj="EarthSpace">EARTH &amp; SPACE</button>
+            <button class="subj-btn active" data-subj="Energy">ENERGY</button>
+            <button class="subj-btn active" data-subj="Math">MATH</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="config-row-label" style="margin-bottom:0.5rem">QUESTIONS</div>
+          <div class="count-row">
+            <input type="range" id="q-count-slider" min="5" max="60" value="20" />
+            <div class="count-display" id="q-count-display">20</div>
+          </div>
+        </div>
+
+        <div>
+          <button class="gen-btn" id="gen-btn">GENERATE TEST →</button>
+          <div class="error-msg" id="error-msg">Not enough questions for the selected subjects. Try selecting more subjects or reducing the count.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="test-output">
+      <div class="print-controls">
+        <button class="print-btn" onclick="window.print()">🖨 PRINT</button>
+        <button class="reset-btn" id="reset-btn">← RECONFIGURE</button>
+      </div>
+
+      <div class="test-header-block">
+        <div class="test-title-text">SCIENCE BOWL PRACTICE TEST</div>
+        <div class="test-meta" id="test-meta"></div>
+      </div>
+
+      <div id="q-output"></div>
+      <div class="answer-key-section">
+        <div class="answer-key-title">// ANSWER KEY //</div>
+        <div class="answer-grid" id="answer-output"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="question.js"></script>
+  <script>
+    const banks = {
+      MS: {
+        Biology: typeof MSBiology !== 'undefined' ? MSBiology : {},
+        Physics: typeof MSPhysics !== 'undefined' ? MSPhysics : {},
+        Chemistry: typeof MSChemistry !== 'undefined' ? MSChemistry : {},
+        EarthSpace: typeof MSEarthSpace !== 'undefined' ? MSEarthSpace : {},
+        Energy: typeof MSEnergy !== 'undefined' ? MSEnergy : {},
+        Math: typeof MSMath !== 'undefined' ? MSMath : {},
+      },
+      HS: {
+        Biology: typeof HSBiology !== 'undefined' ? HSBiology : {},
+        Physics: typeof HSPhysics !== 'undefined' ? HSPhysics : {},
+        Chemistry: typeof HSChemistry !== 'undefined' ? HSChemistry : {},
+        EarthSpace: typeof HSEarthSpace !== 'undefined' ? HSEarthSpace : {},
+        Energy: typeof HSEnergy !== 'undefined' ? HSEnergy : {},
+        Math: typeof HSMath !== 'undefined' ? HSMath : {},
+      }
+    };
+
+    const subjLabels = { Biology:'Biology', Physics:'Physics', Chemistry:'Chemistry', EarthSpace:'Earth & Space', Energy:'Energy', Math:'Math' };
+
+    let activeLevel = 'MS';
+    let activeSubjects = new Set(['Biology','Physics','Chemistry','EarthSpace','Energy','Math']);
+    let questionCount = 20;
+
+    const slider = document.getElementById('q-count-slider');
+    const countDisplay = document.getElementById('q-count-display');
+
+    slider.addEventListener('input', () => {
+      questionCount = +slider.value;
+      countDisplay.textContent = questionCount;
+    });
+
+    document.querySelectorAll('.level-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeLevel = btn.dataset.level;
+      });
+    });
+
+    document.querySelectorAll('.subj-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        if (btn.classList.contains('active')) activeSubjects.add(btn.dataset.subj);
+        else activeSubjects.delete(btn.dataset.subj);
+      });
+    });
+
+    function formatQuestion(q) {
+      return q.replace(/ ([WXYZ]\))/g, '\n$1');
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    document.getElementById('gen-btn').addEventListener('click', () => {
+      const errEl = document.getElementById('error-msg');
+      errEl.style.display = 'none';
+
+      if (activeSubjects.size === 0) {
+        errEl.textContent = 'Select at least one subject.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      // Gather all eligible questions
+      let pool = [];
+      activeSubjects.forEach(subj => {
+        const bank = banks[activeLevel][subj];
+        Object.entries(bank).forEach(([q, a]) => pool.push({ q, a, subj }));
+      });
+
+      if (pool.length < questionCount) {
+        errEl.textContent = `Only ${pool.length} questions available for the selected subjects. Reduce the count or add more subjects.`;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const selected = shuffle(pool).slice(0, questionCount);
+
+      // Build question list
+      const qOut = document.getElementById('q-output');
+      const aOut = document.getElementById('answer-output');
+      qOut.innerHTML = '';
+      aOut.innerHTML = '';
+
+      selected.forEach((item, i) => {
+        const num = i + 1;
+        const qEl = document.createElement('div');
+        qEl.className = 'q-item';
+        qEl.innerHTML = `<div class="q-num">${num}. ${subjLabels[item.subj].toUpperCase()}</div><div class="q-body">${formatQuestion(item.q)}</div>`;
+        qOut.appendChild(qEl);
+
+        const aEl = document.createElement('div');
+        aEl.className = 'answer-item';
+        aEl.innerHTML = `${num}. <span>${item.a}</span>`;
+        aOut.appendChild(aEl);
+      });
+
+      const subjList = [...activeSubjects].map(s => subjLabels[s]).join(', ');
+      document.getElementById('test-meta').textContent =
+        `${activeLevel === 'MS' ? 'MIDDLE SCHOOL' : 'HIGH SCHOOL'} · ${questionCount} QUESTIONS · ${subjList.toUpperCase()}`;
+
+      document.getElementById('config-panel').style.display = 'none';
+      document.getElementById('test-output').style.display = 'block';
+    });
+
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      document.getElementById('config-panel').style.display = 'block';
+      document.getElementById('test-output').style.display = 'none';
+    });
+  </script>
+</body>
+</html>

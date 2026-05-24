@@ -1,4 +1,4 @@
-const CACHE = 'sbcn-v1';
+const CACHE = 'sbcn-v3';
 const ASSETS = [
   '/',
   '/index.html',
@@ -10,6 +10,8 @@ const ASSETS = [
   '/LearnTopics-MS.html',
   '/Progress.html',
   '/Settings.html',
+  '/Browse.html',
+  '/PrintableTest.html',
   '/settings.js',
   '/style.css',
   '/question.js',
