@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="favicon.ico" />
     <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Practice Science Bowl questions online for free. Choose middle school or high school level, pick your subjects — biology, physics, chemistry, earth &amp; space, energy, math — and quiz yourself in standard or survival mode." />
@@ -22,6 +21,53 @@
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css" />
     <script src="settings.js"></script>
+  <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Science Bowl Practice Quiz",
+      "url": "https://sciencebowlpractice.org/Practice.html",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "description": "Practice Science Bowl questions online for free. Choose middle school or high school, pick your subjects, and quiz yourself.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
+          { "@type": "ListItem", "position": 2, "name": "Practice Quiz", "item": "https://sciencebowlpractice.org/Practice.html" }
+        ]
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What subjects can I practice?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Biology, Chemistry, Physics, Earth & Space Science, Energy, and Math — for both middle school and high school levels." }
+        },
+        {
+          "@type": "Question",
+          "name": "What practice modes are available?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Standard mode lets you quiz through questions at your own pace. Survival mode ends your session on a wrong answer for added pressure." }
+        },
+        {
+          "@type": "Question",
+          "name": "Are the questions formatted like real Science Bowl questions?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Questions follow the tossup and bonus format used in official NSB (National Science Bowl) competitions." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does the site track my practice progress?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. After each session your accuracy by subject is saved locally, and you can review it in the Progress Report." }
+        }
+      ]
+    }
+  ]
+  </script>
   </head>
   <body>
     <canvas id="starfield"></canvas>

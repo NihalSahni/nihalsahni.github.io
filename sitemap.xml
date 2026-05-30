@@ -40,9 +40,15 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://sciencebowlpractice.org/Progress.html</loc>
+    <loc>https://sciencebowlpractice.org/Browse.html</loc>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sciencebowlpractice.org/PrintableTest.html</loc>
     <lastmod>2026-05-23</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
 </urlset>

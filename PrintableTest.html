@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="favicon.ico" />
   <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Generate a printable Science Bowl practice test. Choose your level, subjects, and question count, then print a formatted test with an answer key." />
@@ -120,6 +119,25 @@
       .answer-item span { color: #333; font-weight: bold; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Science Bowl Printable Test Generator",
+    "url": "https://sciencebowlpractice.org/PrintableTest.html",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web Browser",
+    "description": "Generate a printable Science Bowl practice test. Choose your level, subjects, and question count, then print a formatted test with an answer key.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
+        { "@type": "ListItem", "position": 2, "name": "Printable Test", "item": "https://sciencebowlpractice.org/PrintableTest.html" }
+      ]
+    }
+  }
+  </script>
 </head>
 <body>
   <canvas id="starfield"></canvas>
