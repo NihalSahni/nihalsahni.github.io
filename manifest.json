@@ -1,8 +1,8 @@
-{
+﻿{
   "name": "Science Bowl Command Network",
   "short_name": "ScienceBowl",
   "description": "Train for Science Bowl — practice questions, flashcards, and buzzer drills.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0e1a",
   "theme_color": "#00e5ff",

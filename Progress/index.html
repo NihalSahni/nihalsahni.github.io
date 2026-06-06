@@ -1,15 +1,15 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="robots" content="noindex, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Track your Science Bowl practice performance over time. See your accuracy by subject, monitor improvement, and identify weak areas to focus on before your next Science Bowl competition." />
     <meta name="keywords" content="science bowl progress tracker, science bowl score tracker, science bowl performance stats, science bowl practice results, NSB prep tracker" />
-    <link rel="canonical" href="https://sciencebowlpractice.org/Progress.html" />
+    <link rel="canonical" href="https://sciencebowlpractice.org/Progress/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sciencebowlpractice.org/Progress.html" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/Progress/" />
     <meta property="og:site_name" content="Science Bowl Command Network" />
     <meta property="og:title" content="Science Bowl Progress Tracker — Science Bowl Command Network" />
     <meta property="og:description" content="Track your Science Bowl practice performance over time. Monitor your scores by subject and improve before your next competition." />
@@ -19,9 +19,9 @@
     <title>Progress — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="settings.js"></script>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
     <style>
       .page-wrap { max-width: 860px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
@@ -140,7 +140,7 @@
 
     <div class="page-wrap">
       <div class="page-header">
-        <a href="index.html" class="back-link">← HOME BASE</a>
+        <a href="/" class="back-link">← HOME BASE</a>
         <h1 class="page-title">PROGRESS REPORT</h1>
         <p class="page-sub">MODULE 04 — FLASHCARD &amp; PRACTICE TRACKING</p>
       </div>
@@ -165,7 +165,7 @@
       <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
     </div>
 
-    <script src="Flashcards.js"></script>
+    <script src="/Flashcards.js"></script>
     <script>
       var SUBJECTS = ['Biology', 'Chemistry', 'Physics', 'Earth Science', 'Energy', 'Math'];
       var COLORS = {
@@ -470,7 +470,7 @@
               '</div>';
           });
           html += '</div>';
-          html += '<a href="Practice.html" class="rq-drill-btn">DRILL ALL →</a>';
+          html += '<a href="/Practice/" class="rq-drill-btn">DRILL ALL →</a>';
         }
         el.innerHTML = html;
       }
@@ -488,14 +488,18 @@
         var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
-        function draw() {
-          ctx.clearRect(0,0,canvas.width,canvas.height);
-          stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
-          requestAnimationFrame(draw);
+        var _sf_last=0,_sf_raf;
+        function draw(ts) {
+          if(ts-_sf_last>=33){_sf_last=ts;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          }
+          _sf_raf=requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
+        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
       })();
     </script>
-    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
   </body>
 </html>

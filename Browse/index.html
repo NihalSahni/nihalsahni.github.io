@@ -1,26 +1,28 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+  <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Browse the full Science Bowl question bank. Filter by middle school or high school level and subject, then tap any question to reveal the answer." />
   <meta name="keywords" content="science bowl questions list, browse science bowl questions, science bowl question bank, science bowl answer key" />
-  <link rel="canonical" href="https://sciencebowlpractice.org/Browse.html" />
+  <link rel="canonical" href="https://sciencebowlpractice.org/Browse/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sciencebowlpractice.org/Browse.html" />
+  <meta property="og:url" content="https://sciencebowlpractice.org/Browse/" />
   <meta property="og:site_name" content="Science Bowl Command Network" />
   <meta property="og:title" content="Browse Questions — Science Bowl Command Network" />
   <meta property="og:description" content="Browse the full Science Bowl question bank filtered by level and subject." />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
   <meta name="twitter:title" content="Browse Questions — Science Bowl Command Network" />
   <meta name="twitter:description" content="Browse the full Science Bowl question bank filtered by level and subject." />
   <title>Browse Questions — Science Bowl Command Network</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="settings.js"></script>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/settings.js"></script>
   <style>
     .page-wrap { max-width: 860px; margin: 0 auto; padding: 0 1rem 4rem; }
 
@@ -124,7 +126,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Science Bowl Question Browser",
-    "url": "https://sciencebowlpractice.org/Browse.html",
+    "url": "https://sciencebowlpractice.org/Browse/",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "description": "Browse the full Science Bowl question bank filtered by level and subject. Tap any question to reveal the answer.",
@@ -133,7 +135,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
-        { "@type": "ListItem", "position": 2, "name": "Browse Questions", "item": "https://sciencebowlpractice.org/Browse.html" }
+        { "@type": "ListItem", "position": 2, "name": "Browse Questions", "item": "https://sciencebowlpractice.org/Browse/" }
       ]
     }
   }
@@ -142,11 +144,11 @@
 <body>
   <canvas id="starfield"></canvas>
   <div id="scanlines"></div>
-  <a href="Settings.html" style="position:fixed;top:1rem;right:1.2rem;font-size:0.62rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid var(--muted);padding:0.3rem 0.75rem;border-radius:2px;background:var(--surface);z-index:100">⚙ SETTINGS</a>
+  <a href="/Settings/" style="position:fixed;top:1rem;right:1.2rem;font-size:0.62rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid var(--muted);padding:0.3rem 0.75rem;border-radius:2px;background:var(--surface);z-index:100">⚙ SETTINGS</a>
 
   <div class="page-wrap">
     <div class="page-header">
-      <a href="index.html" class="back-link">← HOME BASE</a>
+      <a href="/" class="back-link">← HOME BASE</a>
       <h1 class="page-title">BROWSE QUESTIONS</h1>
       <p class="page-sub">// TAP A QUESTION TO REVEAL THE ANSWER //</p>
     </div>
@@ -188,7 +190,7 @@
     <div class="q-list" id="q-list"></div>
   </div>
 
-  <script src="question.js"></script>
+  <script src="/question.js"></script>
   <script>
     const banks = {
       MS: {

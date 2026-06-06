@@ -1,26 +1,28 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+  <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Free online Science Bowl buzzer simulator. Practice reaction speed and compete with teammates in a virtual Science Bowl buzzer round — no hardware required." />
   <meta name="keywords" content="science bowl buzzer, science bowl buzzer simulator, science bowl buzzer practice, online science bowl buzzer, virtual buzzer science bowl, science bowl reaction time, NSB buzzer" />
-  <link rel="canonical" href="https://sciencebowlpractice.org/Buzzer.html" />
+  <link rel="canonical" href="https://sciencebowlpractice.org/Buzzer/" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sciencebowlpractice.org/Buzzer.html" />
+  <meta property="og:url" content="https://sciencebowlpractice.org/Buzzer/" />
   <meta property="og:site_name" content="Science Bowl Command Network" />
   <meta property="og:title" content="Science Bowl Buzzer Simulator — Free Online Buzzer" />
   <meta property="og:description" content="Free online Science Bowl buzzer simulator. Practice reaction speed and compete with teammates in a virtual buzzer round — no hardware required." />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
   <meta name="twitter:title" content="Science Bowl Buzzer Simulator — Free Online Buzzer" />
   <meta name="twitter:description" content="Free online Science Bowl buzzer simulator. Practice reaction speed and compete with teammates in a virtual buzzer round — no hardware required." />
   <title>Science Bowl Buzzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="settings.js"></script>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/settings.js"></script>
   <style>
     body { max-width: 960px; margin: 0 auto; padding: 2rem; }
 
@@ -432,7 +434,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Science Bowl Buzzer Simulator",
-    "url": "https://sciencebowlpractice.org/Buzzer.html",
+    "url": "https://sciencebowlpractice.org/Buzzer/",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "description": "Free online Science Bowl buzzer simulator. Practice reaction speed and compete with teammates — no hardware required.",
@@ -441,7 +443,7 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
-        { "@type": "ListItem", "position": 2, "name": "Buzzer Simulator", "item": "https://sciencebowlpractice.org/Buzzer.html" }
+        { "@type": "ListItem", "position": 2, "name": "Buzzer Simulator", "item": "https://sciencebowlpractice.org/Buzzer/" }
       ]
     }
   }
@@ -452,7 +454,7 @@
   <div id="scanlines"></div>
 
   <div style="text-align:center;margin-top:1.5rem">
-    <a href="index.html" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)';this.style.textShadow='0 0 12px var(--magenta)';this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='';this.style.textShadow='0 0 6px var(--magenta)99';this.style.borderColor='var(--magenta)55'">← HOME BASE</a>
+    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)';this.style.textShadow='0 0 12px var(--magenta)';this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='';this.style.textShadow='0 0 6px var(--magenta)99';this.style.borderColor='var(--magenta)55'">← HOME BASE</a>
   </div>
 
   <h1 id="Title">BUZZER ARENA<span class="blink-cursor">|</span></h1>
@@ -592,8 +594,8 @@
 
   </div><!-- /game-area -->
 
-  <script src="question.js"></script>
-  <script src="Buzzer.js"></script>
-  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+  <script src="/question.js"></script>
+  <script src="/Buzzer.js"></script>
+  <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
 </body>
 </html>

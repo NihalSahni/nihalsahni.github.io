@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +12,9 @@
     <meta property="og:site_name" content="Science Bowl Command Network" />
     <meta property="og:title" content="Science Bowl Command Network — Free Science Bowl Practice" />
     <meta property="og:description" content="Free Science Bowl practice for middle school and high school students. Quiz yourself on biology, physics, chemistry, earth &amp; space science, energy, and math." />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
     <meta name="twitter:title" content="Science Bowl Command Network — Free Science Bowl Practice" />
     <meta name="twitter:description" content="Free Science Bowl practice for middle school and high school students. Quiz yourself on biology, physics, chemistry, earth &amp; space science, energy, and math." />
     <title>Science Bowl Command Network</title>
@@ -324,7 +326,7 @@
   <body>
     <canvas id="starfield"></canvas>
     <div id="scanlines"></div>
-    <a href="Settings.html" class="settings-gear">⚙ SETTINGS</a>
+    <a href="/Settings/" class="settings-gear">⚙ SETTINGS</a>
 
     <div class="hero">
       <p class="hero-tag">
@@ -348,7 +350,7 @@
     </div>
 
     <div class="missions">
-      <a href="Practice.html" class="mission-card" style="--accent: var(--cyan)">
+      <a href="/Practice/" class="mission-card" style="--accent: var(--cyan)">
         <div class="mission-icon">🧠</div>
         <span class="mission-label">MODULE 01</span>
         <h2 class="mission-title">NEURAL TRIALS</h2>
@@ -359,7 +361,7 @@
         <span class="mission-enter">ENTER MISSION →</span>
       </a>
 
-      <a href="BuzzerHP.html" class="mission-card" style="--accent: var(--magenta)">
+      <a href="/Buzzer/" class="mission-card" style="--accent: var(--magenta)">
         <div class="mission-icon">⚡</div>
         <span class="mission-label" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta)">MODULE 02</span>
         <h2 class="mission-title">QUICK BUZZ</h2>
@@ -370,7 +372,7 @@
         <span class="mission-enter" style="color:var(--magenta);text-shadow:0 0 6px var(--magenta)">ENTER MISSION →</span>
       </a>
 
-      <a href="LearnTopics.html" class="mission-card" style="--accent: var(--green)">
+      <a href="/LearnTopics/" class="mission-card" style="--accent: var(--green)">
         <div class="mission-icon">📡</div>
         <span class="mission-label" style="color:var(--green);text-shadow:0 0 8px var(--green)">MODULE 03</span>
         <h2 class="mission-title">INTEL DATABASE</h2>
@@ -381,7 +383,7 @@
         <span class="mission-enter" style="color:var(--green);text-shadow:0 0 6px var(--green)">ENTER MISSION →</span>
       </a>
 
-      <a href="Browse.html" class="mission-card" style="--accent: #f5a623">
+      <a href="/Browse/" class="mission-card" style="--accent: #f5a623">
         <div class="mission-icon">🔍</div>
         <span class="mission-label" style="color:#f5a623;text-shadow:0 0 8px #f5a62388">MODULE 04</span>
         <h2 class="mission-title">BROWSE QUESTIONS</h2>
@@ -392,7 +394,7 @@
         <span class="mission-enter" style="color:#f5a623;text-shadow:0 0 6px #f5a62388">BROWSE →</span>
       </a>
 
-      <a href="Progress.html" class="mission-card" style="--accent: #f5c542">
+      <a href="/Progress/" class="mission-card" style="--accent: #f5c542">
         <div class="mission-icon">📊</div>
         <span class="mission-label" style="color:#f5c542;text-shadow:0 0 8px #f5c54288">MODULE 05</span>
         <h2 class="mission-title">PROGRESS REPORT</h2>
@@ -403,7 +405,7 @@
         <span class="mission-enter" style="color:#f5c542;text-shadow:0 0 6px #f5c54288">VIEW PROGRESS →</span>
       </a>
 
-      <a href="PrintableTest.html" class="mission-card" style="--accent: #a78bfa">
+      <a href="/PrintableTest/" class="mission-card" style="--accent: #a78bfa">
         <div class="mission-icon">🖨️</div>
         <span class="mission-label" style="color:#a78bfa;text-shadow:0 0 8px #a78bfa88">MODULE 06</span>
         <h2 class="mission-title">PRINTABLE TEST</h2>
@@ -446,7 +448,6 @@
       </div>
     </footer>
 
-    <script src="question.js"></script>
     <script>
       // Starfield
       (function () {
@@ -466,28 +467,36 @@
             opacity: Math.random() * 0.6 + 0.2,
           }));
         }
-        function draw() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          stars.forEach((s) => {
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(232,244,255,${s.opacity})`;
-            ctx.fill();
-            s.y += s.speed;
-            if (s.y > canvas.height) {
-              s.y = 0;
-              s.x = Math.random() * canvas.width;
-            }
-          });
-          requestAnimationFrame(draw);
+        let _sf_last = 0, _sf_raf;
+        function draw(ts) {
+          if (ts - _sf_last >= 33) {
+            _sf_last = ts;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach((s) => {
+              ctx.beginPath();
+              ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(232,244,255,${s.opacity})`;
+              ctx.fill();
+              s.y += s.speed;
+              if (s.y > canvas.height) {
+                s.y = 0;
+                s.x = Math.random() * canvas.width;
+              }
+            });
+          }
+          _sf_raf = requestAnimationFrame(draw);
         }
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) cancelAnimationFrame(_sf_raf);
+          else _sf_raf = requestAnimationFrame(draw);
+        });
         window.addEventListener("resize", () => {
           resize();
           init();
         });
         resize();
         init();
-        draw();
+        _sf_raf = requestAnimationFrame(draw);
       })();
 
       // Typing subtitle
@@ -514,23 +523,6 @@
         }
       }
       typeLine();
-
-      // Question count stat
-      const allBanks = [
-        typeof MSBiology !== "undefined" ? MSBiology : {},
-        typeof MSPhysics !== "undefined" ? MSPhysics : {},
-        typeof MSChemistry !== "undefined" ? MSChemistry : {},
-        typeof MSEarthSpace !== "undefined" ? MSEarthSpace : {},
-        typeof MSEnergy !== "undefined" ? MSEnergy : {},
-        typeof MSMath !== "undefined" ? MSMath : {},
-        typeof HSBiology !== "undefined" ? HSBiology : {},
-        typeof HSPhysics !== "undefined" ? HSPhysics : {},
-        typeof HSChemistry !== "undefined" ? HSChemistry : {},
-        typeof HSEarthSpace !== "undefined" ? HSEarthSpace : {},
-        typeof HSEnergy !== "undefined" ? HSEnergy : {},
-        typeof HSMath !== "undefined" ? HSMath : {},
-      ];
-      const total = allBanks.reduce((s, b) => s + Object.keys(b).length, 0);
 
       // Streak display
       (function() {

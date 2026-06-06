@@ -1,26 +1,28 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="High School Science Bowl study topics and reference guide. Master biology, physics, chemistry, earth &amp; space science, energy, and mathematics for NSB high school competitions." />
     <meta name="keywords" content="high school science bowl topics, HSBE study guide, NSB high school prep, science bowl HS biology, science bowl HS physics, science bowl HS chemistry, science bowl HS math, high school science bowl study" />
-    <link rel="canonical" href="https://sciencebowlpractice.org/LearnTopics-HS.html" />
+    <link rel="canonical" href="https://sciencebowlpractice.org/LearnTopics-HS/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sciencebowlpractice.org/LearnTopics-HS.html" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/LearnTopics-HS/" />
     <meta property="og:site_name" content="Science Bowl Command Network" />
     <meta property="og:title" content="High School Science Bowl Study Topics — HS Intel Database" />
     <meta property="og:description" content="High School Science Bowl study topics and reference guide. Master biology, physics, chemistry, earth &amp; space science, energy, and math for NSB competitions." />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
     <meta name="twitter:title" content="High School Science Bowl Study Topics — HS Intel Database" />
     <meta name="twitter:description" content="High School Science Bowl study topics and reference guide. Master biology, physics, chemistry, earth &amp; space science, energy, and math for NSB competitions." />
     <title>HS Intel Database — Science Bowl Command Network</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="settings.js"></script>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
     <style>
       .page-wrap { max-width: 1040px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
@@ -152,8 +154,8 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
-        { "@type": "ListItem", "position": 2, "name": "Study Topics", "item": "https://sciencebowlpractice.org/LearnTopics.html" },
-        { "@type": "ListItem", "position": 3, "name": "High School", "item": "https://sciencebowlpractice.org/LearnTopics-HS.html" }
+        { "@type": "ListItem", "position": 2, "name": "Study Topics", "item": "https://sciencebowlpractice.org/LearnTopics/" },
+        { "@type": "ListItem", "position": 3, "name": "High School", "item": "https://sciencebowlpractice.org/LearnTopics-HS/" }
       ]
     }
   }
@@ -165,8 +167,8 @@
 
     <div class="page-wrap">
       <div class="page-header">
-        <a href="LearnTopics.html" class="back-link">← SELECT DIVISION</a>
-        <a href="Progress.html" class="back-link" style="margin-left:1.5rem">VIEW PROGRESS →</a>
+        <a href="/LearnTopics/" class="back-link">← SELECT DIVISION</a>
+        <a href="/Progress/" class="back-link" style="margin-left:1.5rem">VIEW PROGRESS →</a>
         <h1 class="page-title">HS INTEL DATABASE</h1>
         <p class="page-sub">MODULE 03B — HIGH SCHOOL CONCEPT REFERENCE &amp; STUDY TOOLS</p>
       </div>
@@ -241,9 +243,9 @@
       <footer>SCIENCE BOWL COMMAND NETWORK &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
     </div>
 
-    <script src="question.js"></script>
-    <script src="Learn.js"></script>
-    <script src="Flashcards.js"></script>
+    <script src="/question.js"></script>
+    <script src="/Learn.js"></script>
+    <script src="/Flashcards.js"></script>
     <script>
       var currentMode    = 'A';
       var currentSubject = 'ALL';
@@ -520,14 +522,18 @@
         var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
-        function draw() {
-          ctx.clearRect(0,0,canvas.width,canvas.height);
-          stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
-          requestAnimationFrame(draw);
+        var _sf_last=0,_sf_raf;
+        function draw(ts) {
+          if(ts-_sf_last>=33){_sf_last=ts;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          }
+          _sf_raf=requestAnimationFrame(draw);
         }
-        window.addEventListener('resize', function(){resize();init();}); resize(); init(); draw();
+        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
       })();
     </script>
-    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
   </body>
 </html>

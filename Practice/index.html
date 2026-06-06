@@ -1,33 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="favicon-48.png" sizes="48x48" type="image/png" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Practice Science Bowl questions online for free. Choose middle school or high school level, pick your subjects — biology, physics, chemistry, earth &amp; space, energy, math — and quiz yourself in standard or survival mode." />
     <meta name="keywords" content="science bowl practice questions, science bowl quiz, science bowl test, science bowl tossup, MSBE questions, HSBE questions, science bowl multiple choice, science bowl biology, science bowl physics, science bowl chemistry, science bowl math" />
-    <link rel="canonical" href="https://sciencebowlpractice.org/Practice.html" />
+    <link rel="canonical" href="https://sciencebowlpractice.org/Practice/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sciencebowlpractice.org/Practice.html" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/Practice/" />
     <meta property="og:site_name" content="Science Bowl Command Network" />
     <meta property="og:title" content="Science Bowl Practice Quiz — Free Online Questions" />
     <meta property="og:description" content="Practice Science Bowl questions online for free. Choose middle school or high school, pick your subjects, and quiz yourself with tossup and bonus style questions." />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
     <meta name="twitter:title" content="Science Bowl Practice Quiz — Free Online Questions" />
     <meta name="twitter:description" content="Practice Science Bowl questions online for free. Choose middle school or high school, pick your subjects, and quiz yourself with tossup and bonus style questions." />
     <title>Science Bowl Practice</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="style.css" />
-    <script src="settings.js"></script>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
   <script type="application/ld+json">
   [
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "Science Bowl Practice Quiz",
-      "url": "https://sciencebowlpractice.org/Practice.html",
+      "url": "https://sciencebowlpractice.org/Practice/",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web Browser",
       "description": "Practice Science Bowl questions online for free. Choose middle school or high school, pick your subjects, and quiz yourself.",
@@ -36,7 +38,7 @@
         "@type": "BreadcrumbList",
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
-          { "@type": "ListItem", "position": 2, "name": "Practice Quiz", "item": "https://sciencebowlpractice.org/Practice.html" }
+          { "@type": "ListItem", "position": 2, "name": "Practice Quiz", "item": "https://sciencebowlpractice.org/Practice/" }
         ]
       }
     },
@@ -74,7 +76,7 @@
     <div id="scanlines"></div>
 
     <div id="home-link-wrap" style="text-align:center;margin-top:1.5rem">
-      <a href="index.html" class="debrief-btn debrief-btn-secondary" style="font-size:0.72rem;letter-spacing:0.22em;text-decoration:none;display:inline-block">← HOME BASE</a>
+      <a href="/" class="debrief-btn debrief-btn-secondary" style="font-size:0.72rem;letter-spacing:0.22em;text-decoration:none;display:inline-block">← HOME BASE</a>
     </div>
 
     <h1 id="Title">COMMAND DECK<span class="blink-cursor">|</span></h1>
@@ -132,8 +134,8 @@
     <button onclick="showResults()" id="EndEarly" style="display:none">&#9632; END OPERATION EARLY</button>
     <button onclick="location.href='index.html'" id="AbandonBtn" style="display:none">✕ ABANDON</button>
 
-    <script src="question.js"></script>
-    <script src="Practice.js"></script>
-    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+    <script src="/question.js"></script>
+    <script src="/Practice.js"></script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
   </body>
 </html>
