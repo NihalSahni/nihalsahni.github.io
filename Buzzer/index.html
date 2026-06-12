@@ -392,11 +392,82 @@
     .go-score-num { font-size: 4rem; line-height: 1.1; }
     .go-stats { font-size: 0.82rem; color: var(--muted); line-height: 2; letter-spacing: 0.05em; }
 
-    /* ── DIFFICULTY BUTTONS ── */
-    #DifficultyPanel { display: flex; flex-direction: column; gap: 0.5rem; }
-    .diff-btn { background: transparent; border: 1px solid var(--muted)55; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; letter-spacing: 0.15em; padding: 0.55rem 1rem; cursor: pointer; border-radius: 2px; text-align: left; transition: all 0.18s; }
-    .diff-btn:hover { border-color: var(--cyan)88; color: var(--cyan); }
-    .diff-btn.selected { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: 0 0 10px var(--cyan)33; background: var(--cyan)0d; }
+    /* ── DIFFICULTY / MATCH TYPE BUTTONS ── */
+    #DifficultyPanel, #MatchTypePanel { display: flex; flex-direction: row; gap: 0.6rem; flex-wrap: wrap; }
+    .diff-btn {
+      flex: 1; min-width: 80px;
+      background: var(--surface);
+      border: 2px solid color-mix(in srgb, var(--muted) 25%, transparent);
+      color: color-mix(in srgb, var(--muted) 60%, transparent);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem; letter-spacing: 0.12em;
+      padding: 0.7rem 0.9rem;
+      cursor: pointer; border-radius: 3px; text-align: center;
+      transition: all 0.18s;
+    }
+    .diff-btn:hover {
+      border-color: color-mix(in srgb, var(--cyan) 60%, transparent);
+      color: var(--cyan);
+      background: color-mix(in srgb, var(--cyan) 8%, var(--surface));
+    }
+    .diff-btn.selected {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: color-mix(in srgb, var(--cyan) 18%, var(--surface));
+      text-shadow: 0 0 10px var(--cyan);
+      box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 35%, transparent),
+                  inset 0 0 12px color-mix(in srgb, var(--cyan) 10%, transparent);
+    }
+
+    /* ── HEAD-TO-HEAD BUTTONS ── */
+    #h2h-buttons {
+      display: none;
+      gap: 1rem;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .h2h-buzz-btn {
+      font-size: 1.5rem;
+      padding: 1.1rem 2.2rem;
+      letter-spacing: 0.18em;
+      transition: transform 0.08s, box-shadow 0.1s;
+    }
+    .h2h-buzz-btn:active { transform: scale(0.96); }
+    .h2h-buzz-btn:disabled { opacity: 0.25; animation: none !important; transform: none; cursor: not-allowed; }
+    #BuzzBtn1 {
+      border: 3px solid var(--cyan);
+      color: var(--cyan);
+      text-shadow: 0 0 20px var(--cyan);
+      box-shadow: 0 0 25px var(--cyan)55;
+      animation: buzz-pulse-p1 1.6s ease-in-out infinite;
+    }
+    #BuzzBtn1:hover:not(:disabled) { background: var(--cyan)1a; box-shadow: 0 0 55px var(--cyan); transform: scale(1.03); }
+    @keyframes buzz-pulse-p1 {
+      0%,100% { box-shadow: 0 0 15px var(--cyan)44; }
+      50%      { box-shadow: 0 0 45px var(--cyan), 0 0 80px var(--cyan)33; }
+    }
+    #BuzzBtn2 {
+      border: 3px solid var(--green);
+      color: var(--green);
+      text-shadow: 0 0 20px var(--green);
+      box-shadow: 0 0 25px var(--green)55;
+      animation: buzz-pulse-p2 1.6s ease-in-out infinite;
+    }
+    #BuzzBtn2:hover:not(:disabled) { background: var(--green)1a; box-shadow: 0 0 55px var(--green); transform: scale(1.03); }
+    @keyframes buzz-pulse-p2 {
+      0%,100% { box-shadow: 0 0 15px var(--green)44; }
+      50%      { box-shadow: 0 0 45px var(--green), 0 0 80px var(--green)33; }
+    }
+    #ans-player-label {
+      display: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      margin-bottom: 0.4rem;
+    }
+    @media (max-width: 600px) {
+      .h2h-buzz-btn { font-size: 1.2rem; padding: 0.9rem 1.2rem; }
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 600px) {
@@ -489,6 +560,12 @@
     <label><input type="radio" name="bzmode" value="display" onchange="bzSetMode('display')" /> DISPLAY TEXT</label>
   </div>
 
+  <div id="MatchTypePanel" class="hud-panel">
+    <div class="panel-label">MATCH TYPE</div>
+    <button id="mt-bot" class="diff-btn selected" onclick="bzSetMatchType('bot')">VS BOT <span class="rank-sub">[ solo practice ]</span></button>
+    <button id="mt-h2h" class="diff-btn"          onclick="bzSetMatchType('h2h')">HEAD-TO-HEAD <span class="rank-sub">[ 2 players, same device ]</span></button>
+  </div>
+
   <div id="DifficultyPanel" class="hud-panel">
     <div class="panel-label">BOT DIFFICULTY</div>
     <button id="diff-cadet"    class="diff-btn selected" onclick="bzSetDifficulty('cadet')">CADET <span class="rank-sub">[ easy ]</span></button>
@@ -505,12 +582,12 @@
     <!-- Score bar -->
     <div id="score-bar">
       <div class="score-block">
-        <div class="score-label">YOUR TEAM</div>
+        <div class="score-label" id="my-team-label">YOUR TEAM</div>
         <div class="score-val my" id="my-score">0</div>
       </div>
       <div class="score-vs">VS</div>
       <div class="score-block">
-        <div class="score-label">OPPONENTS</div>
+        <div class="score-label" id="en-team-label">OPPONENTS</div>
         <div class="score-val enemy" id="en-score">0</div>
       </div>
     </div>
@@ -542,6 +619,12 @@
 
       <button id="BuzzBtn">&#9889; BUZZ IN</button>
 
+      <!-- H2H: two side-by-side buzz buttons -->
+      <div id="h2h-buttons">
+        <button id="BuzzBtn1" class="h2h-buzz-btn">&#9889; P1 &nbsp;[SPACE]</button>
+        <button id="BuzzBtn2" class="h2h-buzz-btn">&#9889; P2 &nbsp;[ENTER]</button>
+      </div>
+
       <!-- Bot answering -->
       <div id="bot-overlay">
         <div id="bot-icon">◈</div>
@@ -551,6 +634,7 @@
 
       <!-- Player answer panel (no ring — uses 5s text countdown) -->
       <div id="answer-panel">
+        <div id="ans-player-label"></div>
         <div id="ans-countdown" class="ans-cd">5</div>
 
         <div id="mc-panel">
