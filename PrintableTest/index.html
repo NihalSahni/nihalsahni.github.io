@@ -124,12 +124,19 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
+    "@type": ["WebApplication", "LearningResource"],
     "name": "Science Bowl Printable Test Generator",
     "url": "https://sciencebowlpractice.org/PrintableTest/",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "description": "Generate a printable Science Bowl practice test. Choose your level, subjects, and question count, then print a formatted test with an answer key.",
+    "learningResourceType": "Practice Problem",
+    "educationalLevel": ["Middle School", "High School"],
+    "teaches": ["Biology", "Chemistry", "Physics", "Earth and Space Science", "Energy", "Math"],
+    "audience": { "@type": "EducationalAudience", "educationalRole": "student" },
+    "isAccessibleForFree": true,
+    "inLanguage": "en",
+    "provider": { "@type": "EducationalOrganization", "name": "Science Bowl Practice", "url": "https://sciencebowlpractice.org/" },
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "breadcrumb": {
       "@type": "BreadcrumbList",

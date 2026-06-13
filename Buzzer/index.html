@@ -503,12 +503,18 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
+    "@type": ["WebApplication", "LearningResource"],
     "name": "Science Bowl Buzzer Simulator",
     "url": "https://sciencebowlpractice.org/Buzzer/",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "description": "Free online Science Bowl buzzer simulator. Practice reaction speed and compete with teammates — no hardware required.",
+    "learningResourceType": "Simulation",
+    "educationalLevel": ["Middle School", "High School"],
+    "audience": { "@type": "EducationalAudience", "educationalRole": "student" },
+    "isAccessibleForFree": true,
+    "inLanguage": "en",
+    "provider": { "@type": "EducationalOrganization", "name": "Science Bowl Practice", "url": "https://sciencebowlpractice.org/" },
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "breadcrumb": {
       "@type": "BreadcrumbList",

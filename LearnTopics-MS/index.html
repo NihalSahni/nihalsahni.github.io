@@ -144,11 +144,17 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Course",
-    "name": "Middle School Science Bowl Practice Topics",
-    "description": "Study guide for Middle School Science Bowl covering biology, physics, chemistry, earth and space science, energy, and math.",
-    "provider": { "@type": "Organization", "name": "Science Bowl Practice", "sameAs": "https://sciencebowlpractice.org/" },
+    "@type": ["Course", "LearningResource"],
+    "name": "Middle School Science Bowl Study Guide",
+    "url": "https://sciencebowlpractice.org/LearnTopics-MS/",
+    "description": "Free study guide for Middle School Science Bowl covering biology, physics, chemistry, earth and space science, energy, and math. Includes topic cards and flashcards.",
+    "provider": { "@type": "EducationalOrganization", "name": "Science Bowl Practice", "url": "https://sciencebowlpractice.org/" },
     "educationalLevel": "Middle School",
+    "teaches": ["Biology", "Chemistry", "Physics", "Earth and Space Science", "Energy", "Math"],
+    "audience": { "@type": "EducationalAudience", "educationalRole": "student", "educationalLevel": "Middle School" },
+    "learningResourceType": "Study Guide",
+    "isAccessibleForFree": true,
+    "inLanguage": "en",
     "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "online", "courseWorkload": "Self-paced" },
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "breadcrumb": {

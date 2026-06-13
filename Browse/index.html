@@ -124,12 +124,19 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
+    "@type": ["WebApplication", "LearningResource"],
     "name": "Science Bowl Question Browser",
     "url": "https://sciencebowlpractice.org/Browse/",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "description": "Browse the full Science Bowl question bank filtered by level and subject. Tap any question to reveal the answer.",
+    "learningResourceType": "Practice Problem",
+    "educationalLevel": ["Middle School", "High School"],
+    "teaches": ["Biology", "Chemistry", "Physics", "Earth and Space Science", "Energy", "Math"],
+    "audience": { "@type": "EducationalAudience", "educationalRole": "student" },
+    "isAccessibleForFree": true,
+    "inLanguage": "en",
+    "provider": { "@type": "EducationalOrganization", "name": "Science Bowl Practice", "url": "https://sciencebowlpractice.org/" },
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "breadcrumb": {
       "@type": "BreadcrumbList",
