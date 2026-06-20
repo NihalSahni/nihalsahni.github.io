@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Science Bowl live multiplayer buzzer — create a room, share the code, and compete against real opponents online." />
+  <link rel="canonical" href="https://sciencebowlpractice.org/Online/" />
+  <title>Online Arena — Science Bowl Practice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── LOBBY ── */
+    #lobby-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    @media (max-width: 560px) { #lobby-grid { grid-template-columns: 1fr; } }
+
+    .action-box {
+      border: 1px solid var(--muted)44;
+      background: var(--surface);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      position: relative;
+    }
+    .action-box::before {
+      content: ''; position: absolute; top: -2px; left: -2px;
+      width: 14px; height: 14px;
+      border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan);
+    }
+    .action-box-label {
+      font-size: 0.62rem; letter-spacing: 0.25em; color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan); margin-bottom: 0.1rem;
+    }
+
+    .ol-input {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      padding: 0.55rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--muted)66;
+      color: var(--text);
+      width: 100%;
+      box-sizing: border-box;
+      letter-spacing: 0.1em;
+    }
+    .ol-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan)44; }
+    .ol-input.code-input { font-size: 1.3rem; letter-spacing: 0.35em; text-align: center; text-transform: uppercase; }
+
+    /* ── PUBLIC ROOMS ── */
+    #public-rooms-section { margin-top: 2rem; }
+    #public-rooms-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+    .room-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid var(--muted)33;
+      background: var(--surface);
+      padding: 0.75rem 1rem;
+      gap: 1rem;
+    }
+    .room-row:hover { border-color: var(--cyan)55; }
+    .room-code-tag { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); font-size: 1rem; letter-spacing: 0.2em; }
+    .room-meta { font-size: 0.72rem; color: var(--muted); flex: 1; }
+    .room-join-btn {
+      font-size: 0.72rem; padding: 0.35rem 1rem;
+      border-color: var(--cyan); color: var(--cyan);
+    }
+    .no-rooms { font-size: 0.8rem; color: var(--muted); padding: 1rem 0; text-align: center; letter-spacing: 0.1em; }
+
+    /* ── ROOM (WAITING) ── */
+    #room-code-display {
+      font-size: 2.8rem;
+      letter-spacing: 0.5em;
+      color: var(--cyan);
+      text-shadow: 0 0 30px var(--cyan);
+      text-align: center;
+      margin: 1rem 0 0.3rem;
+      cursor: pointer;
+    }
+    #room-copy-hint { text-align: center; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 1.5rem; }
+
+    #players-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .team-col {
+      border: 1px solid var(--muted)33;
+      background: var(--surface);
+      padding: 1rem;
+    }
+    .team-col-label {
+      font-size: 0.62rem; letter-spacing: 0.22em; margin-bottom: 0.7rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--muted)22;
+    }
+    .team-col-label.team-a { color: var(--green); text-shadow: 0 0 8px var(--green)88; }
+    .team-col-label.team-b { color: var(--magenta); text-shadow: 0 0 8px var(--magenta)88; }
+
+    .player-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.5rem; margin-bottom: 0.4rem;
+      border: 1px solid var(--muted)18; border-radius: 2px;
+      font-size: 0.8rem;
+    }
+    .player-row .pr-name { flex: 1; }
+    .player-row .pr-host { font-size: 0.62rem; color: var(--orange); }
+    .player-row .pr-ready { font-size: 0.62rem; color: var(--green); }
+    .player-row.is-me { border-color: var(--cyan)44; background: var(--cyan)08; }
+
+    #room-settings { margin: 1rem 0; }
+    #room-settings .hud-panel { margin-bottom: 0.8rem; }
+
+    .switch-team-btn {
+      font-size: 0.72rem; padding: 0.35rem 1rem;
+      border-color: var(--muted); color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .switch-team-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    #public-toggle-row {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--muted);
+    }
+    .toggle-switch {
+      position: relative; width: 40px; height: 22px;
+      background: var(--surface); border: 1px solid var(--muted);
+      border-radius: 11px; cursor: pointer; transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .toggle-switch.on { background: var(--cyan)33; border-color: var(--cyan); }
+    .toggle-knob {
+      position: absolute; top: 3px; left: 3px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--muted); transition: left 0.18s, background 0.18s;
+    }
+    .toggle-switch.on .toggle-knob { left: 21px; background: var(--cyan); }
+
+    #ready-btn { width: 100%; margin-top: 0.5rem; font-size: 1rem; padding: 0.8rem; border-color: var(--green); color: var(--green); }
+    #ready-btn.is-ready { background: var(--green)18; text-shadow: 0 0 10px var(--green); box-shadow: 0 0 18px var(--green)44; }
+    #launch-btn { width: 100%; margin-top: 0.5rem; font-size: 1.1rem; padding: 0.9rem; border-color: var(--magenta); color: var(--magenta); }
+    #launch-btn:hover:not(:disabled) { background: var(--magenta)18; box-shadow: 0 0 20px var(--magenta)55; }
+    #launch-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    #room-status-msg { text-align: center; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; margin-top: 0.5rem; min-height: 1.2em; }
+
+    /* ── GAME SCREEN (mirrors Buzzer Arena) ── */
+    #score-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem; border: 1px solid var(--muted);
+      background: linear-gradient(135deg, var(--cyan)08 0%, transparent 60%);
+      margin-bottom: 0.8rem; position: relative;
+    }
+    #score-bar::before { content:'';position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid var(--cyan);border-left:3px solid var(--cyan); }
+    #score-bar::after  { content:'';position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid var(--cyan);border-right:3px solid var(--cyan); }
+    .score-block { text-align: center; }
+    .score-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 0.2rem; }
+    .score-val   { font-size: 2.8rem; line-height: 1; }
+    .score-val.team-a { color: var(--green);   text-shadow: 0 0 20px var(--green); }
+    .score-val.team-b { color: var(--magenta); text-shadow: 0 0 20px var(--magenta); }
+    .score-vs { color: var(--muted); font-size: 1.1rem; }
+
+    #round-info { text-align:center;font-size:0.72rem;color:var(--muted);letter-spacing:0.15em;margin-bottom:0.8rem; }
+
+    #question-area {
+      min-height: 130px; padding: 1.4rem 1.6rem;
+      border: 1px solid var(--muted)44; background: var(--surface);
+      margin-bottom: 1.2rem; position: relative;
+    }
+    #question-area::before { content:'';position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid var(--cyan)88;border-left:2px solid var(--cyan)88; }
+    #q-subject { font-size:0.65rem;color:var(--orange);letter-spacing:0.25em;margin-bottom:0.7rem;text-shadow:0 0 6px var(--orange)66; }
+    #q-text    { font-size:1.05rem;line-height:1.75;color:var(--text); }
+    .q-opts { margin-top:0.8rem;display:flex;flex-direction:column;gap:0.3rem; }
+    .q-opt  { padding:0.25rem 0; }
+    .q-opt-letter { color:var(--cyan);margin-right:0.4rem; }
+
+    #opp-chance-banner {
+      display:none;text-align:center;padding:0.55rem 1rem;border:1px solid;
+      font-size:0.82rem;letter-spacing:0.15em;margin-bottom:0.8rem;
+    }
+    #locked-banner {
+      display:none;text-align:center;padding:0.4rem 1rem;
+      color:var(--magenta);text-shadow:0 0 8px var(--magenta);
+      font-size:0.82rem;letter-spacing:0.15em;margin-bottom:0.5rem;
+    }
+
+    #buzz-zone { display:flex;flex-direction:column;align-items:center;gap:1.2rem;margin:0.5rem 0 1rem; }
+
+    #BuzzBtn {
+      font-size:2rem;padding:1.4rem 5rem;
+      border:3px solid var(--magenta);color:var(--magenta);
+      text-shadow:0 0 20px var(--magenta);
+      box-shadow:0 0 25px var(--magenta)55,inset 0 0 20px var(--magenta)0a;
+      animation:buzz-pulse 1.6s ease-in-out infinite;
+      letter-spacing:0.2em;transition:transform 0.08s,box-shadow 0.1s;
+    }
+    #BuzzBtn:hover { background:var(--magenta)1a;box-shadow:0 0 55px var(--magenta),inset 0 0 30px var(--magenta)1a;transform:scale(1.03); }
+    #BuzzBtn:active { transform:scale(0.96); }
+    #BuzzBtn:disabled { opacity:0.25;animation:none;transform:none;cursor:not-allowed; }
+    @keyframes buzz-pulse { 0%,100%{box-shadow:0 0 15px var(--magenta)44;}50%{box-shadow:0 0 45px var(--magenta),0 0 80px var(--magenta)33;} }
+
+    #timer-wrap { position:relative;width:80px;height:80px; }
+    #timer-wrap svg { transform:rotate(-90deg); }
+    .ring-bg  { fill:none;stroke:var(--surface);stroke-width:7; }
+    .ring-arc { fill:none;stroke:var(--cyan);stroke-width:7;stroke-linecap:round;transition:stroke-dasharray 0.1s linear; }
+    .ring-arc.warn   { stroke:var(--orange); }
+    .ring-arc.danger { stroke:var(--magenta); }
+    #timer-num { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.9rem;color:var(--cyan);text-shadow:0 0 10px var(--cyan); }
+
+    #who-buzzing {
+      display:none;flex-direction:column;align-items:center;gap:0.5rem;
+      padding:1.2rem 2rem;border:2px solid var(--orange);
+      box-shadow:0 0 20px var(--orange)55;background:var(--surface);
+      font-size:0.9rem;letter-spacing:0.12em;color:var(--orange);
+      text-shadow:0 0 8px var(--orange);
+    }
+    #who-buzzing .wb-name { font-size:1rem;letter-spacing:0.22em; }
+
+    #answer-panel { display:none;flex-direction:column;align-items:center;gap:1rem;width:100%; }
+    .ans-cd { font-size:2.4rem;color:var(--cyan);text-shadow:0 0 12px var(--cyan);letter-spacing:0.1em;min-width:2rem;text-align:center; }
+    .ans-cd.warn   { color:var(--orange);text-shadow:0 0 12px var(--orange); }
+    .ans-cd.danger { color:var(--magenta);text-shadow:0 0 16px var(--magenta);animation:cd-flash 0.4s step-end infinite; }
+    @keyframes cd-flash { 0%,100%{opacity:1;}50%{opacity:0.3;} }
+
+    #mc-panel { display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center; }
+    .mc-buzz-btn {
+      font-size:1rem;padding:0.7rem 1.4rem;border:2px solid var(--muted)66;color:var(--text);
+      min-width:180px;text-align:left;
+    }
+    .mc-buzz-btn:hover { border-color:var(--cyan);color:var(--cyan); }
+    .mc-buzz-btn.sel { border-color:var(--cyan);color:var(--cyan);background:var(--cyan)18;box-shadow:0 0 14px var(--cyan)55; }
+
+    #oe-panel { display:none; }
+    #BuzzerOE {
+      font-size:1.15rem;padding:0.6rem 1.1rem;width:100%;max-width:380px;
+      border:2px solid var(--cyan);box-shadow:0 0 10px var(--cyan)44;
+      background:var(--surface);color:var(--text);font-family:'Share Tech Mono',monospace;
+    }
+    #BuzzerOE:focus { outline:none;box-shadow:0 0 20px var(--cyan)77; }
+    #ConfirmBtn { font-size:1.05rem;padding:0.65rem 2.4rem;border-color:var(--green);color:var(--green);text-shadow:0 0 8px var(--green); }
+    #ConfirmBtn:hover { background:var(--green)18;box-shadow:0 0 20px var(--green); }
+
+    #round-result { text-align:center;min-height:1.8rem;font-size:1.15rem;letter-spacing:0.1em;margin:0.5rem 0; }
+    #round-result.correct   { color:var(--green);text-shadow:0 0 14px var(--green); }
+    #round-result.incorrect { color:var(--magenta);text-shadow:0 0 14px var(--magenta); }
+    #round-result.neutral   { color:var(--muted); }
+
+    #NextBtn { display:none;margin:0.3rem auto 0;font-size:1rem;padding:0.55rem 2rem;border-color:var(--cyan);color:var(--cyan); }
+
+    /* online roster */
+    #teams-panel {
+      display:flex;gap:0;border:1px solid var(--muted)44;
+      background:linear-gradient(135deg,var(--cyan)05 0%,transparent 60%);
+      margin-top:1.2rem;position:relative;
+    }
+    #teams-panel::before { content:'';position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid var(--cyan);border-left:3px solid var(--cyan); }
+    #teams-panel::after  { content:'';position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid var(--cyan);border-right:3px solid var(--cyan); }
+    .t-col { flex:1;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:0.5rem; }
+    .t-col+.t-col { border-left:1px solid var(--muted)33; }
+    .t-col-label { font-size:0.62rem;letter-spacing:0.22em;margin-bottom:0.4rem;padding-bottom:0.4rem;border-bottom:1px solid var(--muted)22; }
+    .t-col-label.friendly { color:var(--green);text-shadow:0 0 6px var(--green)88; }
+    .t-col-label.enemy    { color:var(--magenta);text-shadow:0 0 6px var(--magenta)88; }
+    .member { display:flex;align-items:center;gap:0.6rem;padding:0.38rem 0.6rem;border:1px solid var(--muted)18;border-radius:3px;transition:all 0.25s; }
+    .member.buzzing { border-color:var(--orange);box-shadow:0 0 18px var(--orange)77;animation:member-pop 0.35s ease-out; }
+    @keyframes member-pop { 0%{transform:scale(1.07);}100%{transform:scale(1);} }
+    .member.ok   { border-color:var(--green);box-shadow:0 0 12px var(--green)55; }
+    .member.fail { border-color:var(--magenta);box-shadow:0 0 12px var(--magenta)55; }
+    .m-icon   { font-size:1.3rem;width:28px;text-align:center;flex-shrink:0; }
+    .m-name   { font-size:0.76rem;letter-spacing:0.08em;flex:1; }
+    .m-name.you-label { color:var(--cyan);text-shadow:0 0 6px var(--cyan)88; }
+    .m-status { font-size:0.62rem;color:var(--muted);min-width:55px;text-align:right; }
+
+    #game-over { display:none;text-align:center;padding:2.5rem 1rem; }
+    .go-result-txt { font-size:2.2rem;letter-spacing:0.15em;margin-bottom:1rem; }
+    .go-scores { display:flex;gap:3rem;justify-content:center;align-items:center;margin:1rem 0 1.5rem; }
+    .go-score-block { text-align:center; }
+    .go-score-lbl { font-size:0.65rem;color:var(--muted);letter-spacing:0.2em; }
+    .go-score-num { font-size:4rem;line-height:1.1; }
+    .go-stats { font-size:0.82rem;color:var(--muted);line-height:2;letter-spacing:0.05em; }
+
+    .countdown { text-align:center;font-size:5rem;color:var(--cyan);text-shadow:0 0 40px var(--cyan);animation:count-pop 0.3s ease-out; }
+    @keyframes count-pop { 0%{transform:scale(1.4);opacity:0.4;}100%{transform:scale(1);opacity:1;} }
+
+    #connection-status {
+      position: fixed; top: 0.6rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.62rem; letter-spacing: 0.18em; padding: 0.25rem 0.8rem;
+      border-radius: 2px; z-index: 200; display: none;
+    }
+    #connection-status.connecting { display:block;background:var(--surface);border:1px solid var(--orange);color:var(--orange); }
+    #connection-status.reconnecting { display:block;background:var(--surface);border:1px solid var(--magenta);color:var(--magenta); }
+
+    @media (max-width:600px) {
+      body { padding: 0.85rem; }
+      #BuzzBtn { padding:1rem 2rem;font-size:1.5rem; }
+      .mc-buzz-btn { min-width:0;width:calc(50% - 0.2rem);font-size:0.85rem;padding:0.55rem 0.5rem;white-space:normal; }
+      #score-bar { padding:0.75rem 1rem; }
+      .score-val { font-size:2rem; }
+      #lobby-grid { grid-template-columns:1fr; }
+      #players-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield"></canvas>
+  <div id="scanlines"></div>
+
+  <div id="connection-status" class="connecting">⟳ CONNECTING...</div>
+
+  <div style="text-align:center;margin-top:1.5rem">
+    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME BASE</a>
+  </div>
+
+  <h1 style="text-align:center">ONLINE ARENA<span class="blink-cursor">|</span></h1>
+
+  <!-- ══ SCREEN: LOBBY ══════════════════════════════════════════════════════ -->
+  <div id="screen-lobby" class="screen active">
+    <p style="text-align:center;color:var(--muted);font-size:0.85rem;letter-spacing:0.08em;margin:0 0 1.5rem">
+      Compete live against real opponents — buzzer arbitrated server-side.
+    </p>
+
+    <div style="margin-bottom:1.2rem">
+      <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.22em;margin-bottom:0.4rem">YOUR CALLSIGN</div>
+      <input id="player-name-input" class="ol-input" type="text" maxlength="16"
+        placeholder="ENTER YOUR NAME..." autocomplete="off" style="max-width:320px" />
+    </div>
+
+    <div id="lobby-grid">
+      <!-- Create -->
+      <div class="action-box">
+        <div class="action-box-label">ESTABLISH ROOM</div>
+        <p style="font-size:0.8rem;color:var(--muted);margin:0;line-height:1.6">
+          Generate a 6-character room code and share it with your team.
+        </p>
+        <button onclick="createRoom()" style="border-color:var(--cyan);color:var(--cyan);font-size:1rem;padding:0.7rem">
+          ⚡ CREATE ROOM
+        </button>
+      </div>
+
+      <!-- Join by code -->
+      <div class="action-box">
+        <div class="action-box-label">JOIN BY CODE</div>
+        <input id="join-code-input" class="ol-input code-input" type="text" maxlength="6"
+          placeholder="XXXXXX" autocomplete="off" />
+        <button onclick="joinRoom()" style="border-color:var(--green);color:var(--green);font-size:1rem;padding:0.7rem">
+          → ENTER ROOM
+        </button>
+      </div>
+    </div>
+
+    <!-- Public rooms -->
+    <div id="public-rooms-section">
+      <div class="panel-label">OPEN MISSIONS</div>
+      <div id="public-rooms-list">
+        <div class="no-rooms">SCANNING FOR OPEN ROOMS...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN: ROOM (WAITING) ═════════════════════════════════════════════ -->
+  <div id="screen-room" class="screen">
+    <div style="text-align:center;margin-bottom:0.4rem">
+      <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.25em">ROOM CODE — CLICK TO COPY</div>
+    </div>
+    <div id="room-code-display" onclick="copyRoomCode()" title="Click to copy">······</div>
+    <div id="room-copy-hint">CLICK CODE TO COPY · SHARE WITH TEAMMATES</div>
+
+    <div id="players-grid">
+      <div class="team-col">
+        <div class="team-col-label team-a">◈ TEAM ALPHA</div>
+        <div id="team-a-list"></div>
+      </div>
+      <div class="team-col">
+        <div class="team-col-label team-b">▲ TEAM OMEGA</div>
+        <div id="team-b-list"></div>
+      </div>
+    </div>
+
+    <button class="switch-team-btn" onclick="switchTeam()">⇄ SWITCH TEAM</button>
+
+    <!-- Host: public toggle -->
+    <div id="public-toggle-row" style="display:none">
+      <div id="public-toggle" class="toggle-switch" onclick="togglePublic()">
+        <div class="toggle-knob"></div>
+      </div>
+      <span>Make room public (visible in Open Missions)</span>
+    </div>
+
+    <!-- Host settings -->
+    <div id="room-settings" style="display:none">
+      <div class="hud-panel">
+        <div class="panel-label">OPERATIVE CLASS</div>
+        <button id="rm-ms" class="diff-btn" onclick="rmSetLevel('MS')">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
+        <button id="rm-hs" class="diff-btn" onclick="rmSetLevel('HS')">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
+      </div>
+
+      <div class="hud-panel">
+        <div class="panel-label">MODULE SELECT</div>
+        <label><input id="rm-Everything" type="checkbox" onchange="rmSubject('Everything',this)" /> ALL MODULES</label>
+        <label><input id="rm-Biology"    type="checkbox" onchange="rmSubject('Biology',this)"    /> BIOLOGY</label>
+        <label><input id="rm-Physics"    type="checkbox" onchange="rmSubject('Physics',this)"    /> PHYSICS</label>
+        <label><input id="rm-Chemistry"  type="checkbox" onchange="rmSubject('Chemistry',this)"  /> CHEMISTRY</label>
+        <label><input id="rm-EarthSpace" type="checkbox" onchange="rmSubject('EarthSpace',this)" /> EARTH &amp; SPACE</label>
+        <label><input id="rm-Energy"     type="checkbox" onchange="rmSubject('Energy',this)"     /> ENERGY</label>
+        <label><input id="rm-Math"       type="checkbox" onchange="rmSubject('Math',this)"       /> MATHEMATICS</label>
+      </div>
+
+      <div class="hud-panel">
+        <div class="panel-label">MATCH LENGTH</div>
+        <h3 id="rm-round-display">20 TOSS-UPS</h3>
+        <input type="range" min="5" max="60" value="20" id="rm-round-slider" oninput="rmUpdateRounds()" />
+      </div>
+    </div>
+
+    <div id="room-status-msg">WAITING FOR PLAYERS...</div>
+
+    <button id="ready-btn" onclick="toggleReady()" style="display:none">◉ READY</button>
+    <button id="launch-btn" onclick="launchGame()" disabled>⚡ LAUNCH MISSION</button>
+  </div>
+
+  <!-- ══ SCREEN: GAME ════════════════════════════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+
+    <div id="score-bar">
+      <div class="score-block">
+        <div class="score-label" id="team-a-label">TEAM ALPHA</div>
+        <div class="score-val team-a" id="score-a">0</div>
+      </div>
+      <div class="score-vs">VS</div>
+      <div class="score-block">
+        <div class="score-label" id="team-b-label">TEAM OMEGA</div>
+        <div class="score-val team-b" id="score-b">0</div>
+      </div>
+    </div>
+
+    <div id="round-info">WAITING FOR HOST...</div>
+
+    <div id="question-area">
+      <div id="q-subject"></div>
+      <div id="q-text" style="text-align:center;color:var(--muted);letter-spacing:0.15em">◈ MISSION BRIEFING IN PROGRESS</div>
+    </div>
+
+    <div id="opp-chance-banner"></div>
+    <div id="locked-banner">⊘ YOUR TEAM IS LOCKED OUT</div>
+
+    <div id="buzz-zone">
+      <div id="timer-wrap" style="display:none">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle class="ring-bg"  cx="40" cy="40" r="33" />
+          <circle class="ring-arc" cx="40" cy="40" r="33" id="ring-arc" stroke-dasharray="207.3 207.3" />
+        </svg>
+        <div id="timer-num">7</div>
+      </div>
+
+      <button id="BuzzBtn" disabled>⚡ BUZZ IN</button>
+
+      <div id="who-buzzing">
+        <div class="wb-name" id="wb-name">PLAYER</div>
+        <div style="font-size:0.75rem;letter-spacing:0.18em">IS ANSWERING...</div>
+      </div>
+
+      <div id="answer-panel">
+        <div id="ans-countdown" class="ans-cd">5</div>
+        <div id="mc-panel">
+          <button class="mc-buzz-btn" onclick="olPickMC(this,'W')" data-l="W">W)</button>
+          <button class="mc-buzz-btn" onclick="olPickMC(this,'X')" data-l="X">X)</button>
+          <button class="mc-buzz-btn" onclick="olPickMC(this,'Y')" data-l="Y">Y)</button>
+          <button class="mc-buzz-btn" onclick="olPickMC(this,'Z')" data-l="Z">Z)</button>
+        </div>
+        <div id="oe-panel">
+          <input id="BuzzerOE" type="text" placeholder="TYPE YOUR ANSWER..." autocomplete="off" />
+        </div>
+        <button id="ConfirmBtn" onclick="olConfirm()">CONFIRM ›</button>
+      </div>
+    </div>
+
+    <div id="round-result"></div>
+    <button id="NextBtn" onclick="olNext()">NEXT TOSS-UP ›</button>
+
+    <div style="text-align:center;margin-top:0.75rem">
+      <button onclick="if(confirm('Leave match?'))location.href='/Online/'" style="background:transparent;border:1px solid var(--muted)55;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color=''">✕ LEAVE MATCH</button>
+    </div>
+
+    <div id="game-over"></div>
+
+    <div id="teams-panel">
+      <div class="t-col" id="my-col">
+        <div class="t-col-label friendly">◈ TEAM ALPHA</div>
+      </div>
+      <div class="t-col" id="en-col">
+        <div class="t-col-label enemy">▲ TEAM OMEGA</div>
+      </div>
+    </div>
+
+  </div><!-- /screen-game -->
+
+  <script src="/settings.js"></script>
+  <script src="/question.js"></script>
+  <script>
+  // ── CONFIG ──────────────────────────────────────────────────────────────────
+  // After running "npx partykit deploy", update this to your deployed host:
+  // e.g. 'science-bowl-practice.nihalsahni.partykit.dev'
+  const PK_HOST = location.hostname === 'localhost'
+    ? 'localhost:1999'
+    : 'science-bowl-practice.nihalrsahni.workers.dev';
+  const PK_WS  = location.hostname === 'localhost' ? 'ws' : 'wss';
+  const PK_HTTP = location.hostname === 'localhost' ? 'http' : 'https';
+
+  const CIRC = 2 * Math.PI * 33; // ~207.3
+
+  // ── STATE ───────────────────────────────────────────────────────────────────
+  let ws = null, lobbyWs = null;
+  let me = null;           // { id, name, team, isHost }
+  let players = new Map(); // id -> player
+  let isHostFlag = false;
+  let roomCode = '';
+  let settings = { level: '', subjects: [], rounds: 20 };
+  let isPublic = false;
+  let iAmReady = false;
+
+  // game
+  let gPhase = 'LOBBY'; // server-reported
+  let myScore = 0, enScore = 0;
+  let gRound = 0, gTotalRounds = 20;
+  let curQ = { id: '', text: '', type: '', subject: '' };
+  let iAmBuzzer = false;
+  let pickedMC = '';
+  let buzzTimerId = null, buzzLeft = 7;
+  let ansTimerId = null, ansLeft = 5, curAnsTime = 5;
+  let teamLock = { my: false, en: false };
+  let asked = new Set();
+  let subjectNames = new Set();
+
+  const ALL_SUBS = ['Math','Physics','Chemistry','Biology','EarthSpace','Energy'];
+
+  function OL_SUBJECTS() {
+    const levKey = settings.level || 'HS';
+    const map = {
+      MS: { Math: typeof MSMath!=='undefined'?MSMath:{}, Physics: typeof MSPhysics!=='undefined'?MSPhysics:{},
+            Chemistry: typeof MSChemistry!=='undefined'?MSChemistry:{}, Biology: typeof MSBiology!=='undefined'?MSBiology:{},
+            EarthSpace: typeof MSEarthSpace!=='undefined'?MSEarthSpace:{}, Energy: typeof MSEnergy!=='undefined'?MSEnergy:{} },
+      HS: { Math: typeof HSMath!=='undefined'?HSMath:{}, Physics: typeof HSPhysics!=='undefined'?HSPhysics:{},
+            Chemistry: typeof HSChemistry!=='undefined'?HSChemistry:{}, Biology: typeof HSBiology!=='undefined'?HSBiology:{},
+            EarthSpace: typeof HSEarthSpace!=='undefined'?HSEarthSpace:{}, Energy: typeof HSEnergy!=='undefined'?HSEnergy:{} },
+    };
+    return map[levKey] || map.HS;
+  }
+
+  // ── UTILITIES ────────────────────────────────────────────────────────────────
+  function eid(id) { return document.getElementById(id); }
+  function wsend(data) { if (ws && ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify(data)); }
+  function beep(freq=880, dur=80) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      const ac = new AC(), o = ac.createOscillator(), g = ac.createGain();
+      o.connect(g); g.connect(ac.destination);
+      o.frequency.value = freq; o.type = 'sine';
+      g.gain.setValueAtTime(0.12, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur/1000);
+      o.start(); o.stop(ac.currentTime + dur/1000);
+    } catch(_) {}
+  }
+  function generateCode() {
+    return Math.random().toString(36).slice(2, 8).toUpperCase();
+  }
+  function getPlayerName() {
+    return (eid('player-name-input')?.value || '').trim().toUpperCase().slice(0, 16) || null;
+  }
+
+  // ── SCREENS ─────────────────────────────────────────────────────────────────
+  function showScreen(name) {
+    ['lobby','room','game'].forEach(s => {
+      eid('screen-' + s).classList.toggle('active', s === name);
+    });
+  }
+
+  // ── LOBBY ────────────────────────────────────────────────────────────────────
+  function connectLobby() {
+    try {
+      lobbyWs = new WebSocket(`${PK_WS}://${PK_HOST}/parties/lobby/main`);
+      lobbyWs.onmessage = e => {
+        const data = JSON.parse(e.data);
+        if (data.type === 'lobbyUpdate') renderPublicRooms(data.rooms);
+      };
+      lobbyWs.onerror = () => {};
+    } catch(_) {}
+  }
+
+  function renderPublicRooms(rooms) {
+    const list = eid('public-rooms-list');
+    if (!rooms || rooms.length === 0) {
+      list.innerHTML = '<div class="no-rooms">NO OPEN MISSIONS DETECTED</div>';
+      return;
+    }
+    list.innerHTML = rooms.map(r => {
+      const subs = r.settings?.subjects?.slice(0,3).join(' · ') || '—';
+      const lev = r.settings?.level || '—';
+      return `<div class="room-row">
+        <span class="room-code-tag">${r.roomCode}</span>
+        <span class="room-meta">${lev} · ${subs} · ${r.playerCount}/8 AGENTS</span>
+        <button class="room-join-btn" onclick="joinRoomByCode('${r.roomCode}')">JOIN</button>
+      </div>`;
+    }).join('');
+  }
+
+  function createRoom() {
+    const name = getPlayerName();
+    if (!name) { eid('player-name-input').focus(); return; }
+    connectToRoom(generateCode(), name);
+  }
+
+  function joinRoom() {
+    const code = (eid('join-code-input')?.value || '').trim().toUpperCase();
+    const name = getPlayerName();
+    if (!code || code.length !== 6) { alert('Enter a 6-character room code.'); return; }
+    if (!name) { eid('player-name-input').focus(); return; }
+    connectToRoom(code, name);
+  }
+
+  function joinRoomByCode(code) {
+    const name = getPlayerName();
+    if (!name) { eid('player-name-input').focus(); alert('Enter your callsign first.'); return; }
+    connectToRoom(code, name);
+  }
+
+  function connectToRoom(code, name) {
+    roomCode = code;
+    const cs = eid('connection-status');
+    cs.textContent = '⟳ CONNECTING...';
+    cs.className = 'connecting';
+
+    ws = new WebSocket(`${PK_WS}://${PK_HOST}/parties/game/${code}?name=${encodeURIComponent(name)}`);
+    ws.onopen = () => { cs.style.display = 'none'; };
+    ws.onmessage = e => onWsMessage(JSON.parse(e.data));
+    ws.onerror = () => { alert('Could not connect. Check your code and try again.'); cs.style.display = 'none'; };
+    ws.onclose = () => {
+      if (gPhase !== 'DONE' && gPhase !== 'LOBBY') {
+        cs.textContent = '⚠ DISCONNECTED'; cs.className = 'reconnecting'; cs.style.display = 'block';
+      }
+    };
+  }
+
+  // ── MESSAGE DISPATCH ─────────────────────────────────────────────────────────
+  function onWsMessage(data) {
+    switch (data.type) {
+      case 'welcome':          handleWelcome(data); break;
+      case 'playerJoined':     handlePlayerJoined(data); break;
+      case 'playerLeft':       handlePlayerLeft(data); break;
+      case 'hostChanged':      handleHostChanged(data); break;
+      case 'settingsUpdated':  handleSettingsUpdated(data); break;
+      case 'publicUpdated':    handlePublicUpdated(data); break;
+      case 'playerReadyChanged': handleReadyChanged(data); break;
+      case 'playerTeamChanged': handleTeamChanged(data); break;
+      case 'gameStarted':      handleGameStarted(data); break;
+      case 'questionLoaded':   handleQuestionLoaded(data); break;
+      case 'buzzed':           handleBuzzed(data); break;
+      case 'answerResult':     handleAnswerResult(data); break;
+      case 'answerTimeout':    handleAnswerTimeout(data); break;
+      case 'questionExpired':  handleQuestionExpired(data); break;
+      case 'gameOver':         handleGameOver(data); break;
+    }
+  }
+
+  // ── ROOM SCREEN HANDLERS ─────────────────────────────────────────────────────
+  function handleWelcome(data) {
+    me = data.you;
+    isHostFlag = data.isHost;
+    players = new Map(data.players.map(p => [p.id, p]));
+    settings = data.settings || settings;
+    isPublic = data.isPublic;
+    gRound = data.round || 0;
+    myScore = data.scores?.my || 0;
+    enScore = data.scores?.en || 0;
+
+    showScreen('room');
+    eid('room-code-display').textContent = roomCode;
+    eid('room-settings').style.display = isHostFlag ? 'block' : 'none';
+    eid('public-toggle-row').style.display = isHostFlag ? 'flex' : 'none';
+    eid('ready-btn').style.display = isHostFlag ? 'none' : 'block';
+    if (isHostFlag) {
+      syncHostSettingsUI();
+    }
+    renderRoomPlayers();
+    updateLaunchBtn();
+    beep(660, 80);
+  }
+
+  function handlePlayerJoined(data) {
+    players.set(data.player.id, data.player);
+    renderRoomPlayers();
+    updateLaunchBtn();
+    beep(440, 60);
+  }
+
+  function handlePlayerLeft(data) {
+    players.delete(data.playerId);
+    renderRoomPlayers();
+    updateLaunchBtn();
+    // Also update game roster if in-game
+    if (gPhase !== 'LOBBY') renderGameRoster();
+  }
+
+  function handleHostChanged(data) {
+    for (const p of players.values()) p.isHost = (p.id === data.playerId);
+    if (me && me.id === data.playerId) {
+      isHostFlag = true; me.isHost = true;
+      eid('room-settings').style.display = 'block';
+      eid('public-toggle-row').style.display = 'flex';
+      eid('ready-btn').style.display = 'none';
+      eid('launch-btn').style.display = 'block';
+    }
+    renderRoomPlayers();
+  }
+
+  function handleSettingsUpdated(data) {
+    settings = data.settings;
+    if (!isHostFlag) syncGuestSettingsDisplay();
+    updateLaunchBtn();
+  }
+
+  function handlePublicUpdated(data) {
+    isPublic = data.isPublic;
+    eid('public-toggle').classList.toggle('on', isPublic);
+  }
+
+  function handleReadyChanged(data) {
+    const p = players.get(data.playerId);
+    if (p) p.ready = data.ready;
+    if (me && me.id === data.playerId) {
+      iAmReady = data.ready;
+      eid('ready-btn').classList.toggle('is-ready', iAmReady);
+      eid('ready-btn').textContent = iAmReady ? '◉ READY (CLICK TO CANCEL)' : '◉ READY';
+    }
+    renderRoomPlayers();
+    updateLaunchBtn();
+  }
+
+  function handleTeamChanged(data) {
+    const p = players.get(data.playerId);
+    if (p) p.team = data.team;
+    if (me && me.id === data.playerId) me.team = data.team;
+    renderRoomPlayers();
+  }
+
+  // ── ROOM UI ──────────────────────────────────────────────────────────────────
+  function renderRoomPlayers() {
+    const aList = eid('team-a-list');
+    const bList = eid('team-b-list');
+    aList.innerHTML = '';
+    bList.innerHTML = '';
+    for (const p of players.values()) {
+      const isMe = me && p.id === me.id;
+      const row = document.createElement('div');
+      row.className = 'player-row' + (isMe ? ' is-me' : '');
+      row.innerHTML = `
+        <span class="pr-name">${p.name}${isMe ? ' (YOU)' : ''}</span>
+        ${p.isHost ? '<span class="pr-host">HOST</span>' : ''}
+        ${(!p.isHost && p.ready) ? '<span class="pr-ready">READY</span>' : ''}
+      `;
+      (p.team === 'my' ? aList : bList).appendChild(row);
+    }
+  }
+
+  function updateLaunchBtn() {
+    if (!isHostFlag) return;
+    const hasLevel = !!settings.level;
+    const hasSubs = settings.subjects && settings.subjects.length > 0;
+    const hasPlayers = players.size >= 2;
+    const allReady = [...players.values()].filter(p => !p.isHost).every(p => p.ready);
+    const canLaunch = hasLevel && hasSubs && hasPlayers && allReady;
+    eid('launch-btn').disabled = !canLaunch;
+    const parts = [];
+    if (!hasLevel) parts.push('select class');
+    if (!hasSubs) parts.push('select modules');
+    if (!hasPlayers) parts.push('need 2+ players');
+    if (!allReady && hasPlayers) parts.push('waiting for ready');
+    eid('room-status-msg').textContent = parts.length ? parts.join(' · ').toUpperCase() : 'ALL SYSTEMS GO';
+  }
+
+  function syncHostSettingsUI() {
+    if (settings.level === 'MS') { eid('rm-ms').classList.add('selected'); eid('rm-hs').classList.remove('selected'); }
+    if (settings.level === 'HS') { eid('rm-hs').classList.add('selected'); eid('rm-ms').classList.remove('selected'); }
+    ALL_SUBS.forEach(n => { const el = eid('rm-' + n); if (el) el.checked = settings.subjects?.includes(n) || false; });
+    if (settings.rounds) eid('rm-round-slider').value = settings.rounds;
+    rmSliderTrail();
+    syncGuestSettingsDisplay();
+  }
+
+  function syncGuestSettingsDisplay() {
+    const lvTxt = settings.level === 'MS' ? 'CLASS: AGENT [MS]' : settings.level === 'HS' ? 'CLASS: COMMANDER [HS]' : 'CLASS: —';
+    const subTxt = settings.subjects?.length ? settings.subjects.join(' · ') : 'MODULES: —';
+    const rndTxt = `ROUNDS: ${settings.rounds || 20} TOSS-UPS`;
+    eid('room-status-msg').textContent = `${lvTxt} · ${subTxt} · ${rndTxt}`;
+  }
+
+  // host settings controls
+  function rmSetLevel(lev) {
+    settings.level = lev;
+    ['MS','HS'].forEach(l => eid('rm-' + l.toLowerCase())?.classList.toggle('selected', l === lev));
+    wsend({ type: 'updateSettings', settings: { level: lev } });
+    updateLaunchBtn();
+  }
+
+  function rmSubject(name, cb) {
+    if (name === 'Everything') {
+      if (cb.checked) ALL_SUBS.forEach(n => { subjectNames.add(n); eid('rm-' + n).checked = true; });
+      else { subjectNames.clear(); ALL_SUBS.forEach(n => { eid('rm-' + n).checked = false; }); }
+    } else {
+      cb.checked ? subjectNames.add(name) : subjectNames.delete(name);
+    }
+    settings.subjects = [...subjectNames];
+    wsend({ type: 'updateSettings', settings: { subjects: settings.subjects } });
+    updateLaunchBtn();
+  }
+
+  function rmUpdateRounds() {
+    settings.rounds = Number(eid('rm-round-slider').value);
+    eid('rm-round-display').textContent = settings.rounds + ' TOSS-UPS';
+    rmSliderTrail();
+    wsend({ type: 'updateSettings', settings: { rounds: settings.rounds } });
+  }
+
+  function rmSliderTrail() {
+    const s = eid('rm-round-slider');
+    if (!s) return;
+    const pct = (s.value - s.min) / (s.max - s.min) * 100;
+    s.style.background = `linear-gradient(to right, var(--cyan) ${pct}%, var(--surface) ${pct}%)`;
+  }
+
+  function switchTeam() {
+    if (!me) return;
+    const newTeam = me.team === 'my' ? 'en' : 'my';
+    wsend({ type: 'changeTeam', team: newTeam });
+  }
+
+  function togglePublic() {
+    isPublic = !isPublic;
+    eid('public-toggle').classList.toggle('on', isPublic);
+    wsend({ type: 'setPublic', public: isPublic });
+  }
+
+  function toggleReady() {
+    wsend({ type: 'ready' });
+  }
+
+  function launchGame() {
+    wsend({ type: 'start' });
+  }
+
+  function copyRoomCode() {
+    navigator.clipboard?.writeText(roomCode).then(() => {
+      eid('room-copy-hint').textContent = '✓ COPIED TO CLIPBOARD';
+      setTimeout(() => eid('room-copy-hint').textContent = 'CLICK CODE TO COPY · SHARE WITH TEAMMATES', 2000);
+    });
+  }
+
+  // ── GAME HANDLERS ────────────────────────────────────────────────────────────
+  function handleGameStarted(data) {
+    settings = data.settings || settings;
+    gTotalRounds = settings.rounds || 20;
+    asked.clear();
+    myScore = 0; enScore = 0;
+    gPhase = 'PLAYING';
+    showScreen('game');
+    renderGameRoster();
+    updateScores();
+    olCountdown(() => {
+      if (isHostFlag) olPickAndSendQuestion();
+    });
+    beep(880, 200);
+  }
+
+  function handleQuestionLoaded(data) {
+    gRound = data.round;
+    gTotalRounds = data.totalRounds || gTotalRounds;
+    curQ = { id: data.questionId, text: data.questionText, type: data.qType, subject: data.subject };
+    iAmBuzzer = false;
+    pickedMC = '';
+    teamLock = { my: false, en: false };
+    gPhase = 'BUZZ_OPEN';
+
+    stopBuzzTimer();
+    stopAnsTimer();
+    hideAnswer();
+    eid('who-buzzing').style.display = 'none';
+    eid('opp-chance-banner').style.display = 'none';
+    eid('locked-banner').style.display = 'none';
+    eid('round-result').textContent = '';
+    eid('round-result').className = '';
+    eid('NextBtn').style.display = 'none';
+
+    displayQuestion();
+    startBuzzTimer();
+    if (!isLockedOut()) enableBuzzBtn();
+    else disableBuzzBtn();
+
+    eid('round-info').textContent = `TOSS-UP ${gRound} / ${gTotalRounds}`;
+    updateRoster('idle', null);
+  }
+
+  function handleBuzzed(data) {
+    gPhase = 'PLAYER_ANSWERING';
+    stopBuzzTimer();
+    iAmBuzzer = (data.playerId === me?.id);
+
+    eid('BuzzBtn').style.display = 'none';
+    eid('who-buzzing').style.display = 'none';
+
+    if (iAmBuzzer) {
+      showAnswerPanel();
+      startAnsTimer();
+    } else {
+      eid('who-buzzing').style.display = 'flex';
+      const col = data.team === 'my' ? 'var(--green)' : 'var(--magenta)';
+      eid('who-buzzing').style.borderColor = col;
+      eid('who-buzzing').style.color = col;
+      eid('wb-name').textContent = data.playerName;
+    }
+
+    updateRoster('buzzing', data.playerId);
+    beep(880, 110);
+  }
+
+  function handleAnswerResult(data) {
+    stopAnsTimer();
+    hideAnswer();
+    eid('who-buzzing').style.display = 'none';
+
+    if (data.correct) {
+      myScore = data.scores.my;
+      enScore = data.scores.en;
+      updateScores();
+      const msg = iAmBuzzer ? `✓ CORRECT! +4  ·  ${data.correctAnswer}` : `✓ ${data.playerName || 'PLAYER'} CORRECT  ·  ${data.correctAnswer}`;
+      olResult(msg, 'correct');
+      updateRoster('ok', data.playerId);
+      gPhase = 'RESULT';
+      if (isHostFlag) eid('NextBtn').style.display = 'inline-block';
+      beep(880, 130);
+    } else {
+      myScore = data.scores.my;
+      enScore = data.scores.en;
+      teamLock = data.teamLock || teamLock;
+      updateScores();
+      const msg = iAmBuzzer ? `✗ WRONG −4  ·  Correct: ${data.correctAnswer}` : `✗ ${data.playerName || 'PLAYER'} WRONG −4  ·  ${data.correctAnswer}`;
+      olResult(msg, 'incorrect');
+      updateRoster('fail', data.playerId);
+      gPhase = 'BUZZ_OPEN';
+      // Show opp-chance banner based on who was locked
+      setTimeout(() => {
+        olResult('', '');
+        showOppChanceBanner(data.teamLock);
+        if (!isLockedOut()) {
+          eid('BuzzBtn').style.display = '';
+          enableBuzzBtn();
+        } else {
+          disableBuzzBtn();
+        }
+        startBuzzTimer();
+      }, 2200);
+      beep(220, 220);
+    }
+  }
+
+  function handleAnswerTimeout(data) {
+    stopAnsTimer();
+    hideAnswer();
+    eid('who-buzzing').style.display = 'none';
+    myScore = data.scores.my;
+    enScore = data.scores.en;
+    teamLock = data.teamLock || teamLock;
+    updateScores();
+    updateRoster('fail', data.playerId);
+    olResult('TIME EXPIRED — −4', 'incorrect');
+    gPhase = 'BUZZ_OPEN';
+    setTimeout(() => {
+      olResult('', '');
+      showOppChanceBanner(data.teamLock);
+      if (!isLockedOut()) {
+        eid('BuzzBtn').style.display = '';
+        enableBuzzBtn();
+      }
+      startBuzzTimer();
+    }, 2200);
+    beep(220, 220);
+  }
+
+  function handleQuestionExpired(data) {
+    stopBuzzTimer();
+    myScore = data.scores.my;
+    enScore = data.scores.en;
+    updateScores();
+    olResult('TIME EXPIRED — QUESTION DEAD', 'neutral');
+    disableBuzzBtn();
+    eid('opp-chance-banner').style.display = 'none';
+    gPhase = 'RESULT';
+    if (isHostFlag) eid('NextBtn').style.display = 'inline-block';
+    beep(200, 150);
+  }
+
+  function handleGameOver(data) {
+    stopBuzzTimer(); stopAnsTimer();
+    myScore = data.scores.my;
+    enScore = data.scores.en;
+    gPhase = 'DONE';
+    const won = myScore > enScore, tied = myScore === enScore;
+    const teamWon = me?.team === 'my' ? won : !won && !tied;
+    const label = tied ? 'DRAW' : teamWon ? 'VICTORY' : 'DEFEAT';
+    const col = tied ? 'var(--cyan)' : teamWon ? 'var(--green)' : 'var(--magenta)';
+
+    ['BuzzBtn','NextBtn'].forEach(id => eid(id).style.display = 'none');
+    ['question-area','buzz-zone','round-result','opp-chance-banner','locked-banner','teams-panel']
+      .forEach(id => { const el = eid(id); if (el) el.style.display = 'none'; });
+
+    eid('game-over').innerHTML = `
+      <div class="go-result-txt" style="color:${col};text-shadow:0 0 30px ${col}">${label}</div>
+      <div class="go-scores">
+        <div class="go-score-block">
+          <div class="go-score-lbl">TEAM ALPHA</div>
+          <div class="go-score-num" style="color:var(--green);text-shadow:0 0 25px var(--green)">${myScore}</div>
+        </div>
+        <div style="color:var(--muted);font-size:1.5rem">VS</div>
+        <div class="go-score-block">
+          <div class="go-score-lbl">TEAM OMEGA</div>
+          <div class="go-score-num" style="color:var(--magenta);text-shadow:0 0 25px var(--magenta)">${enScore}</div>
+        </div>
+      </div>
+      <div class="go-stats">Rounds played: ${data.round || gRound}</div>
+      <button onclick="location.href='/Online/'" style="margin-top:2rem;font-size:1rem;padding:0.7rem 2.5rem;border-color:var(--cyan);color:var(--cyan);">
+        ↺ PLAY AGAIN
+      </button>`;
+    eid('game-over').style.display = 'block';
+    beep(teamWon || tied ? 880 : 220, 450);
+  }
+
+  // ── GAME ACTIONS ─────────────────────────────────────────────────────────────
+  function olBuzz() {
+    if (gPhase !== 'BUZZ_OPEN') return;
+    if (isLockedOut()) return;
+    wsend({ type: 'buzz', questionId: curQ.id });
+    disableBuzzBtn();
+  }
+
+  function olPickMC(btn, letter) {
+    if (gPhase !== 'PLAYER_ANSWERING' || !iAmBuzzer) return;
+    document.querySelectorAll('.mc-buzz-btn').forEach(b => b.classList.remove('sel'));
+    btn.classList.add('sel');
+    pickedMC = letter;
+    beep(600, 40);
+    setTimeout(olConfirm, 220);
+  }
+
+  function olConfirm() {
+    if (gPhase !== 'PLAYER_ANSWERING' || !iAmBuzzer) return;
+    stopAnsTimer();
+    let ans = '';
+    if (curQ.type === 'MC') {
+      if (!pickedMC) { olNoAnswer(); return; }
+      ans = olOptText(curQ.text, pickedMC);
+    } else {
+      ans = eid('BuzzerOE')?.value.trim() || '';
+      if (!ans) { olNoAnswer(); return; }
+    }
+    hideAnswer();
+    wsend({ type: 'answer', questionId: curQ.id, answer: ans });
+  }
+
+  function olNoAnswer() {
+    hideAnswer();
+    wsend({ type: 'noAnswer', questionId: curQ.id });
+  }
+
+  function olNext() {
+    if (!isHostFlag) return;
+    eid('NextBtn').style.display = 'none';
+    gPhase = 'READING';
+    olPickAndSendQuestion();
+  }
+
+  // ── HOST QUESTION SELECTION ──────────────────────────────────────────────────
+  function olPickAndSendQuestion() {
+    if (gRound >= gTotalRounds) {
+      wsend({ type: 'loadQuestion', questionId: '__END__', questionText: '', answer: '', qType: 'OE', subject: '' });
+      return;
+    }
+    const subjectMap = OL_SUBJECTS();
+    const pool = (settings.subjects || [])
+      .map(n => ({ name: n, data: subjectMap[n] }))
+      .filter(s => s.data && Object.keys(s.data).length > 0)
+      .map(s => ({ ...s, keys: Object.keys(s.data).filter(k => !asked.has(k)) }))
+      .filter(s => s.keys.length > 0);
+
+    if (!pool.length) {
+      wsend({ type: 'gameOver' });
+      return;
+    }
+
+    const sub = pool[Math.floor(Math.random() * pool.length)];
+    const key = sub.keys[Math.floor(Math.random() * sub.keys.length)];
+    asked.add(key);
+
+    const questionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    wsend({
+      type: 'loadQuestion',
+      questionId,
+      questionText: key,
+      answer: sub.data[key],
+      qType: key.includes('W) ') ? 'MC' : 'OE',
+      subject: sub.name,
+    });
+  }
+
+  // ── GAME UI HELPERS ───────────────────────────────────────────────────────────
+  function displayQuestion() {
+    const el = eid('q-text');
+    eid('q-subject').textContent = `[ ${(curQ.subject || '?').toUpperCase()} · ${curQ.type === 'MC' ? 'MULTIPLE CHOICE' : 'OPEN ENDED'} ]`;
+    if (curQ.type === 'MC') {
+      const wIdx = curQ.text.indexOf('W) ');
+      const stem = wIdx !== -1 ? curQ.text.slice(0, wIdx).trim() : curQ.text;
+      const opts = wIdx !== -1
+        ? `<div class="q-opts">${['W','X','Y','Z'].map(l =>
+            `<div class="q-opt"><span class="q-opt-letter">${l})</span> ${olOptText(curQ.text, l)}</div>`
+          ).join('')}</div>`
+        : '';
+      el.innerHTML = `<span>${stem}</span>${opts}`;
+    } else {
+      el.textContent = curQ.text;
+    }
+  }
+
+  function olOptText(q, letter) {
+    const order = ['W','X','Y','Z'];
+    const idx = order.indexOf(letter);
+    const start = q.indexOf(letter + ') ') + 3;
+    const next = order[idx + 1];
+    const end = next ? q.indexOf(next + ') ') : q.length;
+    return q.slice(start, end).trim();
+  }
+
+  function showAnswerPanel() {
+    const panel = eid('answer-panel');
+    panel.style.display = 'flex';
+    const mc = eid('mc-panel'), oe = eid('oe-panel');
+    if (curQ.type === 'MC') {
+      mc.style.display = 'flex'; oe.style.display = 'none';
+      pickedMC = '';
+      document.querySelectorAll('.mc-buzz-btn').forEach(b => {
+        b.classList.remove('sel');
+        const l = b.dataset.l;
+        b.textContent = `${l}) ${olOptText(curQ.text, l)}`;
+      });
+    } else {
+      mc.style.display = 'none'; oe.style.display = 'block';
+      eid('BuzzerOE').value = '';
+      setTimeout(() => eid('BuzzerOE').focus(), 40);
+    }
+    curAnsTime = curQ.type === 'MC' ? 5 : Math.max(5, 5 + Math.ceil((curQ.text.length / 2) * 0.05));
+    ansLeft = curAnsTime;
+    eid('ans-countdown').textContent = curAnsTime;
+    eid('ans-countdown').className = 'ans-cd';
+    eid('ConfirmBtn').style.display = curQ.type === 'OE' ? 'inline-block' : 'none';
+  }
+
+  function hideAnswer() {
+    eid('answer-panel').style.display = 'none';
+    eid('BuzzBtn').style.display = '';
+  }
+
+  function showOppChanceBanner(lock) {
+    const bn = eid('opp-chance-banner');
+    const myTeam = me?.team || 'my';
+    const myLocked = lock?.[myTeam];
+    if (myLocked) {
+      bn.textContent = '⊘ YOUR TEAM WAS PENALISED — OPPONENT HAS A CHANCE';
+      bn.style.borderColor = 'var(--orange)'; bn.style.color = 'var(--orange)';
+      eid('locked-banner').style.display = 'block';
+    } else {
+      bn.textContent = '⚡ OPPONENT PENALISED — YOUR TEAM CAN BUZZ IN!';
+      bn.style.borderColor = 'var(--green)'; bn.style.color = 'var(--green)';
+      eid('locked-banner').style.display = 'none';
+    }
+    bn.style.display = 'block';
+  }
+
+  function isLockedOut() {
+    const myTeam = me?.team || 'my';
+    return teamLock?.[myTeam] || false;
+  }
+
+  function enableBuzzBtn() {
+    const btn = eid('BuzzBtn');
+    btn.disabled = false;
+    btn.style.display = '';
+  }
+
+  function disableBuzzBtn() {
+    eid('BuzzBtn').disabled = true;
+  }
+
+  function olResult(msg, cls) {
+    eid('round-result').textContent = msg;
+    eid('round-result').className = cls;
+  }
+
+  function updateScores() {
+    eid('score-a').textContent = myScore;
+    eid('score-b').textContent = enScore;
+    eid('round-info').textContent = `TOSS-UP ${gRound} / ${gTotalRounds}  ·  ALPHA ${myScore}  ·  OMEGA ${enScore}`;
+  }
+
+  function renderGameRoster() {
+    const mc = eid('my-col'), ec = eid('en-col');
+    mc.innerHTML = '<div class="t-col-label friendly">◈ TEAM ALPHA</div>';
+    ec.innerHTML = '<div class="t-col-label enemy">▲ TEAM OMEGA</div>';
+    for (const p of players.values()) {
+      const isMe = me && p.id === me.id;
+      const col = isMe ? ' id="m-' + p.id + '"' : ` id="m-${p.id}"`;
+      const html = `<div class="member"${col}>
+        <span class="m-icon">⚡</span>
+        <span class="m-name${isMe ? ' you-label' : ''}">${p.name}${isMe ? ' (YOU)' : ''}</span>
+        <span class="m-status" id="ms-${p.id}"></span>
+      </div>`;
+      (p.team === 'my' ? mc : ec).insertAdjacentHTML('beforeend', html);
+    }
+  }
+
+  function updateRoster(state, playerId) {
+    if (!playerId) {
+      // Reset all
+      for (const p of players.values()) {
+        const el = eid('m-' + p.id);
+        if (el) { el.className = 'member'; eid('ms-' + p.id).textContent = ''; }
+      }
+      return;
+    }
+    const el = eid('m-' + playerId);
+    if (!el) return;
+    el.className = 'member ' + state;
+    const st = eid('ms-' + playerId);
+    if (st) st.textContent = { buzzing: '● BUZZED', ok: '✓ CORRECT', fail: '✗ WRONG', idle: '' }[state] || '';
+  }
+
+  // ── TIMERS ──────────────────────────────────────────────────────────────────
+  const BUZZ_TOTAL = 7;
+  function startBuzzTimer() {
+    stopBuzzTimer();
+    buzzLeft = BUZZ_TOTAL;
+    const arc = eid('ring-arc');
+    arc.style.strokeDasharray = `${CIRC} ${CIRC}`;
+    arc.className = 'ring-arc';
+    eid('timer-num').textContent = '7';
+    eid('timer-wrap').style.display = 'block';
+
+    buzzTimerId = setInterval(() => {
+      buzzLeft -= 0.1;
+      const frac = Math.max(0, buzzLeft / BUZZ_TOTAL);
+      arc.style.strokeDasharray = `${frac * CIRC} ${CIRC}`;
+      eid('timer-num').textContent = Math.ceil(buzzLeft);
+      if (buzzLeft <= 2)      arc.className = 'ring-arc danger';
+      else if (buzzLeft <= 4) arc.className = 'ring-arc warn';
+      if (buzzLeft <= 0) {
+        stopBuzzTimer();
+        if (isHostFlag) wsend({ type: 'questionExpired', questionId: curQ.id });
+      }
+    }, 100);
+  }
+
+  function stopBuzzTimer() {
+    if (buzzTimerId) { clearInterval(buzzTimerId); buzzTimerId = null; }
+    eid('timer-wrap').style.display = 'none';
+  }
+
+  function startAnsTimer() {
+    stopAnsTimer();
+    ansLeft = curAnsTime;
+    ansTimerId = setInterval(() => {
+      ansLeft -= 0.1;
+      const cd = eid('ans-countdown');
+      cd.textContent = Math.ceil(ansLeft);
+      if (ansLeft <= 1)               cd.className = 'ans-cd danger';
+      else if (ansLeft <= curAnsTime * 0.4) cd.className = 'ans-cd warn';
+      if (ansLeft <= 0) { stopAnsTimer(); olNoAnswer(); }
+    }, 100);
+  }
+
+  function stopAnsTimer() {
+    if (ansTimerId) { clearInterval(ansTimerId); ansTimerId = null; }
+  }
+
+  // ── COUNTDOWN ────────────────────────────────────────────────────────────────
+  function olCountdown(cb) {
+    eid('BuzzBtn').disabled = true;
+    eid('q-subject').textContent = '';
+    let n = 3;
+    eid('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`;
+    beep(440, 120);
+    const iv = setInterval(() => {
+      n--;
+      if (n > 0) { eid('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`; beep(440, 120); }
+      else {
+        clearInterval(iv);
+        eid('q-text').innerHTML = `<h1 class="countdown" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</h1>`;
+        beep(880, 200);
+        setTimeout(cb, 600);
+      }
+    }, 800);
+  }
+
+  // ── KEYBOARD ─────────────────────────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (gPhase === 'BUZZ_OPEN' && e.code === 'Space') {
+      e.preventDefault(); olBuzz(); return;
+    }
+    if (gPhase === 'PLAYER_ANSWERING' && iAmBuzzer) {
+      if (curQ.type === 'MC') {
+        const map = { w:0, x:1, y:2, z:3 };
+        const idx = map[e.key.toLowerCase()];
+        if (idx !== undefined) {
+          e.preventDefault();
+          const btns = document.querySelectorAll('.mc-buzz-btn');
+          btns.forEach((b, i) => b.classList.toggle('sel', i === idx));
+          pickedMC = ['W','X','Y','Z'][idx];
+          beep(600, 40); setTimeout(olConfirm, 220);
+        }
+      }
+      if (curQ.type === 'OE' && e.key === 'Enter') { e.preventDefault(); olConfirm(); }
+    }
+    if (gPhase === 'RESULT' && isHostFlag && e.key === 'Enter') {
+      e.preventDefault(); olNext();
+    }
+  });
+
+  // ── STARFIELD ────────────────────────────────────────────────────────────────
+  (function () {
+    const cv = document.getElementById('starfield');
+    const cx = cv.getContext('2d');
+    let stars = [];
+    function resize() { cv.width = innerWidth; cv.height = innerHeight; }
+    function init() {
+      stars = Array.from({ length: 200 }, () => ({
+        x: Math.random() * cv.width, y: Math.random() * cv.height,
+        r: Math.random() * 1.2 + 0.2, speed: Math.random() * 0.25 + 0.04, op: Math.random() * 0.6 + 0.2,
+      }));
+    }
+    function draw() {
+      cx.clearRect(0, 0, cv.width, cv.height);
+      stars.forEach(s => {
+        cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        cx.fillStyle = `rgba(232,244,255,${s.op})`; cx.fill();
+        s.y += s.speed; if (s.y > cv.height) { s.y = 0; s.x = Math.random() * cv.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', () => { resize(); init(); });
+    resize(); init(); draw();
+  })();
+
+  // ── INIT ─────────────────────────────────────────────────────────────────────
+  window.addEventListener('DOMContentLoaded', () => {
+    connectLobby();
+
+    eid('BuzzBtn').addEventListener('click', () => olBuzz());
+
+    // Pre-fill name from a prior session if stored
+    const storedName = sessionStorage.getItem('ol_name');
+    if (storedName) eid('player-name-input').value = storedName;
+
+    eid('player-name-input').addEventListener('input', () => {
+      sessionStorage.setItem('ol_name', eid('player-name-input').value);
+    });
+
+    eid('join-code-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') joinRoom();
+    });
+  });
+  </script>
+</body>
+</html>
