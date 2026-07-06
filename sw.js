@@ -1,4 +1,4 @@
-﻿const CACHE = 'sbcn-v4';
+﻿const CACHE = 'sbcn-v6';
 const ASSETS = [
   '/',
   '/index.html',

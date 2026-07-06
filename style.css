@@ -328,6 +328,33 @@ label.flash {
   font-size: 1.4rem;
 }
 
+.override-wrap {
+  margin-top: 0.6rem;
+}
+
+.override-btn {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  border-radius: 2px;
+  text-shadow: 0 0 6px var(--green)88;
+  box-shadow: 0 0 8px var(--green)22;
+  transition: all 0.2s;
+}
+.override-btn:hover {
+  background: var(--green)15;
+  box-shadow: 0 0 14px var(--green)55;
+}
+.override-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .results-screen {
   max-width: 720px;
   margin: 0 auto;

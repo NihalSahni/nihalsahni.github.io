@@ -465,7 +465,8 @@ function bzBotAnswer(bot, correct) {
     bzPhase = 'RESULT';
     setTimeout(() => {
       bzHideBot();
-      bzOppChance(bot.team === 'my' ? 'en' : 'my');
+      if (bzMyLocked && bzEnLocked) bzQuestionDead('BOTH TEAMS INCORRECT — TOSS-UP DEAD');
+      else bzOppChance(bot.team === 'my' ? 'en' : 'my');
     }, 2000);
   }
 }
@@ -473,18 +474,20 @@ function bzBotAnswer(bot, correct) {
 // ══ OPPONENT CHANCE ══════════════════════════════════════════════════════════
 
 function bzOppChance(whichGetsChance) {
-  bzPhase = 'BUZZ_OPEN';
+  // Per NSB rules, a toss-up must be re-read in full before the other
+  // side may answer, since buzzing in early may have cut off the reading.
+  bzPhase = 'READING';
   const bn = $('opp-chance-banner');
   bn.style.display = 'block';
 
   if (bzMatchType === 'h2h') {
     if (whichGetsChance === 'my') {
-      bn.textContent = '⚡ PLAYER 2 WRONG — PLAYER 1 CAN BUZZ IN!';
+      bn.textContent = '⚡ PLAYER 2 WRONG — RE-READING FOR PLAYER 1...';
       bn.style.borderColor = 'var(--cyan)';
       bn.style.color = 'var(--cyan)';
       bn.style.textShadow = '0 0 8px var(--cyan)55';
     } else {
-      bn.textContent = '⚡ PLAYER 1 WRONG — PLAYER 2 CAN BUZZ IN!';
+      bn.textContent = '⚡ PLAYER 1 WRONG — RE-READING FOR PLAYER 2...';
       bn.style.borderColor = 'var(--green)';
       bn.style.color = 'var(--green)';
       bn.style.textShadow = '0 0 8px var(--green)55';
@@ -494,48 +497,28 @@ function bzOppChance(whichGetsChance) {
     $('BuzzBtn1').disabled = (whichGetsChance !== 'my');
     $('BuzzBtn2').disabled = (whichGetsChance !== 'en');
   } else {
+    const readMs = bzAudioMode ? bzEstimateSpeechMs(bzCurQ) : Math.min(bzCurQ.length * 16, 4500);
     if (whichGetsChance === 'my') {
-      bn.textContent = '⚡ OPPONENT WRONG — YOUR TEAM CAN NOW BUZZ IN!';
+      bn.textContent = '⚡ OPPONENT WRONG — RE-READING FOR YOUR TEAM...';
       bn.style.borderColor = 'var(--green)';
       bn.style.color = 'var(--green)';
       bn.style.textShadow = '0 0 8px var(--green)55';
       $('BuzzBtn').style.display = '';
       $('BuzzBtn').disabled = false;
       $('locked-banner').style.display = 'none';
-      bzScheduleBots(MY_BOTS, 500);
+      bzScheduleBots(MY_BOTS, readMs);
     } else {
-      bn.textContent = '⊘ YOUR TEAM ANSWERED WRONG — OPPONENT GETS A CHANCE';
+      bn.textContent = '⊘ YOUR TEAM ANSWERED WRONG — RE-READING FOR OPPONENT...';
       bn.style.borderColor = 'var(--orange)';
       bn.style.color = 'var(--orange)';
       bn.style.textShadow = '0 0 8px var(--orange)55';
       $('BuzzBtn').style.display = 'none';
       $('locked-banner').style.display = 'block';
-      bzScheduleBots(EN_BOTS, 500);
+      bzScheduleBots(EN_BOTS, readMs);
     }
   }
 
-  bzBuzzLeft = 7;
-  const arc = $('ring-arc');
-  arc.style.strokeDasharray = `${CIRC} ${CIRC}`;
-  arc.className = 'ring-arc';
-  $('timer-num').textContent = '7';
-  $('timer-wrap').style.display = 'block';
-
-  bzBuzzWindowTimer = setInterval(() => {
-    bzBuzzLeft -= 0.1;
-    const frac = Math.max(0, bzBuzzLeft / 7);
-    arc.style.strokeDasharray = `${frac * CIRC} ${CIRC}`;
-    $('timer-num').textContent = Math.ceil(bzBuzzLeft);
-    if (bzBuzzLeft <= 2)      arc.className = 'ring-arc danger';
-    else if (bzBuzzLeft <= 4) arc.className = 'ring-arc warn';
-    if (bzBuzzLeft <= 0) {
-      bzStopBuzzWindow();
-      bzCancelTimers();
-      bzResult('TIME EXPIRED — QUESTION DEAD', 'neutral');
-      bzStats.noAnswer++;
-      bzAfterResult();
-    }
-  }, 100);
+  bzDisplayQuestion();
 }
 
 // ══ PLAYER BUZZES IN ═════════════════════════════════════════════════════════
@@ -669,8 +652,12 @@ function bzTimeout() {
     bzUpdateScores();
     bzResult('TIME EXPIRED — −4', 'incorrect');
     setTimeout(() => {
-      bzResult('', '');
-      bzOppChance(bzActivePlayer === 1 ? 'en' : 'my');
+      if (bzMyLocked && bzEnLocked) {
+        bzQuestionDead('BOTH TEAMS INCORRECT — TOSS-UP DEAD');
+      } else {
+        bzResult('', '');
+        bzOppChance(bzActivePlayer === 1 ? 'en' : 'my');
+      }
     }, 2200);
   } else {
     bzResult('TIME EXPIRED — NO ANSWER', 'neutral');
@@ -718,8 +705,12 @@ function bzConfirm() {
     bzUpdateScores();
     bzResult(`✗ WRONG −4  ·  Correct: ${bzCurAnswer}`, 'incorrect');
     setTimeout(() => {
-      bzResult('', '');
-      bzOppChance(isP2 ? 'my' : 'en');
+      if (bzMyLocked && bzEnLocked) {
+        bzQuestionDead('BOTH TEAMS INCORRECT — TOSS-UP DEAD');
+      } else {
+        bzResult('', '');
+        bzOppChance(isP2 ? 'my' : 'en');
+      }
     }, 2200);
   }
 }
@@ -729,6 +720,12 @@ function bzConfirm() {
 function bzResult(msg, cls) {
   $('round-result').textContent = msg;
   $('round-result').className = cls;
+}
+function bzQuestionDead(msg) {
+  $('opp-chance-banner').style.display = 'none';
+  $('locked-banner').style.display = 'none';
+  bzResult(msg, 'neutral');
+  bzAfterResult();
 }
 function bzAfterResult() {
   bzPhase = 'RESULT';
@@ -934,6 +931,19 @@ window.addEventListener('DOMContentLoaded', () => {
   typeText($('Title'), 'BUZZER ARENA');
   bzSliderTrail();
   bzStatus();
+
+  // Apply practice defaults from Settings (level + subjects)
+  if (window.SBSettings) {
+    const ds = window.SBSettings.all();
+    if (ds.defaultLevel === 'MS') bzMS();
+    else if (ds.defaultLevel === 'HS') bzHS();
+    if (ds.defaultSubjects && ds.defaultSubjects.length) {
+      ds.defaultSubjects.forEach(subj => {
+        const cb = $(subj);
+        if (cb) { cb.checked = true; bzSubject(subj, cb); }
+      });
+    }
+  }
 
   let buzzBtnDown = false;
   const buzzBtn = $('BuzzBtn');

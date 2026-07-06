@@ -53,6 +53,10 @@ let reviewQueue = [];
 let sessionReviewQueue = [];
 let newlyQueued = 0;
 
+let lastAnsweredRecord = null;
+let survivalGameOverTimeout = null;
+let pendingResults = false;
+
 function updateStreak() {
   const today = new Date().toISOString().slice(0, 10);
   let s; try { s = JSON.parse(localStorage.getItem('sb_streak') || '{}'); } catch(e) { s = {}; }
@@ -138,9 +142,20 @@ function getSelectedAnswer(question) {
 function AddMCQuestion() {
   if (!reviewMode && (level === "" || selectedSubjects.length === 0)) return;
 
+  if (pendingResults) {
+    pendingResults = false;
+    showResults();
+    return;
+  }
+
   if (currentQuestion !== "") checkAndShowAnswer();
 
   if (maxQuestions <= 0) {
+    if (lastAnsweredRecord) {
+      pendingResults = true;
+      submitBtn.innerHTML = "VIEW RESULTS >";
+      return;
+    }
     showResults();
     return;
   }
@@ -309,26 +324,55 @@ function checkAndShowAnswer() {
   if (survivalMode && !isCorrect) {
     lives--;
     updateLivesDisplay();
-    if (lives <= 0) setTimeout(showResults, 1200);
+    if (lives <= 0) survivalGameOverTimeout = setTimeout(showResults, 1200);
   }
 
-  answeredQuestions.push({
+  const record = {
     question: currentQuestion,
     subjectName: currentSubjectName,
     correctAnswer,
     userAnswer: currentAnswer,
     wasCorrect: isCorrect,
     timeTaken,
-  });
+  };
+  answeredQuestions.push(record);
+  lastAnsweredRecord = isCorrect ? null : record;
 
   beep(isCorrect ? 880 : 220, isCorrect ? 100 : 150);
 
   const answerEl = document.getElementById("answer");
   answerEl.className = isCorrect ? "correct" : "incorrect";
   const timeTag = timeTaken !== null ? ` <span class="time-tag">${timeTaken.toFixed(1)}s</span>` : "";
+  const overrideHTML = isCorrect ? "" :
+    `<div class="override-wrap"><button class="override-btn" onclick="markPreviousCorrect()">✓ I ACTUALLY GOT THIS RIGHT</button></div>`;
   answerEl.innerHTML = isCorrect
     ? "Correct!" + timeTag
-    : (hideAnswersMode ? "Incorrect." : `Incorrect. The correct answer was: ${correctAnswer}`) + timeTag;
+    : (hideAnswersMode ? "Incorrect." : `Incorrect. The correct answer was: ${correctAnswer}`) + timeTag + overrideHTML;
+}
+
+function markPreviousCorrect() {
+  const record = lastAnsweredRecord;
+  if (!record || record.wasCorrect) return;
+
+  record.wasCorrect = true;
+  stats[record.subjectName].correct++;
+
+  if (survivalMode) {
+    clearTimeout(survivalGameOverTimeout);
+    lives = Math.min(MAX_LIVES, lives + 1);
+    updateLivesDisplay();
+  }
+  if (reviewMode) {
+    reviewQueue = reviewQueue.filter(item => item.question !== record.question);
+    saveReviewQueue(reviewQueue);
+  }
+
+  lastAnsweredRecord = null;
+  beep(880, 100);
+
+  const answerEl = document.getElementById("answer");
+  answerEl.className = "correct";
+  answerEl.innerHTML = "Marked Correct ✓";
 }
 
 function UpdateQuestions() {
