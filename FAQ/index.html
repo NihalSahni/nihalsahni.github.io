@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Real answers to the most common Science Bowl questions — what it is, how scoring and buzzing in work, which subjects are tested, and how to prepare for competition." />
+    <meta name="keywords" content="science bowl faq, how does science bowl work, science bowl rules, science bowl scoring explained, what is a toss up question, what is a bonus question, science bowl vs science olympiad, is science bowl free, science bowl grade levels, how to join a science bowl team" />
+    <link rel="canonical" href="https://sciencebowlpractice.org/FAQ/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/FAQ/" />
+    <meta property="og:site_name" content="Science Bowl Practice" />
+    <meta property="og:title" content="Science Bowl FAQ — Science Bowl Practice" />
+    <meta property="og:description" content="Real answers to the most common Science Bowl questions — what it is, how scoring and buzzing in work, which subjects are tested, and how to prepare." />
+    <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:title" content="Science Bowl FAQ — Science Bowl Practice" />
+    <meta name="twitter:description" content="Real answers to the most common Science Bowl questions — what it is, how scoring and buzzing in work, which subjects are tested, and how to prepare." />
+    <title>Science Bowl FAQ — Science Bowl Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
+    <style>
+      .page-wrap { max-width: 860px; margin: 0 auto; padding: 0 1rem 4rem; }
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-shadow: 0 0 6px var(--cyan)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--cyan)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: var(--cyan)11; }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+
+      .faq-search-wrap { max-width: 520px; margin: 1.5rem auto 0; position: relative; }
+      .faq-search-input { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 0.84rem; letter-spacing: 0.04em; background: var(--surface); border: 1px solid var(--muted)55; color: var(--text); padding: 0.7rem 1rem; border-radius: 4px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+      .faq-search-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px var(--cyan)44; }
+      .faq-search-input::placeholder { color: var(--muted); }
+      .faq-search-count { text-align: center; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); margin-top: 0.6rem; min-height: 1em; }
+      .faq-search-count span { color: var(--cyan); }
+      .faq-no-results { display: none; text-align: center; color: var(--muted); font-size: 0.78rem; line-height: 1.8; letter-spacing: 0.05em; padding: 2.5rem 1rem; }
+      .faq-no-results a { color: var(--cyan); }
+
+      .faq-intro { max-width: 700px; margin: 1.75rem auto 2rem; }
+      .faq-intro p { color: var(--text); line-height: 1.85; font-size: 0.9rem; margin: 0; }
+
+      .faq-toc { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 0 auto 2.75rem; max-width: 700px; transition: opacity 0.15s; }
+      .faq-toc a { font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); border: 1px solid var(--muted)44; padding: 0.4rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+      .faq-toc a:hover { color: var(--text); border-color: var(--text)77; text-shadow: none; }
+
+      .faq-category { margin-bottom: 3rem; scroll-margin-top: 1.25rem; }
+      .faq-cat-header { border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .faq-cat-title { font-size: 1.15rem; letter-spacing: 0.14em; color: var(--c); text-shadow: 0 0 12px var(--c); margin: 0; }
+      .faq-cat-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.6; margin-top: 0.45rem; max-width: 620px; }
+
+      .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
+      .faq-item { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; overflow: hidden; transition: border-color 0.2s; }
+      .faq-item[open] { border-color: var(--c)55; }
+      .faq-item summary { cursor: pointer; padding: 0.9rem 1.1rem; font-size: 0.83rem; letter-spacing: 0.02em; color: var(--text); list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; user-select: none; }
+      .faq-item summary::-webkit-details-marker { display: none; }
+      .faq-item summary::marker { content: ''; }
+      .faq-item summary:hover { color: var(--c); }
+      .faq-icon { color: var(--c); font-size: 1.05rem; flex-shrink: 0; line-height: 1; transition: transform 0.25s; }
+      .faq-item[open] .faq-icon { transform: rotate(45deg); }
+      .faq-answer { padding: 0 1.1rem 1.1rem; font-size: 0.8rem; line-height: 1.8; color: var(--muted); }
+      .faq-answer a { color: var(--c); text-decoration: underline; text-underline-offset: 2px; }
+      .faq-answer a:hover { text-shadow: 0 0 8px var(--c); }
+
+      .faq-cta { max-width: 640px; margin: 1rem auto 3rem; text-align: center; }
+      .faq-cta p { font-size: 0.82rem; line-height: 1.8; color: var(--text); margin: 0 0 1.2rem; }
+      .faq-cta-row { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+      .faq-cta-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.18em; padding: 0.5rem 1.1rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 2rem 0; }
+
+      @media (max-width: 600px) {
+        .page-header { padding: 1.5rem 0 0.75rem; }
+        .faq-item summary { font-size: 0.78rem; padding: 0.8rem 0.9rem; }
+        .faq-answer { padding: 0 0.9rem 0.9rem; font-size: 0.76rem; }
+      }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl is a fast-paced, buzzer-based academic competition where teams of students race to answer questions in biology, chemistry, physics, earth and space science, energy, and math. A moderator reads each question aloud, and the first team to buzz in gets a chance to answer for points, with the winning team going on to answer a bonus question worth even more. The official National Science Bowl has run annually since 1991 and is split into separate middle school and high school divisions. If you want to see what an actual question looks like, you can try a few in Practice or test your reflexes on the Buzzer." }
+        },
+        {
+          "@type": "Question",
+          "name": "Who organizes Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl is organized and sponsored by the U.S. Department of Energy's Office of Science, which has run the national competition since 1991. Regional tournaments are hosted locally by national laboratories, universities, and other DOE-affiliated organizations, with about 65 high school and 50 middle school regionals held each year. The winning team from each regional advances directly to the National Finals in the Washington, D.C. area, with no state-level round in between." }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between Science Bowl and Science Olympiad?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl is a head-to-head buzzer competition — teams of four sit at a table and race to answer rapid-fire toss-up and bonus questions across six science and math subjects, similar to a quiz bowl. Science Olympiad works completely differently: teams of up to 15 students compete across roughly 23 separate events per season, ranging from written tests to hands-on builds like bridges, rockets, and lab experiments. Because Science Olympiad covers so many different skill sets, it tends to attract more participating schools, while Science Bowl stays narrowly focused on fast content recall and teamwork under time pressure. The two barely overlap in what they train, so Science Bowl practice won't help much with a Science Olympiad build event, and vice versa." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Science Bowl free to participate in?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For students, yes — there's no fee you pay directly to be on a team. Your coach registers the team with a regional coordinator, and any regional registration fee, which commonly falls somewhere between $50 and $150 depending on the region, is covered by the school rather than individual students. Many regions also offer fee waivers for schools with financial need. The only real cost to you is time spent studying, which is exactly what Practice and Browse on this site are free to help with." }
+        },
+        {
+          "@type": "Question",
+          "name": "What grade levels compete in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl runs two separate divisions: Middle School Science Bowl, generally for students in grades 6 through 8, and the National Science Bowl for high schoolers in grades 9 through 12. You can only compete in one division per year, so once you've moved up to high school you can't go back to middle school questions. The two divisions use different question sets and difficulty levels, which is why this site keeps high school and middle school study material separate." }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do Science Bowl competitions take place?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Competitions start at the regional level, hosted at national laboratories, universities, and other DOE-affiliated sites across the country, with about 65 high school and 50 middle school regionals held each year. The team that wins its regional advances directly to the National Finals — there's no state-level round in between. National Finals are held each spring in the Washington, D.C. area and bring together the top team from every regional in the country." }
+        },
+        {
+          "@type": "Question",
+          "name": "How does a Science Bowl match work?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Each match is a head-to-head round between two 4-person teams, run by a moderator who reads questions and an official scorekeeper who tracks points. The moderator alternates between toss-up questions, which either team can buzz in on, and bonus questions, which only go to the team that won the toss-up. Matches are split into two timed halves — 8 minutes each at the regional level, 10 minutes at the National Finals — with a short break in between, and whichever team has more points when time runs out wins. The questions below break down scoring, timing, and what happens if you buzz in early, or you can try the pace yourself on the Buzzer trainer." }
+        },
+        {
+          "@type": "Question",
+          "name": "How does scoring work in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A correct toss-up answer is worth 4 points and also earns your team the exclusive right to answer a follow-up bonus question worth up to 10 more. Points simply accumulate over the match, and whichever team has more when the clock runs out wins that round. In round-robin play, match results count separately for seeding too — a win is worth 2 standings points, a tie is worth 1, and a loss is worth 0." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a toss-up question in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A toss-up is the question type that opens every point of play — the moderator reads it aloud, and any player on either team can buzz in the moment they know the answer. You get 5 seconds to respond once the moderator finishes reading, including every option if it's multiple choice. Whichever team answers correctly earns 4 points and immediately gets a shot at the bonus question that follows. Practice on this site is built around this exact toss-up format so you can build the recall speed it demands." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a bonus question in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A bonus question is the reward for winning a toss-up — only the team that answered correctly gets to attempt it, while the other team sits out entirely. Bonus questions are usually short answer rather than multiple choice and often have multiple parts, worth up to 10 points total. Teams get 20 seconds to answer, with officials calling out a warning once 15 seconds have passed, and only the team captain's response counts. Because there's no buzzer race involved, bonus questions reward teams that can talk through a problem together and agree on one final answer fast." }
+        },
+        {
+          "@type": "Question",
+          "name": "How many players are on a Science Bowl team?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A full Science Bowl team has 4 active players plus 1 alternate, for 5 students total, along with a teacher who serves as coach. Only the 4 students actively competing at the table can buzz in and answer during a match — the alternate, coach, and anyone else on the sideline can't get involved in what's being discussed or answered. Schools are often allowed to register more than one team for a regional, so being among the strongest 4 on competition day matters as much as the size of the overall roster." }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does a Science Bowl match last?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A regional match is played in two 8-minute halves with a 2-minute break between them, so around 18 minutes total, while matches at the National Finals stretch to two 10-minute halves. Because a single toss-up only takes a few seconds to resolve, a half can pack in a surprising number of questions. Whichever team has the higher score when the second half clock hits zero wins the match outright." }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if you buzz in early in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Buzzing in before the moderator finishes reading is called an interrupt, and it's a real risk — if you answer wrong after interrupting, the other team automatically gets 4 free points without even needing to answer. If the other team was still eligible to answer, the question gets re-read from the beginning just for them, giving them their own shot at the same 4 points and a bonus. That's why buzzer speed alone isn't enough — you need to actually be confident in the answer before you hit the button. The Buzzer trainer on this site is built specifically to practice that judgment call under time pressure." }
+        },
+        {
+          "@type": "Question",
+          "name": "How long do you get to answer a Science Bowl question?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For a toss-up, you get 5 seconds to answer once the moderator finishes reading the entire question, including every choice if it's multiple choice. For a bonus question, your team gets 20 seconds, with officials calling out a warning once 15 seconds have passed. If your team captain hasn't started answering by the time the timekeeper calls time, the answer doesn't count at all, so teams have to commit rather than second-guess until the last second." }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if your team answers a question wrong?",
+          "acceptedAnswer": { "@type": "Answer", "text": "If you answer a toss-up incorrectly without interrupting, your team simply gets nothing, and the other team stays eligible to buzz in and try for the same question. A wrong bonus answer means no points for that part, but the match just moves on to the next toss-up with no additional penalty. The only time a wrong answer actively costs you extra is on an early buzz, where the opposing team receives 4 automatic points if you're wrong." }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the moderator do in a Science Bowl match?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The moderator is the person who runs the match — before reading each question, they announce whether it's a toss-up or bonus, which subject it's from, and whether it's multiple choice or short answer. They read every question at a controlled pace, judge whether a buzz-in came before or after the question was finished, and rule on whether answers are correct. Because the moderator controls timing and pacing so tightly, matches move fast, which is part of why quick recall matters so much more in Science Bowl than in slower, discussion-based competitions." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Science Bowl include math?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — math is one of the six official Science Bowl subjects, alongside biology, chemistry, physics, earth and space science, and energy. Math questions typically involve calculations you have to work out under time pressure rather than pure recall, which makes them feel different from the other categories. Calculators aren't allowed, so mental math speed matters just as much as knowing the right formula. You can filter specifically for math questions in Browse or drill them directly in Practice." }
+        },
+        {
+          "@type": "Question",
+          "name": "What subjects are covered in Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "High school Science Bowl covers six subjects — biology, chemistry, physics, earth and space science, energy, and math — tested at roughly a college-freshman difficulty level. Middle school Science Bowl covers similar ground but groups it slightly differently, into life science, physical science, earth and space science, energy, and math. Every match mixes questions from all the subjects rather than sticking to one, so teams need reasonably even coverage instead of specializing narrowly. The Learn topic guides on this site break each subject down further so you know exactly what's tested." }
+        },
+        {
+          "@type": "Question",
+          "name": "Which Science Bowl subjects matter most?",
+          "acceptedAnswer": { "@type": "Answer", "text": "There's no officially weighted subject — questions are spread out fairly evenly across all six categories in a match, so no single subject decides the outcome by design. That said, physics and math questions tend to take longer to work through because they involve multi-step calculations, so speed in those two categories often matters more in close matches than speed in a pure-recall subject like biology. The most reliable strategy is covering all six well enough that your team is never stuck guessing in one category, rather than mastering one subject and ignoring the rest." }
+        },
+        {
+          "@type": "Question",
+          "name": "Are Science Bowl questions multiple choice or short answer?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Both formats show up in Science Bowl, and the moderator always announces which type a question is before reading it. Toss-up questions are often multiple choice with four answer options, though some, especially in math, are short answer. Bonus questions are usually short answer and frequently have multiple parts, since there's no buzzer race and teams get a full 20 seconds to work through them together." }
+        },
+        {
+          "@type": "Question",
+          "name": "How can I prepare for Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "The most effective prep mixes content review with speed training, since Science Bowl rewards both knowing the answer and buzzing in fast. Start by studying core concepts subject by subject with the Learn topic guides, then move to timed recall with Practice once you're comfortable with the material. Separately, train your reaction time on the Buzzer so you're not losing points on questions you actually know, and use a Printable Test to simulate real match conditions with your whole team. Checking your weak subjects on the Progress page regularly is the fastest way to close gaps before competition day." }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I join a Science Bowl team?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Ask a teacher at your school whether a Science Bowl team already exists — most teams form in the fall, with a teacher acting as coach and registering with a regional coordinator. If your school doesn't have one yet, an interested teacher can start a new team by contacting their regional coordinator directly, since students generally can't register a team without a coach. Once a team exists, getting a spot usually comes down to how the coach evaluates students, whether through tryouts, grades, or simply teacher recommendation." }
+        },
+        {
+          "@type": "Question",
+          "name": "How are Science Bowl teams selected?",
+          "acceptedAnswer": { "@type": "Answer", "text": "There's no universal process — team selection is entirely up to each school's coach, so it varies a lot from school to school. Some coaches run tryouts using practice questions or a mock buzzer round, others weigh science and math grades, and some just take the first students who show consistent interest. If your school selects its team through tryouts, drilling with Practice and the Buzzer beforehand is the most direct way to stand out." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the competition format of Science Bowl?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Regional tournaments start with round-robin play, where every team faces several different opponents and earns standings points for wins and ties. The top teams from round-robin play then move into a single- or double-elimination bracket to determine the regional champion. That regional winner advances directly to the National Finals — with no state round in between — where the same round-robin-into-elimination format decides the national champion." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Science Bowl Practice?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl Practice is a free study site built for students preparing for Science Bowl, covering both middle school and high school levels. It includes a timed practice quiz, a buzzer reaction-time trainer, topic-by-topic study guides, a full searchable question browser, a printable test generator, and a live multiplayer online arena. Everything runs right in your browser with no account needed, and your progress saves locally so you can track improvement over time on the Progress page." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Science Bowl Practice free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free — every tool on the site, from Practice to the Online Arena, is free to use with no sign-up, subscription, or hidden paywall. It was built to give students better free prep tools, so there's no plan to ever charge for any of it." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can coaches use this site to run team practices?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — coaches regularly use Printable Test to generate paper practice sets by level and subject for in-person team practice. The Online Arena also works well for running live buzzer scrimmages between students, whether everyone's in the same room or practicing remotely. Browse is useful too if a coach wants to pull specific questions to build a custom practice set, and none of it requires creating an account, so a coach can just share a link and go." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I suggest changes or report an issue on this site?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — there's a Report an Issue link in the footer of the home page that goes straight to a GitHub issue form where you can flag a wrong answer, report a bug, or suggest a new feature. Every submission gets read and used to keep the question bank accurate and the tools useful, since this is an independent project rather than something built by a large team." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does competing in Science Bowl help with college applications?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes — Science Bowl is one of the more effective STEM extracurriculars for college applications, especially at competitive schools that look for sustained, high-level academic involvement outside the classroom. It signals real subject-matter strength across multiple sciences and math at once, which is harder to demonstrate than a one-off club membership, and doing well at regionals or reaching the National Finals gives you a specific, verifiable achievement to point to in essays and activity lists. Taking on a role like team captain or helping recruit and train younger teammates adds a leadership angle on top of that. It won't replace strong grades and test scores, but among academic competitions, it carries real weight." }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="/" class="back-link">← HOME BASE</a>
+        <h1 class="page-title">SCIENCE BOWL FAQ</h1>
+        <p class="page-sub">EVERYTHING YOU NEED TO KNOW, IN ONE PLACE</p>
+      </div>
+
+      <div class="faq-search-wrap">
+        <input
+          type="text"
+          id="faq-search"
+          class="faq-search-input"
+          placeholder="Search questions — e.g. scoring, toss-up, grade levels, join a team"
+          autocomplete="off"
+        />
+        <div class="faq-search-count" id="faq-search-count"></div>
+      </div>
+
+      <div class="faq-intro">
+        <p>
+          Science Bowl is a fast-paced, buzzer-based academic competition run by the
+          U.S. Department of Energy, where teams answer rapid-fire questions in
+          biology, chemistry, physics, earth and space science, energy, and math.
+          Below are straight answers to the questions students, parents, and
+          coaches ask most — how the game is scored, what's actually tested, how
+          to get on a team, and what this site can do to help you prep.
+        </p>
+      </div>
+
+      <nav class="faq-toc" aria-label="FAQ categories">
+        <a href="#about">ABOUT SCIENCE BOWL</a>
+        <a href="#rules">RULES &amp; FORMAT</a>
+        <a href="#subjects">SUBJECTS &amp; PREP</a>
+        <a href="#site">ABOUT THIS SITE</a>
+      </nav>
+
+      <section class="faq-category" id="about" style="--c: var(--cyan)">
+        <div class="faq-cat-header">
+          <h2 class="faq-cat-title">ABOUT SCIENCE BOWL</h2>
+          <p class="faq-cat-desc">The basics — what Science Bowl is, who runs it, and who can compete.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>What is Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Science Bowl is a fast-paced, buzzer-based academic competition where teams of students race to answer questions in biology, chemistry, physics, earth and space science, energy, and math. A moderator reads each question aloud, and the first team to buzz in gets a chance to answer for points, with the winning team going on to answer a bonus question worth even more. The official National Science Bowl has run annually since 1991 and is split into separate middle school and high school divisions. If you want to see what an actual question looks like, try a few in <a href="/Practice/">Practice</a> or test your reflexes on the <a href="/Buzzer/">Buzzer</a>.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Who organizes Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Science Bowl is organized and sponsored by the U.S. Department of Energy's Office of Science, which has run the national competition since 1991. Regional tournaments are hosted locally by national laboratories, universities, and other DOE-affiliated organizations, with about 65 high school and 50 middle school regionals held each year. The winning team from each regional advances directly to the National Finals in the Washington, D.C. area, with no state-level round in between.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What's the difference between Science Bowl and Science Olympiad?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Science Bowl is a head-to-head buzzer competition — teams of four sit at a table and race to answer rapid-fire toss-up and bonus questions across six science and math subjects, similar to a quiz bowl. Science Olympiad works completely differently: teams of up to 15 students compete across roughly 23 separate events per season, ranging from written tests to hands-on builds like bridges, rockets, and lab experiments. Because Science Olympiad covers so many different skill sets, it tends to attract more participating schools, while Science Bowl stays narrowly focused on fast content recall and teamwork under time pressure. The two barely overlap in what they train, so <a href="/Practice/">Science Bowl practice</a> won't help much with a Science Olympiad build event, and vice versa.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Is Science Bowl free to participate in?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>For students, yes — there's no fee you pay directly to be on a team. Your coach registers the team with a regional coordinator, and any regional registration fee, which commonly falls somewhere between $50 and $150 depending on the region, is covered by the school rather than individual students. Many regions also offer fee waivers for schools with financial need. The only real cost to you is time spent studying, which is exactly what <a href="/Practice/">Practice</a> and <a href="/Browse/">Browse</a> on this site are free to help with.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What grade levels compete in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Science Bowl runs two separate divisions: Middle School Science Bowl, generally for students in grades 6 through 8, and the National Science Bowl for high schoolers in grades 9 through 12. You can only compete in one division per year, so once you've moved up to high school you can't go back to middle school questions. The two divisions use different question sets and difficulty levels, which is why this site keeps <a href="/LearnTopics-HS/">high school</a> and <a href="/LearnTopics-MS/">middle school</a> study material separate.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Where do Science Bowl competitions take place?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Competitions start at the regional level, hosted at national laboratories, universities, and other DOE-affiliated sites across the country, with about 65 high school and 50 middle school regionals held each year. The team that wins its regional advances directly to the National Finals — there's no state-level round in between. National Finals are held each spring in the Washington, D.C. area and bring together the top team from every regional in the country.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-category" id="rules" style="--c: var(--magenta)">
+        <div class="faq-cat-header">
+          <h2 class="faq-cat-title">RULES &amp; FORMAT</h2>
+          <p class="faq-cat-desc">Scoring, timing, toss-ups, bonuses, and everything else that happens during a match.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>How does a Science Bowl match work?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Each match is a head-to-head round between two 4-person teams, run by a moderator who reads questions and an official scorekeeper who tracks points. The moderator alternates between toss-up questions, which either team can buzz in on, and bonus questions, which only go to the team that won the toss-up. Matches are split into two timed halves — 8 minutes each at the regional level, 10 minutes at the National Finals — with a short break in between, and whichever team has more points when time runs out wins. The questions below break down scoring, timing, and what happens if you buzz in early, or you can try the pace yourself on the <a href="/Buzzer/">Buzzer trainer</a>.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How does scoring work in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>A correct toss-up answer is worth 4 points and also earns your team the exclusive right to answer a follow-up bonus question worth up to 10 more. Points simply accumulate over the match, and whichever team has more when the clock runs out wins that round. In round-robin play, match results count separately for seeding too — a win is worth 2 standings points, a tie is worth 1, and a loss is worth 0.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What is a toss-up question in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>A toss-up is the question type that opens every point of play — the moderator reads it aloud, and any player on either team can buzz in the moment they know the answer. You get 5 seconds to respond once the moderator finishes reading, including every option if it's multiple choice. Whichever team answers correctly earns 4 points and immediately gets a shot at the bonus question that follows. <a href="/Practice/">Practice</a> on this site is built around this exact toss-up format so you can build the recall speed it demands.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What is a bonus question in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>A bonus question is the reward for winning a toss-up — only the team that answered correctly gets to attempt it, while the other team sits out entirely. Bonus questions are usually short answer rather than multiple choice and often have multiple parts, worth up to 10 points total. Teams get 20 seconds to answer, with officials calling out a warning once 15 seconds have passed, and only the team captain's response counts. Because there's no buzzer race involved, bonus questions reward teams that can talk through a problem together and agree on one final answer fast.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How many players are on a Science Bowl team?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>A full Science Bowl team has 4 active players plus 1 alternate, for 5 students total, along with a teacher who serves as coach. Only the 4 students actively competing at the table can buzz in and answer during a match — the alternate, coach, and anyone else on the sideline can't get involved in what's being discussed or answered. Schools are often allowed to register more than one team for a regional, so being among the strongest 4 on competition day matters as much as the size of the overall roster.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How long does a Science Bowl match last?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>A regional match is played in two 8-minute halves with a 2-minute break between them, so around 18 minutes total, while matches at the National Finals stretch to two 10-minute halves. Because a single toss-up only takes a few seconds to resolve, a half can pack in a surprising number of questions. Whichever team has the higher score when the second half clock hits zero wins the match outright.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What happens if you buzz in early in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Buzzing in before the moderator finishes reading is called an interrupt, and it's a real risk — if you answer wrong after interrupting, the other team automatically gets 4 free points without even needing to answer. If the other team was still eligible to answer, the question gets re-read from the beginning just for them, giving them their own shot at the same 4 points and a bonus. That's why buzzer speed alone isn't enough — you need to actually be confident in the answer before you hit the button. The <a href="/Buzzer/">Buzzer trainer</a> on this site is built specifically to practice that judgment call under time pressure.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How long do you get to answer a Science Bowl question?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>For a toss-up, you get 5 seconds to answer once the moderator finishes reading the entire question, including every choice if it's multiple choice. For a bonus question, your team gets 20 seconds, with officials calling out a warning once 15 seconds have passed. If your team captain hasn't started answering by the time the timekeeper calls time, the answer doesn't count at all, so teams have to commit rather than second-guess until the last second.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What happens if your team answers a question wrong?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>If you answer a toss-up incorrectly without interrupting, your team simply gets nothing, and the other team stays eligible to buzz in and try for the same question. A wrong bonus answer means no points for that part, but the match just moves on to the next toss-up with no additional penalty. The only time a wrong answer actively costs you extra is on an early buzz, where the opposing team receives 4 automatic points if you're wrong.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What does the moderator do in a Science Bowl match?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>The moderator is the person who runs the match — before reading each question, they announce whether it's a toss-up or bonus, which subject it's from, and whether it's multiple choice or short answer. They read every question at a controlled pace, judge whether a buzz-in came before or after the question was finished, and rule on whether answers are correct. Because the moderator controls timing and pacing so tightly, matches move fast, which is part of why quick recall matters so much more in Science Bowl than in slower, discussion-based competitions.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-category" id="subjects" style="--c: var(--green)">
+        <div class="faq-cat-header">
+          <h2 class="faq-cat-title">SUBJECTS &amp; PREPARATION</h2>
+          <p class="faq-cat-desc">What's actually tested, how to prepare, and how teams come together.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Does Science Bowl include math?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Yes — math is one of the six official Science Bowl subjects, alongside biology, chemistry, physics, earth and space science, and energy. Math questions typically involve calculations you have to work out under time pressure rather than pure recall, which makes them feel different from the other categories. Calculators aren't allowed, so mental math speed matters just as much as knowing the right formula. You can filter specifically for math questions in <a href="/Browse/">Browse</a> or drill them directly in <a href="/Practice/">Practice</a>.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What subjects are covered in Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>High school Science Bowl covers six subjects — biology, chemistry, physics, earth and space science, energy, and math — tested at roughly a college-freshman difficulty level. Middle school Science Bowl covers similar ground but groups it slightly differently, into life science, physical science, earth and space science, energy, and math. Every match mixes questions from all the subjects rather than sticking to one, so teams need reasonably even coverage instead of specializing narrowly. The <a href="/LearnTopics-HS/">Learn topic guides</a> break each subject down further so you know exactly what's tested.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Which Science Bowl subjects matter most?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>There's no officially weighted subject — questions are spread out fairly evenly across all six categories in a match, so no single subject decides the outcome by design. That said, physics and math questions tend to take longer to work through because they involve multi-step calculations, so speed in those two categories often matters more in close matches than speed in a pure-recall subject like biology. The most reliable strategy is covering all six well enough that your team is never stuck guessing in one category, rather than mastering one subject and ignoring the rest.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Are Science Bowl questions multiple choice or short answer?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Both formats show up in Science Bowl, and the moderator always announces which type a question is before reading it. Toss-up questions are often multiple choice with four answer options, though some, especially in math, are short answer. Bonus questions are usually short answer and frequently have multiple parts, since there's no buzzer race and teams get a full 20 seconds to work through them together.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How can I prepare for Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>The most effective prep mixes content review with speed training, since Science Bowl rewards both knowing the answer and buzzing in fast. Start by studying core concepts subject by subject with the <a href="/LearnTopics-HS/">Learn topic guides</a>, then move to timed recall with <a href="/Practice/">Practice</a> once you're comfortable with the material. Separately, train your reaction time on the <a href="/Buzzer/">Buzzer</a> so you're not losing points on questions you actually know, and use a <a href="/PrintableTest/">Printable Test</a> to simulate real match conditions with your whole team. Checking your weak subjects on the <a href="/Progress/">Progress</a> page regularly is the fastest way to close gaps before competition day.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How do I join a Science Bowl team?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Ask a teacher at your school whether a Science Bowl team already exists — most teams form in the fall, with a teacher acting as coach and registering with a regional coordinator. If your school doesn't have one yet, an interested teacher can start a new team by contacting their regional coordinator directly, since students generally can't register a team without a coach. Once a team exists, getting a spot usually comes down to how the coach evaluates students, whether through tryouts, grades, or simply teacher recommendation.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>How are Science Bowl teams selected?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>There's no universal process — team selection is entirely up to each school's coach, so it varies a lot from school to school. Some coaches run tryouts using practice questions or a mock buzzer round, others weigh science and math grades, and some just take the first students who show consistent interest. If your school selects its team through tryouts, drilling with <a href="/Practice/">Practice</a> and the <a href="/Buzzer/">Buzzer</a> beforehand is the most direct way to stand out.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>What is the competition format of Science Bowl?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Regional tournaments start with round-robin play, where every team faces several different opponents and earns standings points for wins and ties. The top teams from round-robin play then move into a single- or double-elimination bracket to determine the regional champion. That regional winner advances directly to the National Finals — with no state round in between — where the same round-robin-into-elimination format decides the national champion.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq-category" id="site" style="--c: #f5a623">
+        <div class="faq-cat-header">
+          <h2 class="faq-cat-title">ABOUT THIS SITE</h2>
+          <p class="faq-cat-desc">What Science Bowl Practice is, who it's for, and how it can help your team.</p>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>What is Science Bowl Practice?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Science Bowl Practice is a free study site built for students preparing for Science Bowl, covering both middle school and high school levels. It includes a timed practice quiz, a buzzer reaction-time trainer, topic-by-topic study guides, a full searchable question browser, a printable test generator, and a live multiplayer online arena. Everything runs right in your browser with no account needed, and your progress saves locally so you can track improvement over time on the <a href="/Progress/">Progress</a> page.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Is Science Bowl Practice free?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Yes, completely free — every tool on the site, from <a href="/Practice/">Practice</a> to the <a href="/Online/">Online Arena</a>, is free to use with no sign-up, subscription, or hidden paywall. It was built to give students better free prep tools, so there's no plan to ever charge for any of it.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can coaches use this site to run team practices?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Yes — coaches regularly use <a href="/PrintableTest/">Printable Test</a> to generate paper practice sets by level and subject for in-person team practice. The <a href="/Online/">Online Arena</a> also works well for running live buzzer scrimmages between students, whether everyone's in the same room or practicing remotely. <a href="/Browse/">Browse</a> is useful too if a coach wants to pull specific questions to build a custom practice set, and none of it requires creating an account, so a coach can just share a link and go.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can I suggest changes or report an issue on this site?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Yes — there's a Report an Issue link in the footer of the <a href="/">home page</a> that goes straight to a GitHub issue form where you can flag a wrong answer, report a bug, or suggest a new feature. Every submission gets read and used to keep the question bank accurate and the tools useful, since this is an independent project rather than something built by a large team.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Does competing in Science Bowl help with college applications?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>Yes — Science Bowl is one of the more effective STEM extracurriculars for college applications, especially at competitive schools that look for sustained, high-level academic involvement outside the classroom. It signals real subject-matter strength across multiple sciences and math at once, which is harder to demonstrate than a one-off club membership, and doing well at regionals or reaching the National Finals gives you a specific, verifiable achievement to point to in essays and activity lists. Taking on a role like team captain or helping recruit and train younger teammates adds a leadership angle on top of that. It won't replace strong grades and test scores, but among academic competitions, it carries real weight.</p></div>
+          </details>
+        </div>
+      </section>
+
+      <p class="faq-no-results" id="faq-no-results">
+        No questions match your search. Try a different term, or
+        <a href="#about">browse by category</a> instead.
+      </p>
+
+      <div class="faq-cta hud-panel">
+        <div class="panel-label">READY?</div>
+        <p>Reading about Science Bowl only gets you so far — the fastest way to actually get better is to start answering real questions.</p>
+        <div class="faq-cta-row">
+          <a href="/Practice/" class="faq-cta-btn" style="color:var(--cyan);border:1px solid var(--cyan)55;text-shadow:0 0 6px var(--cyan)99">START PRACTICING →</a>
+          <a href="/Buzzer/" class="faq-cta-btn" style="color:var(--magenta);border:1px solid var(--magenta)55;text-shadow:0 0 6px var(--magenta)99">TRAIN THE BUZZER →</a>
+        </div>
+      </div>
+
+      <footer>Science Bowl Practice &nbsp;·&nbsp; KNOW THE RULES. WIN THE ROUND.</footer>
+    </div>
+
+    <script>
+      // FAQ search
+      (function() {
+        var input = document.getElementById('faq-search');
+        var countEl = document.getElementById('faq-search-count');
+        var noResults = document.getElementById('faq-no-results');
+        var toc = document.querySelector('.faq-toc');
+        var categories = Array.prototype.slice.call(document.querySelectorAll('.faq-category'));
+        var items = Array.prototype.slice.call(document.querySelectorAll('.faq-item'));
+
+        items.forEach(function(item) {
+          var q = item.querySelector('summary').textContent;
+          var a = item.querySelector('.faq-answer').textContent;
+          item.dataset.searchText = (q + ' ' + a).toLowerCase();
+        });
+
+        function runSearch() {
+          var term = input.value.trim().toLowerCase();
+
+          if (!term) {
+            items.forEach(function(item) { item.style.display = ''; });
+            categories.forEach(function(cat) { cat.style.display = ''; });
+            toc.style.display = '';
+            countEl.textContent = '';
+            noResults.style.display = 'none';
+            return;
+          }
+
+          toc.style.display = 'none';
+          var totalVisible = 0;
+
+          categories.forEach(function(cat) {
+            var catItems = Array.prototype.slice.call(cat.querySelectorAll('.faq-item'));
+            var catVisible = 0;
+            catItems.forEach(function(item) {
+              var match = item.dataset.searchText.indexOf(term) !== -1;
+              item.style.display = match ? '' : 'none';
+              if (match) { catVisible++; totalVisible++; }
+            });
+            cat.style.display = catVisible ? '' : 'none';
+          });
+
+          countEl.innerHTML = '<span>' + totalVisible + '</span> MATCH' + (totalVisible !== 1 ? 'ES' : '') + ' FOUND';
+          noResults.style.display = totalVisible ? 'none' : 'block';
+        }
+
+        input.addEventListener('input', runSearch);
+      })();
+
+      // Starfield
+      (function() {
+        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
+        var _sf_last=0,_sf_raf;
+        function draw(ts) {
+          if(ts-_sf_last>=33){_sf_last=ts;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
+          }
+          _sf_raf=requestAnimationFrame(draw);
+        }
+        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
+        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
+      })();
+    </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+  </body>
+</html>

@@ -1,9 +1,8 @@
-﻿const CACHE = 'sbcn-v6';
+﻿const CACHE = 'sbcn-v7';
 const ASSETS = [
   '/',
   '/index.html',
   '/Practice/',
-  '/Buzzer/',
   '/Buzzer/',
   '/LearnTopics/',
   '/LearnTopics-HS/',
@@ -12,6 +11,7 @@ const ASSETS = [
   '/Settings/',
   '/Browse/',
   '/PrintableTest/',
+  '/FAQ/',
   '/settings.js',
   '/style.css',
   '/question.js',
