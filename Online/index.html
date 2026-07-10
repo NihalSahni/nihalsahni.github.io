@@ -5,7 +5,18 @@
   <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Science Bowl live multiplayer buzzer — create a room, share the code, and compete against real opponents online." />
+  <meta name="keywords" content="science bowl online, science bowl multiplayer, science bowl live buzzer, play science bowl online, science bowl room, NSB online practice" />
   <link rel="canonical" href="https://sciencebowlpractice.org/Online/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sciencebowlpractice.org/Online/" />
+  <meta property="og:site_name" content="Science Bowl Practice" />
+  <meta property="og:title" content="Science Bowl Online Arena — Live Multiplayer Buzzer" />
+  <meta property="og:description" content="Science Bowl live multiplayer buzzer — create a room, share the code, and compete against real opponents online." />
+  <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+  <meta name="twitter:title" content="Science Bowl Online Arena — Live Multiplayer Buzzer" />
+  <meta name="twitter:description" content="Science Bowl live multiplayer buzzer — create a room, share the code, and compete against real opponents online." />
   <title>Online Arena — Science Bowl Practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
@@ -313,6 +324,31 @@
       #players-grid { grid-template-columns:1fr; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["WebApplication", "LearningResource"],
+    "name": "Science Bowl Online Arena",
+    "url": "https://sciencebowlpractice.org/Online/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web Browser",
+    "description": "Science Bowl live multiplayer buzzer — create a room, share the code, and compete against real opponents online.",
+    "learningResourceType": "Simulation",
+    "educationalLevel": ["Middle School", "High School"],
+    "audience": { "@type": "EducationalAudience", "educationalRole": "student" },
+    "isAccessibleForFree": true,
+    "inLanguage": "en",
+    "provider": { "@type": "EducationalOrganization", "name": "Science Bowl Practice", "url": "https://sciencebowlpractice.org/" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sciencebowlpractice.org/" },
+        { "@type": "ListItem", "position": 2, "name": "Online Arena", "item": "https://sciencebowlpractice.org/Online/" }
+      ]
+    }
+  }
+  </script>
 </head>
 <body>
   <canvas id="starfield"></canvas>
@@ -322,6 +358,14 @@
 
   <div style="text-align:center;margin-top:1.5rem">
     <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME BASE</a>
+  </div>
+
+  <div class="related-links-panel" style="margin-top:1rem;margin-bottom:0">
+    <div class="related-links-row">
+      <a href="/Buzzer/" class="related-link-pill" style="--c:var(--magenta)">⚡ BUZZER TRAINER</a>
+      <a href="/Practice/" class="related-link-pill" style="--c:var(--cyan)">🧠 PRACTICE QUIZ</a>
+      <a href="/FAQ/" class="related-link-pill" style="--c:#5b9cf6">❓ FAQ</a>
+    </div>
   </div>
 
   <h1 style="text-align:center">ONLINE ARENA<span class="blink-cursor">|</span></h1>

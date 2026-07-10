@@ -221,6 +221,39 @@ label.flash {
   text-shadow: 0 0 8px var(--cyan);
 }
 
+.related-links-panel {
+  max-width: 640px;
+  margin: 2.5rem auto;
+  text-align: center;
+}
+
+.related-links-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.related-link-pill {
+  display: inline-block;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  padding: 0.4rem 0.9rem;
+  border-radius: 2px;
+  text-decoration: none;
+  color: var(--c, var(--muted));
+  border: 1px solid var(--c, var(--muted));
+  opacity: 0.85;
+  transition: opacity 0.2s, text-shadow 0.2s, background 0.2s;
+}
+
+.related-link-pill:hover {
+  opacity: 1;
+  text-shadow: 0 0 8px var(--c, var(--cyan));
+  background: color-mix(in srgb, var(--c, var(--cyan)) 8%, transparent);
+}
+
 .rank-sub {
   font-size: 0.75rem;
   color: var(--muted);
