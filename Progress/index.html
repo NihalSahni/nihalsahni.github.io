@@ -362,7 +362,7 @@
           '<div class="ws-label">⚠ WEAK SPOT DETECTED</div>' +
           '<div class="ws-subject" style="color:' + color + ';text-shadow:0 0 10px ' + color + '">' + PRACTICE_LABELS[ws.subj] + ' &nbsp;—&nbsp; ' + ws.label + '</div>' +
           '<div class="ws-stats">' + ws.correct + ' / ' + ws.total + ' correct &nbsp;·&nbsp; ' + ws.pct + '% accuracy</div>' +
-          '<a href="Practice.html?level=' + ws.level + '&subject=' + ws.subj + '" class="ws-drill-btn">DRILL THIS SUBJECT →</a>';
+          '<a href="/Practice/?level=' + ws.level + '&subject=' + ws.subj + '" class="ws-drill-btn">DRILL THIS SUBJECT →</a>';
       }
 
       function renderSessionHistory() {
