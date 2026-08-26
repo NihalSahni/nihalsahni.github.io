@@ -64,6 +64,14 @@
       .faq-answer { padding: 0 1.1rem 1.1rem; font-size: 0.8rem; line-height: 1.8; color: var(--muted); }
       .faq-answer a { color: var(--c); text-decoration: underline; text-underline-offset: 2px; }
       .faq-answer a:hover { text-shadow: 0 0 8px var(--c); }
+      .faq-answer em { font-style: normal; color: var(--text); }
+      .faq-table-wrap { overflow-x: auto; margin: 1rem 0; }
+      .faq-table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: 0.74rem; line-height: 1.55; }
+      .faq-table th, .faq-table td { text-align: left; vertical-align: top; padding: 0.45rem 0.8rem 0.45rem 0; border-bottom: 1px solid var(--muted)22; }
+      .faq-table thead th { font-size: 0.62rem; font-weight: normal; letter-spacing: 0.16em; color: var(--c); padding-bottom: 0.6rem; }
+      .faq-table tbody th { font-weight: normal; color: var(--muted); white-space: nowrap; }
+      .faq-table tbody td { color: var(--text); }
+      .faq-table tbody tr:last-child th, .faq-table tbody tr:last-child td { border-bottom: none; }
 
       .faq-cta { max-width: 640px; margin: 1rem auto 3rem; text-align: center; }
       .faq-cta p { font-size: 0.82rem; line-height: 1.8; color: var(--text); margin: 0 0 1.2rem; }
@@ -96,7 +104,7 @@
         {
           "@type": "Question",
           "name": "What's the difference between Science Bowl and Science Olympiad?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Science Bowl is a head-to-head buzzer competition — teams of four sit at a table and race to answer rapid-fire toss-up and bonus questions across six science and math subjects, similar to a quiz bowl. Science Olympiad works completely differently: teams of up to 15 students compete across roughly 23 separate events per season, ranging from written tests to hands-on builds like bridges, rockets, and lab experiments. Because Science Olympiad covers so many different skill sets, it tends to attract more participating schools, while Science Bowl stays narrowly focused on fast content recall and teamwork under time pressure. The two barely overlap in what they train, so Science Bowl practice won't help much with a Science Olympiad build event, and vice versa." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Both are team science competitions, but they test nearly opposite skills. Science Bowl is a head-to-head buzzer match: four students plus an alternate sit at a table and race another team through rapid-fire toss-up and bonus questions across six science and math subjects, closer to quiz bowl than to a lab practical. Science Olympiad is a day-long tournament of roughly 23 separate events, where a roster of up to 15 students splits up and specializes across written tests, hands-on lab events, and engineering builds like bridges, gliders, and vehicles constructed weeks in advance. Point by point: Science Bowl is a head-to-head buzzer match of 4 students plus an alternate, answered in seconds, scored as points per match that you win or lose, run by the U.S. Department of Energy in middle school and high school divisions, with no building involved; Science Olympiad runs about 23 events in parallel for up to 15 students in full test, lab, or build blocks, scored by placement in each event where the lowest total wins, run by Science Olympiad, a nonprofit, in Division B for middle school and Division C for high school, and it includes construction events. The formats barely overlap, but the content does. Science Olympiad study events like Anatomy and Physiology, Astronomy, Chemistry Lab, Disease Detectives, and Meteorology draw on the same biology, chemistry, physics, and earth science material as Science Bowl, so studying for one genuinely feeds the other. What does not carry over is the building and the buzzer instinct, which only Science Bowl demands. Plenty of students do both: Science Olympiad wants deep preparation in a handful of events you pick, while Science Bowl wants broad, instant recall across all six subjects at once." }
         },
         {
           "@type": "Question",
@@ -220,6 +228,11 @@
         },
         {
           "@type": "Question",
+          "name": "Can I use this site to prepare for Science Olympiad?",
+          "acceptedAnswer": { "@type": "Answer", "text": "For the study and test events, yes. Science Olympiad events such as Anatomy and Physiology, Astronomy, Chemistry Lab, Disease Detectives, and Meteorology cover the same biology, chemistry, physics, and earth and space science material as the Science Bowl question bank, so drilling questions here builds the recall those events reward. Browse is useful for reading through a subject in bulk, and the topic study guides work as a refresher before an event. What the site will not help with is the build events, such as towers, gliders, and vehicles, which are hands-on engineering rather than content recall, and it does not follow the Science Olympiad event rotation, which changes each season. Treat it as a content drill rather than an event-specific study guide." }
+        },
+        {
+          "@type": "Question",
           "name": "Can I suggest changes or report an issue on this site?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes — there's a Report an Issue link in the footer of the home page that goes straight to a GitHub issue form where you can flag a wrong answer, report a bug, or suggest a new feature. Every submission gets read and used to keep the question bank accurate and the tools useful, since this is an independent project rather than something built by a large team." }
         },
@@ -288,7 +301,27 @@
           </details>
           <details class="faq-item">
             <summary>What's the difference between Science Bowl and Science Olympiad?<span class="faq-icon">+</span></summary>
-            <div class="faq-answer"><p>Science Bowl is a head-to-head buzzer competition — teams of four sit at a table and race to answer rapid-fire toss-up and bonus questions across six science and math subjects, similar to a quiz bowl. Science Olympiad works completely differently: teams of up to 15 students compete across roughly 23 separate events per season, ranging from written tests to hands-on builds like bridges, rockets, and lab experiments. Because Science Olympiad covers so many different skill sets, it tends to attract more participating schools, while Science Bowl stays narrowly focused on fast content recall and teamwork under time pressure. The two barely overlap in what they train, so <a href="/Practice/">Science Bowl practice</a> won't help much with a Science Olympiad build event, and vice versa.</p></div>
+            <div class="faq-answer"><p>Both are team science competitions, but they test nearly opposite skills. Science Bowl is a head-to-head buzzer match: four students sit at a table and race another team through rapid-fire toss-up and bonus questions across six science and math subjects — closer to quiz bowl than to a lab practical. Science Olympiad is a day-long tournament of roughly 23 separate events, where a roster of up to 15 students splits up and specializes across written tests, hands-on lab events, and engineering builds like bridges, gliders, and vehicles constructed weeks in advance.</p>
+              <div class="faq-table-wrap">
+                <table class="faq-table">
+                  <thead>
+                    <tr><th scope="col"></th><th scope="col">SCIENCE BOWL</th><th scope="col">SCIENCE OLYMPIAD</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">Format</th><td>Head-to-head buzzer match</td><td>~23 events run in parallel</td></tr>
+                    <tr><th scope="row">Team size</th><td>4 students + 1 alternate</td><td>Up to 15 students</td></tr>
+                    <tr><th scope="row">Time per question</th><td>Seconds</td><td>Full test, lab, or build blocks</td></tr>
+                    <tr><th scope="row">What it trains</th><td>Instant recall, breadth, buzzer timing</td><td>Deep specialization, lab skill, engineering</td></tr>
+                    <tr><th scope="row">Building involved</th><td>None</td><td>Yes — bridges, gliders, vehicles</td></tr>
+                    <tr><th scope="row">Scoring</th><td>Points per match; you win or lose the round</td><td>Placement in each event; lowest total wins</td></tr>
+                    <tr><th scope="row">Divisions</th><td>Middle school &amp; high school</td><td>Division B (MS) &amp; Division C (HS)</td></tr>
+                    <tr><th scope="row">Run by</th><td>U.S. Department of Energy</td><td>Science Olympiad, a nonprofit</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>The formats barely overlap, but the <em>content</em> does. Science Olympiad study events like Anatomy and Physiology, Astronomy, Chemistry Lab, Disease Detectives, and Meteorology draw on the same biology, chemistry, physics, and earth science material as Science Bowl, so studying for one genuinely feeds the other. What doesn't carry over is the building — no amount of recall practice helps you construct a tower — and the buzzer instinct, which only Science Bowl demands.</p>
+              <p>Plenty of students do both. The real difference in commitment is shape rather than size: Science Olympiad wants deep preparation in a handful of events you pick, while Science Bowl wants broad, instant recall across all six subjects at once. If you compete in Science Olympiad's study events, <a href="/Practice/">timed practice</a> here still helps — it's the same content, just drilled for speed.</p>
+            </div>
           </details>
           <details class="faq-item">
             <summary>Is Science Bowl free to participate in?<span class="faq-icon">+</span></summary>
@@ -412,6 +445,12 @@
           <details class="faq-item">
             <summary>Can coaches use this site to run team practices?<span class="faq-icon">+</span></summary>
             <div class="faq-answer"><p>Yes — coaches regularly use <a href="/PrintableTest/">Printable Test</a> to generate paper practice sets by level and subject for in-person team practice. The <a href="/Online/">Online Arena</a> also works well for running live buzzer scrimmages between students, whether everyone's in the same room or practicing remotely. <a href="/Browse/">Browse</a> is useful too if a coach wants to pull specific questions to build a custom practice set, and none of it requires creating an account, so a coach can just share a link and go.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary>Can I use this site to prepare for Science Olympiad?<span class="faq-icon">+</span></summary>
+            <div class="faq-answer"><p>For the study and test events, yes. Science Olympiad events such as Anatomy and Physiology, Astronomy, Chemistry Lab, Disease Detectives, and Meteorology cover the same biology, chemistry, physics, and earth and space science material as the Science Bowl question bank, so drilling questions here builds the recall those events reward. <a href="/Browse/">Browse</a> is useful for reading through a subject in bulk, and the <a href="/LearnTopics/">topic study guides</a> work as a refresher before an event.</p>
+              <p>What it won't help with is the build events — towers, gliders, vehicles — which are hands-on engineering rather than content recall, and it doesn't follow the Science Olympiad event rotation, which changes each season. Treat it as a content drill rather than an event-specific study guide.</p>
+            </div>
           </details>
           <details class="faq-item">
             <summary>Can I suggest changes or report an issue on this site?<span class="faq-icon">+</span></summary>
