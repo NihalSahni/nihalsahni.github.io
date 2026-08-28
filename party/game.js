@@ -18,6 +18,12 @@ function lev(a, b) {
   return dp[a.length][b.length];
 }
 
+// A player's token is a secret. Strip it (and the verified flag) from anything
+// that leaves the room, so it never reaches the other clients.
+function publicPlayer(p) {
+  return { id: p.id, name: p.name, team: p.team, isHost: p.isHost, ready: p.ready };
+}
+
 export class GameRoom {
   constructor(state, env) {
     this.state = state;
@@ -55,16 +61,22 @@ export class GameRoom {
   // ── connection ─────────────────────────────────────────────────────────────
   handleConnect(ws, url) {
     const name = (url.searchParams.get('name') || 'PLAYER').toUpperCase().slice(0, 16);
+    const token = url.searchParams.get('token') || '';
     const isFirst = this.sessions.size === 0;
     if (isFirst) this.hostWs = ws;
 
     const team = this.assignTeam();
-    const player = { id: crypto.randomUUID(), name, team, isHost: isFirst, ready: false };
+    const player = { id: crypto.randomUUID(), name, team, isHost: isFirst, ready: false,
+                     token, verified: false };
     this.sessions.set(ws, player);
+
+    // Confirm the callsign really belongs to this player. Until this resolves
+    // (and if it fails) the player simply doesn't count toward the leaderboard.
+    if (token) this.verifyPlayer(player);
 
     this.send(ws, {
       type: 'welcome',
-      you: player,
+      you: publicPlayer(player),
       players: this.playerList(),
       isHost: isFirst,
       roomCode: this.roomId,
@@ -74,7 +86,7 @@ export class GameRoom {
       scores: { ...this.scores },
       round: this.round,
     });
-    this.broadcast({ type: 'playerJoined', player }, ws);
+    this.broadcast({ type: 'playerJoined', player: publicPlayer(player) }, ws);
 
     ws.addEventListener('message', e => this.handleMessage(e.data, ws));
     ws.addEventListener('close',   () => this.handleClose(ws));
@@ -138,6 +150,7 @@ export class GameRoom {
         if (this.round > this.settings.rounds) {
           this.phase = 'DONE';
           this.broadcast({ type: 'gameOver', scores: { ...this.scores }, round: this.round - 1 });
+          this.recordResults();
           this.notifyLobby();
           return;
         }
@@ -244,7 +257,60 @@ export class GameRoom {
   }
 
   playerList() {
-    return [...this.sessions.values()];
+    return [...this.sessions.values()].map(publicPlayer);
+  }
+
+  // ── leaderboard ────────────────────────────────────────────────────────────
+
+  leaderboardStub() {
+    return this.env.LEADERBOARD.get(this.env.LEADERBOARD.idFromName('global'));
+  }
+
+  // Ask the leaderboard whether this player owns the callsign they claimed.
+  async verifyPlayer(player) {
+    try {
+      const res = await this.leaderboardStub().fetch(
+        new Request('https://leaderboard/?action=verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: player.name, token: player.token }),
+        })
+      );
+      const data = await res.json();
+      player.verified = !!data.ok;
+    } catch (_) {
+      player.verified = false;
+    }
+  }
+
+  // Report the finished game. Scores come from this room's own tally, never
+  // from the clients, so a player cannot inflate their own result.
+  async recordResults() {
+    const players = [...this.sessions.values()];
+    const entries = players
+      .filter(p => p.verified && p.token)
+      .map(p => ({
+        name:  p.name,
+        token: p.token,
+        score: this.scores[p.team] ?? 0,
+        won:   this.scores[p.team] > this.scores[p.team === 'my' ? 'en' : 'my'],
+      }));
+    if (!entries.length) return;
+
+    try {
+      await this.leaderboardStub().fetch(
+        new Request('https://leaderboard/?action=submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            entries,
+            rounds:  this.round - 1,
+            level:   this.settings.level,
+            players: players.length,
+          }),
+        })
+      );
+    } catch (_) {}
   }
 
   async notifyLobby() {

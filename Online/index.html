@@ -92,6 +92,55 @@
     }
     .no-rooms { font-size: 0.8rem; color: var(--muted); padding: 1rem 0; text-align: center; letter-spacing: 0.1em; }
 
+    /* ── CALLSIGN CLAIM ── */
+    .claim-line { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .claim-btn {
+      font-size: 0.72rem; padding: 0.45rem 1.1rem; letter-spacing: 0.18em;
+      border-color: var(--cyan); color: var(--cyan); flex-shrink: 0;
+    }
+    .claim-btn-muted { border-color: var(--muted); color: var(--muted); }
+    .claim-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+    .claim-status { font-size: 0.66rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.45rem; min-height: 1.1em; }
+    .claim-status.ok   { color: var(--green); text-shadow: 0 0 8px var(--green); }
+    .claim-status.bad  { color: var(--magenta); text-shadow: 0 0 8px var(--magenta); }
+    .claimed-tag {
+      font-size: 1rem; letter-spacing: 0.18em; color: var(--green);
+      text-shadow: 0 0 10px var(--green); padding: 0.3rem 0;
+    }
+
+    /* ── LEADERBOARD ── */
+    #leaderboard-section { margin-top: 2.5rem; position: relative; }
+    .lb-range-row { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; }
+    .lb-range-btn {
+      font-size: 0.62rem; padding: 0.35rem 0.9rem; letter-spacing: 0.18em;
+      border-color: var(--muted); color: var(--muted);
+    }
+    .lb-range-btn.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+    .lb-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .lb-table th {
+      font-size: 0.58rem; font-weight: normal; letter-spacing: 0.18em; color: var(--muted);
+      text-align: right; padding: 0 0.5rem 0.6rem; border-bottom: 1px solid var(--muted)33;
+    }
+    .lb-table th:nth-child(1), .lb-table th:nth-child(2) { text-align: left; }
+    .lb-table td {
+      padding: 0.5rem; text-align: right; color: var(--text);
+      border-bottom: 1px solid var(--muted)1f;
+    }
+    .lb-table td:nth-child(1), .lb-table td:nth-child(2) { text-align: left; }
+    .lb-table tr:last-child td { border-bottom: none; }
+    .lb-rank { color: var(--muted); width: 2.5rem; }
+    .lb-name { color: var(--cyan); letter-spacing: 0.06em; word-break: break-word; }
+    .lb-row-me .lb-name { color: var(--green); text-shadow: 0 0 8px var(--green); }
+    .lb-row-me .lb-rank { color: var(--green); }
+    .lb-top .lb-rank { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+    .lb-note { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.8rem; line-height: 1.6; }
+    .lb-wrap { overflow-x: auto; }
+
+    @media (max-width: 480px) {
+      .lb-table { font-size: 0.7rem; }
+      .lb-table .lb-hide-sm { display: none; }
+    }
+
     /* ── ROOM (WAITING) ── */
     #room-code-display {
       font-size: 2.8rem;
@@ -378,8 +427,25 @@
 
     <div style="margin-bottom:1.2rem">
       <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.22em;margin-bottom:0.4rem">YOUR CALLSIGN</div>
-      <input id="player-name-input" class="ol-input" type="text" maxlength="16"
-        placeholder="ENTER YOUR NAME..." autocomplete="off" style="max-width:320px" />
+
+      <!-- Unclaimed: pick a callsign nobody has taken -->
+      <div id="claim-row">
+        <div class="claim-line">
+          <input id="player-name-input" class="ol-input" type="text" maxlength="16"
+            placeholder="PICK A CALLSIGN..." autocomplete="off" style="max-width:320px" />
+          <button id="claim-btn" onclick="claimCallsign()" class="claim-btn">CLAIM</button>
+        </div>
+        <div id="claim-status" class="claim-status">Each callsign can only be claimed once.</div>
+      </div>
+
+      <!-- Claimed: this browser holds the token for the name -->
+      <div id="claimed-row" style="display:none">
+        <div class="claim-line">
+          <span class="claimed-tag">◈ <span id="claimed-name"></span></span>
+          <button onclick="releaseCallsign()" class="claim-btn claim-btn-muted">CHANGE</button>
+        </div>
+        <div class="claim-status">Saved to this browser. Clearing site data loses the callsign.</div>
+      </div>
     </div>
 
     <div id="lobby-grid">
@@ -410,6 +476,22 @@
       <div class="panel-label">OPEN MISSIONS</div>
       <div id="public-rooms-list">
         <div class="no-rooms">SCANNING FOR OPEN ROOMS...</div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard-section">
+      <div class="panel-label">STANDINGS</div>
+      <div class="lb-range-row">
+        <button id="lb-range-week" class="lb-range-btn active" onclick="setLbRange('week')">THIS WEEK</button>
+        <button id="lb-range-all"  class="lb-range-btn"        onclick="setLbRange('all')">ALL TIME</button>
+      </div>
+      <div id="leaderboard-list">
+        <div class="no-rooms">LOADING STANDINGS...</div>
+      </div>
+      <div class="lb-note">
+        Ranked by wins, then total points. Only finished games of
+        <span id="lb-min-rounds">5</span>+ rounds with 2 or more agents count.
       </div>
     </div>
   </div>
@@ -621,7 +703,189 @@
     return Math.random().toString(36).slice(2, 8).toUpperCase();
   }
   function getPlayerName() {
-    return (eid('player-name-input')?.value || '').trim().toUpperCase().slice(0, 16) || null;
+    return identity ? identity.name : null;
+  }
+
+  // ── CALLSIGN IDENTITY ───────────────────────────────────────────────────────
+  // A callsign is claimed once and owned by whoever holds its token. The token
+  // lives only in this browser — there is no password and no recovery.
+  const ID_KEY = 'sb_arena_id';
+  let identity = null;   // { name, token }
+  let checkTimer = null;
+
+  const LB_BASE = `${PK_HTTP}://${PK_HOST}/parties/leaderboard/global`;
+
+  function loadIdentity() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(ID_KEY) || 'null');
+      if (raw && typeof raw.name === 'string' && typeof raw.token === 'string') identity = raw;
+    } catch (_) { identity = null; }
+    renderIdentity();
+  }
+
+  // Confirm the stored token still owns the name. Re-claiming with a valid
+  // token is a no-op that returns the same record, so it doubles as a check.
+  // A network failure must never discard a good identity.
+  async function revalidateIdentity() {
+    if (!identity) return;
+    let data;
+    try {
+      const res = await fetch(`${LB_BASE}?action=claim`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: identity.name, token: identity.token }),
+      });
+      data = await res.json();
+    } catch (_) { return; }          // offline — keep what we have
+    if (data && data.ok) return;
+    identity = null;
+    try { localStorage.removeItem(ID_KEY); } catch (_) {}
+    renderIdentity();
+    setClaimStatus('That callsign is no longer yours on this device. Claim a new one.', 'bad');
+  }
+
+  function saveIdentity(id) {
+    identity = id;
+    try { localStorage.setItem(ID_KEY, JSON.stringify(id)); } catch (_) {}
+    renderIdentity();
+  }
+
+  function releaseCallsign() {
+    // Only forgets it on this device — the name stays claimed on the server.
+    identity = null;
+    try { localStorage.removeItem(ID_KEY); } catch (_) {}
+    renderIdentity();
+    setClaimStatus('Your old callsign stays claimed. Pick a new one.', '');
+  }
+
+  function renderIdentity() {
+    const claimRow = eid('claim-row'), claimedRow = eid('claimed-row');
+    if (!claimRow || !claimedRow) return;
+    if (identity) {
+      claimRow.style.display = 'none';
+      claimedRow.style.display = 'block';
+      eid('claimed-name').textContent = identity.name;
+    } else {
+      claimRow.style.display = 'block';
+      claimedRow.style.display = 'none';
+    }
+    renderLeaderboard();
+  }
+
+  function setClaimStatus(text, kind) {
+    const el = eid('claim-status');
+    if (!el) return;
+    el.textContent = text;
+    el.className = 'claim-status' + (kind ? ' ' + kind : '');
+  }
+
+  function typedName() {
+    return (eid('player-name-input')?.value || '').trim().toUpperCase().replace(/\s+/g, ' ').slice(0, 16);
+  }
+
+  // Live availability feedback while typing.
+  async function checkAvailability() {
+    const name = typedName();
+    if (name.length < 3) {
+      setClaimStatus(name ? 'Callsigns are at least 3 characters.' : 'Each callsign can only be claimed once.', '');
+      return;
+    }
+    try {
+      const res = await fetch(`${LB_BASE}?action=check&name=${encodeURIComponent(name)}`);
+      const data = await res.json();
+      if (typedName() !== name) return;  // input moved on
+      if (data.available)              setClaimStatus(`${name} is available.`, 'ok');
+      else if (data.reason === 'taken') setClaimStatus(`${name} is already taken.`, 'bad');
+      else setClaimStatus('Use 3-16 characters: letters, numbers, spaces, _ or -.', 'bad');
+    } catch (_) { /* offline — let the claim attempt report it */ }
+  }
+
+  async function claimCallsign() {
+    const name = typedName();
+    if (name.length < 3) { setClaimStatus('Callsigns are at least 3 characters.', 'bad'); return; }
+    const btn = eid('claim-btn');
+    btn.disabled = true;
+    setClaimStatus('Claiming...', '');
+    try {
+      const res = await fetch(`${LB_BASE}?action=claim`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, token: identity?.token }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        saveIdentity({ name: data.name, token: data.token });
+        setClaimStatus('', '');
+        loadLeaderboard();
+      } else {
+        setClaimStatus(data.error || 'Could not claim that callsign.', 'bad');
+      }
+    } catch (_) {
+      setClaimStatus('Could not reach the server. Try again.', 'bad');
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  // ── LEADERBOARD ─────────────────────────────────────────────────────────────
+  let lbRange = 'week';
+  let lbData = null;
+  let lbFetched = false;
+
+  function setLbRange(range) {
+    lbRange = range === 'all' ? 'all' : 'week';
+    eid('lb-range-week').classList.toggle('active', lbRange === 'week');
+    eid('lb-range-all').classList.toggle('active',  lbRange === 'all');
+    loadLeaderboard();
+  }
+
+  async function loadLeaderboard() {
+    try {
+      const res = await fetch(`${LB_BASE}?action=top&range=${lbRange}`);
+      lbData = await res.json();
+    } catch (_) {
+      lbData = null;
+    }
+    lbFetched = true;
+    renderLeaderboard();
+  }
+
+  function renderLeaderboard() {
+    const list = eid('leaderboard-list');
+    if (!list) return;
+    if (!lbFetched) return;   // keep the loading state until the first fetch lands
+    if (!lbData) {
+      list.innerHTML = '<div class="no-rooms">STANDINGS UNAVAILABLE</div>';
+      return;
+    }
+    const rows = lbData.standings || [];
+    if (!rows.length) {
+      list.innerHTML = `<div class="no-rooms">NO RANKED GAMES ${lbRange === 'week' ? 'THIS WEEK' : 'YET'}</div>`;
+      return;
+    }
+    const mine = identity ? identity.name.toLowerCase() : null;
+    list.innerHTML = `<div class="lb-wrap"><table class="lb-table">
+      <thead><tr>
+        <th>#</th><th>CALLSIGN</th><th>W</th>
+        <th class="lb-hide-sm">GP</th><th>PTS</th><th class="lb-hide-sm">BEST</th>
+      </tr></thead>
+      <tbody>${rows.map(r => {
+        const me = mine && r.name.toLowerCase() === mine;
+        const cls = [me ? 'lb-row-me' : '', r.rank <= 3 ? 'lb-top' : ''].filter(Boolean).join(' ');
+        return `<tr class="${cls}">
+          <td class="lb-rank">${r.rank}</td>
+          <td class="lb-name">${escapeHtml(r.name)}</td>
+          <td>${r.wins}</td>
+          <td class="lb-hide-sm">${r.games}</td>
+          <td>${r.points}</td>
+          <td class="lb-hide-sm">${r.best}</td>
+        </tr>`;
+      }).join('')}</tbody></table></div>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
   // ── SCREENS ─────────────────────────────────────────────────────────────────
@@ -660,24 +924,29 @@
     }).join('');
   }
 
+  // Every entry point needs a claimed callsign first.
+  function requireCallsign() {
+    if (identity) return true;
+    eid('player-name-input').focus();
+    setClaimStatus('Claim a callsign before you can play.', 'bad');
+    return false;
+  }
+
   function createRoom() {
-    const name = getPlayerName();
-    if (!name) { eid('player-name-input').focus(); return; }
-    connectToRoom(generateCode(), name);
+    if (!requireCallsign()) return;
+    connectToRoom(generateCode(), getPlayerName());
   }
 
   function joinRoom() {
     const code = (eid('join-code-input')?.value || '').trim().toUpperCase();
-    const name = getPlayerName();
     if (!code || code.length !== 6) { alert('Enter a 6-character room code.'); return; }
-    if (!name) { eid('player-name-input').focus(); return; }
-    connectToRoom(code, name);
+    if (!requireCallsign()) return;
+    connectToRoom(code, getPlayerName());
   }
 
   function joinRoomByCode(code) {
-    const name = getPlayerName();
-    if (!name) { eid('player-name-input').focus(); alert('Enter your callsign first.'); return; }
-    connectToRoom(code, name);
+    if (!requireCallsign()) return;
+    connectToRoom(code, getPlayerName());
   }
 
   function connectToRoom(code, name) {
@@ -686,7 +955,8 @@
     cs.textContent = '⟳ CONNECTING...';
     cs.className = 'connecting';
 
-    ws = new WebSocket(`${PK_WS}://${PK_HOST}/parties/game/${code}?name=${encodeURIComponent(name)}`);
+    const auth = identity ? `&token=${encodeURIComponent(identity.token)}` : '';
+    ws = new WebSocket(`${PK_WS}://${PK_HOST}/parties/game/${code}?name=${encodeURIComponent(name)}${auth}`);
     ws.onopen = () => { cs.style.display = 'none'; };
     ws.onmessage = e => onWsMessage(JSON.parse(e.data));
     ws.onerror = () => { alert('Could not connect. Check your code and try again.'); cs.style.display = 'none'; };
@@ -1059,6 +1329,8 @@
     myScore = data.scores.my;
     enScore = data.scores.en;
     gPhase = 'DONE';
+    // The room writes the result server-side; give it a moment, then refresh.
+    setTimeout(loadLeaderboard, 1200);
     const won = myScore > enScore, tied = myScore === enScore;
     const teamWon = me?.team === 'my' ? won : !won && !tied;
     const label = tied ? 'DRAW' : teamWon ? 'VICTORY' : 'DEFEAT';
@@ -1417,12 +1689,18 @@
 
     eid('BuzzBtn').addEventListener('click', () => olBuzz());
 
-    // Pre-fill name from a prior session if stored
-    const storedName = sessionStorage.getItem('ol_name');
-    if (storedName) eid('player-name-input').value = storedName;
+    // Restore the claimed callsign for this browser, then load standings.
+    loadIdentity();
+    revalidateIdentity();
+    loadLeaderboard();
 
     eid('player-name-input').addEventListener('input', () => {
-      sessionStorage.setItem('ol_name', eid('player-name-input').value);
+      clearTimeout(checkTimer);
+      checkTimer = setTimeout(checkAvailability, 350);
+    });
+
+    eid('player-name-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') claimCallsign();
     });
 
     eid('join-code-input').addEventListener('keydown', e => {
