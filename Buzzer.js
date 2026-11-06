@@ -199,16 +199,16 @@ function bzCountdown(cb) {
   $('h2h-buttons').style.display = 'none';
   $('q-subject').textContent = '';
   let n = 3;
-  $('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`;
+  $('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite">${n}</div>`;
   beep(440, 120);
   const iv = setInterval(() => {
     n--;
     if (n > 0) {
-      $('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`;
+      $('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite">${n}</div>`;
       beep(440, 120);
     } else {
       clearInterval(iv);
-      $('q-text').innerHTML = `<h1 class="countdown" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</h1>`;
+      $('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</div>`;
       beep(880, 200);
       setTimeout(cb, 600);
     }

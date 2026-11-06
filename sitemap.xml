@@ -21,12 +21,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-  <url>
-    <loc>https://sciencebowlpractice.org/LearnTopics/</loc>
-    <lastmod>2026-11-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <!-- /LearnTopics/ and /Progress/ are deliberately noindex (a thin hub page
+       and a personal stats page), so they are not listed here. Listing a
+       noindexed URL in a sitemap contradicts the page itself and shows up in
+       Search Console as "Submitted URL marked noindex". -->
   <url>
     <loc>https://sciencebowlpractice.org/LearnTopics-HS/</loc>
     <lastmod>2026-11-06</lastmod>
@@ -56,12 +54,6 @@
     <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://sciencebowlpractice.org/Progress/</loc>
-    <lastmod>2026-11-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://sciencebowlpractice.org/FAQ/</loc>

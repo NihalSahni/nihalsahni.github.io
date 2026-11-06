@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="That page doesn't exist. Jump to Science Bowl practice questions, the buzzer trainer, study topics or the question browser." />
+    <title>Page Not Found — Science Bowl Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
+    <style>
+      .nf-wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 3.5rem 1rem 2rem;
+        text-align: center;
+      }
+
+      .nf-code {
+        font-size: clamp(4rem, 18vw, 8rem);
+        line-height: 1;
+        color: var(--magenta);
+        margin: 0;
+      }
+
+      .nf-tag {
+        font-size: 0.72rem;
+        letter-spacing: 0.3em;
+        color: var(--muted);
+        margin: 0.75rem 0 1.5rem;
+      }
+
+      .nf-title {
+        font-size: clamp(1.1rem, 4vw, 1.5rem);
+        color: var(--text);
+        margin: 0 0 0.75rem;
+      }
+
+      .nf-body {
+        font-size: 0.9rem;
+        line-height: 1.8;
+        color: var(--muted);
+        margin: 0 auto 2.5rem;
+        max-width: 440px;
+      }
+
+      .nf-links {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .nf-link {
+        display: block;
+        padding: 0.9rem 0.75rem;
+        background: var(--surface);
+        border: 1px solid color-mix(in srgb, var(--c, var(--cyan)) 40%, transparent);
+        border-radius: 3px;
+        color: var(--c, var(--cyan));
+        text-decoration: none;
+        font-size: 0.82rem;
+        letter-spacing: 0.12em;
+        transition: border-color 0.2s, transform 0.2s;
+      }
+
+      .nf-link:hover {
+        border-color: var(--c, var(--cyan));
+        transform: translateY(-2px);
+      }
+
+      .nf-home {
+        display: inline-block;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        color: var(--muted);
+        text-decoration: none;
+        border: 1px solid color-mix(in srgb, var(--muted) 35%, transparent);
+        padding: 0.45rem 1.1rem;
+        border-radius: 2px;
+        transition: color 0.2s, border-color 0.2s;
+      }
+
+      .nf-home:hover {
+        color: var(--cyan);
+        border-color: var(--cyan);
+      }
+
+      footer {
+        text-align: center;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        color: color-mix(in srgb, var(--muted) 55%, transparent);
+        padding: 2rem 1rem;
+      }
+
+      @media (max-width: 420px) {
+        .nf-links { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="nf-wrap">
+      <h1 class="nf-code">404</h1>
+      <p class="nf-tag">// PAGE NOT FOUND //</p>
+
+      <h2 class="nf-title">This page doesn't exist</h2>
+      <p class="nf-body">
+        The link might be out of date, or the address may have a typo in it.
+        Everything on the site is one tap away below.
+      </p>
+
+      <div class="nf-links">
+        <a href="/Practice/" class="nf-link" style="--c: var(--cyan)">🧠 PRACTICE QUIZ</a>
+        <a href="/Buzzer/" class="nf-link" style="--c: var(--magenta)">⚡ BUZZER TRAINER</a>
+        <a href="/LearnTopics/" class="nf-link" style="--c: var(--green)">📡 STUDY TOPICS</a>
+        <a href="/Browse/" class="nf-link" style="--c: #f5a623">🔍 BROWSE QUESTIONS</a>
+        <a href="/Online/" class="nf-link" style="--c: #ff6b6b">🌐 PLAY ONLINE</a>
+        <a href="/FAQ/" class="nf-link" style="--c: #5b9cf6">❓ QUESTIONS &amp; ANSWERS</a>
+      </div>
+
+      <a href="/" class="nf-home">← BACK TO HOME</a>
+    </div>
+
+    <footer>Science Bowl Practice &nbsp;·&nbsp; TRAIN HARD. BUZZ FAST. WIN.</footer>
+
+    <script src="/starfield.js"></script>
+  </body>
+</html>

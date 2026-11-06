@@ -688,16 +688,16 @@ function updateStatus() {
 function startCountdown(callback) {
   const container = document.getElementById("QuestionContainer");
   let count = 3;
-  container.innerHTML = `<h1 class="countdown">${count}</h1>`;
+  container.innerHTML = `<div class="countdown" role="status" aria-live="polite">${count}</div>`;
   beep(440, 120);
   const iv = setInterval(() => {
     count--;
     if (count > 0) {
-      container.innerHTML = `<h1 class="countdown">${count}</h1>`;
+      container.innerHTML = `<div class="countdown" role="status" aria-live="polite">${count}</div>`;
       beep(440, 120);
     } else {
       clearInterval(iv);
-      container.innerHTML = `<h1 class="countdown" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</h1>`;
+      container.innerHTML = `<div class="countdown" role="status" aria-live="polite" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</div>`;
       beep(880, 200);
       setTimeout(callback, 500);
     }

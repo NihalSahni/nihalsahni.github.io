@@ -557,7 +557,7 @@
 
       <div class="hud-panel">
         <div class="panel-label">MATCH LENGTH</div>
-        <h3 id="rm-round-display">20 TOSS-UPS</h3>
+        <div id="rm-round-display" class="value-readout" role="status" aria-live="polite">20 TOSS-UPS</div>
         <input type="range" min="5" max="60" value="20" id="rm-round-slider" oninput="rmUpdateRounds()" />
       </div>
     </div>
@@ -1690,14 +1690,14 @@
     eid('BuzzBtn').disabled = true;
     eid('q-subject').textContent = '';
     let n = 3;
-    eid('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`;
+    eid('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite">${n}</div>`;
     beep(440, 120);
     const iv = setInterval(() => {
       n--;
-      if (n > 0) { eid('q-text').innerHTML = `<h1 class="countdown">${n}</h1>`; beep(440, 120); }
+      if (n > 0) { eid('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite">${n}</div>`; beep(440, 120); }
       else {
         clearInterval(iv);
-        eid('q-text').innerHTML = `<h1 class="countdown" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</h1>`;
+        eid('q-text').innerHTML = `<div class="countdown" role="status" aria-live="polite" style="color:var(--green);text-shadow:0 0 40px var(--green)">GO</div>`;
         beep(880, 200);
         setTimeout(cb, 600);
       }

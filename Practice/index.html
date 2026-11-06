@@ -109,7 +109,7 @@
         <button id="standard-btn" class="diff-btn" onclick="setSurvivalMode(false)">STANDARD</button>
         <button id="survival-btn" class="diff-btn" onclick="setSurvivalMode(true)">SURVIVAL <span class="rank-sub">[ 3 lives ]</span></button>
       </div>
-      <h3 id="AmountQuestions">30 QUESTIONS</h3>
+      <div id="AmountQuestions" class="value-readout" role="status" aria-live="polite">30 QUESTIONS</div>
       <input type="range" min="10" max="100" value="30" id="QuestionSlider" oninput="UpdateQuestions()" />
       <p id="survival-label" style="display:none;font-size:0.72rem;letter-spacing:0.15em;color:var(--magenta);text-shadow:0 0 8px var(--magenta);margin:0">3 LIVES — WRONG ANSWERS COST A LIFE</p>
     </div>

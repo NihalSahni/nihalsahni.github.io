@@ -923,3 +923,15 @@ summary:focus-visible,
 input[type="range"]:focus-visible {
   outline-offset: 4px;
 }
+
+/* A live value readout, e.g. "30 QUESTIONS" or "20 TOSS-UPS". These look like
+   headings but aren't section titles — marking them up as <h3> under an <h1>
+   skipped a heading level, which makes screen-reader navigation confusing.
+   They're divs now; this keeps the look the h3 had. */
+.value-readout {
+  color: var(--cyan);
+  text-shadow: 0 0 10px var(--cyan);
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 1em 0;
+}
