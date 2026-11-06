@@ -10,14 +10,14 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://sciencebowlpractice.org/Online/" />
   <meta property="og:site_name" content="Science Bowl Practice" />
-  <meta property="og:title" content="Science Bowl Online Arena — Live Multiplayer Buzzer" />
+  <meta property="og:title" content="Play Science Bowl Online — Live Multiplayer Buzzer" />
   <meta property="og:description" content="Science Bowl live multiplayer buzzer on real questions from official National Science Bowl sets — create a room, share the code, and compete against real opponents online." />
   <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
-  <meta name="twitter:title" content="Science Bowl Online Arena — Live Multiplayer Buzzer" />
+  <meta name="twitter:title" content="Play Science Bowl Online — Live Multiplayer Buzzer" />
   <meta name="twitter:description" content="Science Bowl live multiplayer buzzer on real questions from official National Science Bowl sets — create a room, share the code, and compete against real opponents online." />
-  <title>Online Arena — Science Bowl Practice</title>
+  <title>Play Online — Science Bowl Practice</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <link rel="manifest" href="/manifest.json" />
@@ -319,6 +319,20 @@
     #round-result.incorrect { color:var(--magenta);text-shadow:0 0 14px var(--magenta); }
     #round-result.neutral   { color:var(--muted); }
 
+    /* Correct answer, revealed only once a toss-up is over */
+    #answer-reveal {
+      display:none;text-align:center;max-width:520px;margin:0.25rem auto 0.9rem;
+      padding:0.7rem 1rem;border-radius:3px;
+      border:1px solid color-mix(in srgb, var(--green) 45%, transparent);
+      background:color-mix(in srgb, var(--green) 7%, transparent);
+      color:var(--green);font-size:1.05rem;letter-spacing:0.05em;line-height:1.5;
+      text-shadow:0 0 10px color-mix(in srgb, var(--green) 55%, transparent);
+    }
+    #answer-reveal .ar-label {
+      display:block;font-size:0.58rem;letter-spacing:0.28em;
+      color:var(--muted);text-shadow:none;margin-bottom:0.35rem;
+    }
+
     #NextBtn { display:none;margin:0.3rem auto 0;font-size:1rem;padding:0.55rem 2rem;border-color:var(--cyan);color:var(--cyan); }
 
     /* online roster */
@@ -406,7 +420,7 @@
   <div id="connection-status" class="connecting">⟳ CONNECTING...</div>
 
   <div style="text-align:center;margin-top:1.5rem">
-    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME BASE</a>
+    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME</a>
   </div>
 
   <div class="related-links-panel" style="margin-top:1rem;margin-bottom:0">
@@ -417,25 +431,25 @@
     </div>
   </div>
 
-  <h1 style="text-align:center">ONLINE ARENA<span class="blink-cursor">|</span></h1>
+  <h1 style="text-align:center">PLAY ONLINE<span class="blink-cursor">|</span></h1>
 
   <!-- ══ SCREEN: LOBBY ══════════════════════════════════════════════════════ -->
   <div id="screen-lobby" class="screen active">
     <p style="text-align:center;color:var(--muted);font-size:0.85rem;letter-spacing:0.08em;margin:0 0 1.5rem">
-      Compete live against real opponents — buzzer arbitrated server-side.
+      Compete live against real opponents — the server decides who buzzed in first.
     </p>
 
     <div style="margin-bottom:1.2rem">
-      <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.22em;margin-bottom:0.4rem">YOUR CALLSIGN</div>
+      <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.22em;margin-bottom:0.4rem">YOUR NAME</div>
 
       <!-- Unclaimed: pick a callsign nobody has taken -->
       <div id="claim-row">
         <div class="claim-line">
           <input id="player-name-input" class="ol-input" type="text" maxlength="16"
-            placeholder="PICK A CALLSIGN..." autocomplete="off" style="max-width:320px" />
+            placeholder="PICK A NAME..." autocomplete="off" style="max-width:320px" />
           <button id="claim-btn" onclick="claimCallsign()" class="claim-btn">CLAIM</button>
         </div>
-        <div id="claim-status" class="claim-status">Each callsign can only be claimed once.</div>
+        <div id="claim-status" class="claim-status">Each name can only be claimed once.</div>
       </div>
 
       <!-- Claimed: this browser holds the token for the name -->
@@ -444,14 +458,14 @@
           <span class="claimed-tag">◈ <span id="claimed-name"></span></span>
           <button onclick="releaseCallsign()" class="claim-btn claim-btn-muted">CHANGE</button>
         </div>
-        <div class="claim-status">Saved to this browser. Clearing site data loses the callsign.</div>
+        <div class="claim-status">Saved to this browser. Clearing site data loses the name.</div>
       </div>
     </div>
 
     <div id="lobby-grid">
       <!-- Create -->
       <div class="action-box">
-        <div class="action-box-label">ESTABLISH ROOM</div>
+        <div class="action-box-label">CREATE A ROOM</div>
         <p style="font-size:0.8rem;color:var(--muted);margin:0;line-height:1.6">
           Generate a 6-character room code and share it with your team.
         </p>
@@ -473,7 +487,7 @@
 
     <!-- Public rooms -->
     <div id="public-rooms-section">
-      <div class="panel-label">OPEN MISSIONS</div>
+      <div class="panel-label">OPEN ROOMS</div>
       <div id="public-rooms-list">
         <div class="no-rooms">SCANNING FOR OPEN ROOMS...</div>
       </div>
@@ -481,17 +495,17 @@
 
     <!-- Leaderboard -->
     <div id="leaderboard-section">
-      <div class="panel-label">STANDINGS</div>
+      <div class="panel-label">LEADERBOARD</div>
       <div class="lb-range-row">
         <button id="lb-range-week" class="lb-range-btn active" onclick="setLbRange('week')">THIS WEEK</button>
         <button id="lb-range-all"  class="lb-range-btn"        onclick="setLbRange('all')">ALL TIME</button>
       </div>
       <div id="leaderboard-list">
-        <div class="no-rooms">LOADING STANDINGS...</div>
+        <div class="no-rooms">LOADING LEADERBOARD...</div>
       </div>
       <div class="lb-note">
         Ranked by wins, then total points. Only finished games of
-        <span id="lb-min-rounds">5</span>+ rounds with 2 or more agents count.
+        <span id="lb-min-rounds">5</span>+ rounds with 2 or more players count.
       </div>
     </div>
   </div>
@@ -522,20 +536,20 @@
       <div id="public-toggle" class="toggle-switch" onclick="togglePublic()">
         <div class="toggle-knob"></div>
       </div>
-      <span>Make room public (visible in Open Missions)</span>
+      <span>Make room public (visible in Open Rooms)</span>
     </div>
 
     <!-- Host settings -->
     <div id="room-settings" style="display:none">
       <div class="hud-panel">
-        <div class="panel-label">OPERATIVE CLASS</div>
-        <button id="rm-ms" class="diff-btn" onclick="rmSetLevel('MS')">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
-        <button id="rm-hs" class="diff-btn" onclick="rmSetLevel('HS')">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
+        <div class="panel-label">YOUR LEVEL</div>
+        <button id="rm-ms" class="diff-btn" onclick="rmSetLevel('MS')">MIDDLE SCHOOL <span class="rank-sub">[ grades 6-8 ]</span></button>
+        <button id="rm-hs" class="diff-btn" onclick="rmSetLevel('HS')">HIGH SCHOOL <span class="rank-sub">[ grades 9-12 ]</span></button>
       </div>
 
       <div class="hud-panel">
-        <div class="panel-label">MODULE SELECT</div>
-        <label><input id="rm-Everything" type="checkbox" onchange="rmSubject('Everything',this)" /> ALL MODULES</label>
+        <div class="panel-label">SUBJECTS</div>
+        <label><input id="rm-Everything" type="checkbox" onchange="rmSubject('Everything',this)" /> ALL SUBJECTS</label>
         <label><input id="rm-Biology"    type="checkbox" onchange="rmSubject('Biology',this)"    /> BIOLOGY</label>
         <label><input id="rm-Physics"    type="checkbox" onchange="rmSubject('Physics',this)"    /> PHYSICS</label>
         <label><input id="rm-Chemistry"  type="checkbox" onchange="rmSubject('Chemistry',this)"  /> CHEMISTRY</label>
@@ -554,7 +568,7 @@
     <div id="room-status-msg">WAITING FOR PLAYERS...</div>
 
     <button id="ready-btn" onclick="toggleReady()" style="display:none">◉ READY</button>
-    <button id="launch-btn" onclick="launchGame()" disabled>⚡ LAUNCH MISSION</button>
+    <button id="launch-btn" onclick="launchGame()" disabled>⚡ START GAME</button>
   </div>
 
   <!-- ══ SCREEN: GAME ════════════════════════════════════════════════════════ -->
@@ -576,7 +590,7 @@
 
     <div id="question-area">
       <div id="q-subject"></div>
-      <div id="q-text" style="text-align:center;color:var(--muted);letter-spacing:0.15em">◈ MISSION BRIEFING IN PROGRESS</div>
+      <div id="q-text" style="text-align:center;color:var(--muted);letter-spacing:0.15em">◈ WAITING FOR THE NEXT QUESTION</div>
     </div>
 
     <div id="opp-chance-banner"></div>
@@ -614,6 +628,7 @@
     </div>
 
     <div id="round-result"></div>
+    <div id="answer-reveal"></div>
     <button id="NextBtn" onclick="olNext()">NEXT TOSS-UP ›</button>
 
     <div style="text-align:center;margin-top:0.75rem">
@@ -741,7 +756,7 @@
     identity = null;
     try { localStorage.removeItem(ID_KEY); } catch (_) {}
     renderIdentity();
-    setClaimStatus('That callsign is no longer yours on this device. Claim a new one.', 'bad');
+    setClaimStatus('That name is no longer yours on this device. Claim a new one.', 'bad');
   }
 
   function saveIdentity(id) {
@@ -755,7 +770,7 @@
     identity = null;
     try { localStorage.removeItem(ID_KEY); } catch (_) {}
     renderIdentity();
-    setClaimStatus('Your old callsign stays claimed. Pick a new one.', '');
+    setClaimStatus('Your old name stays claimed. Pick a new one.', '');
   }
 
   function renderIdentity() {
@@ -787,7 +802,7 @@
   async function checkAvailability() {
     const name = typedName();
     if (name.length < 3) {
-      setClaimStatus(name ? 'Callsigns are at least 3 characters.' : 'Each callsign can only be claimed once.', '');
+      setClaimStatus(name ? 'Names must be at least 3 characters.' : 'Each name can only be claimed once.', '');
       return;
     }
     try {
@@ -802,7 +817,7 @@
 
   async function claimCallsign() {
     const name = typedName();
-    if (name.length < 3) { setClaimStatus('Callsigns are at least 3 characters.', 'bad'); return; }
+    if (name.length < 3) { setClaimStatus('Names must be at least 3 characters.', 'bad'); return; }
     const btn = eid('claim-btn');
     btn.disabled = true;
     setClaimStatus('Claiming...', '');
@@ -818,7 +833,7 @@
         setClaimStatus('', '');
         loadLeaderboard();
       } else {
-        setClaimStatus(data.error || 'Could not claim that callsign.', 'bad');
+        setClaimStatus(data.error || 'Could not claim that name.', 'bad');
       }
     } catch (_) {
       setClaimStatus('Could not reach the server. Try again.', 'bad');
@@ -866,7 +881,7 @@
     const mine = identity ? identity.name.toLowerCase() : null;
     list.innerHTML = `<div class="lb-wrap"><table class="lb-table">
       <thead><tr>
-        <th>#</th><th>CALLSIGN</th><th>W</th>
+        <th>#</th><th>PLAYER</th><th>W</th>
         <th class="lb-hide-sm">GP</th><th>PTS</th><th class="lb-hide-sm">BEST</th>
       </tr></thead>
       <tbody>${rows.map(r => {
@@ -910,7 +925,7 @@
   function renderPublicRooms(rooms) {
     const list = eid('public-rooms-list');
     if (!rooms || rooms.length === 0) {
-      list.innerHTML = '<div class="no-rooms">NO OPEN MISSIONS DETECTED</div>';
+      list.innerHTML = '<div class="no-rooms">NO OPEN ROOMS RIGHT NOW</div>';
       return;
     }
     list.innerHTML = rooms.map(r => {
@@ -928,7 +943,7 @@
   function requireCallsign() {
     if (identity) return true;
     eid('player-name-input').focus();
-    setClaimStatus('Claim a callsign before you can play.', 'bad');
+    setClaimStatus('Claim a name before you can play.', 'bad');
     return false;
   }
 
@@ -1214,6 +1229,7 @@
     eid('locked-banner').style.display = 'none';
     eid('round-result').textContent = '';
     eid('round-result').className = '';
+    hideCorrectAnswer();
     eid('NextBtn').style.display = 'none';
 
     displayQuestion();
@@ -1268,9 +1284,16 @@
       enScore = data.scores.en;
       teamLock = data.teamLock || teamLock;
       updateScores();
-      const msg = iAmBuzzer ? `✗ WRONG −4  ·  Correct: ${data.correctAnswer}` : `✗ ${data.playerName || 'PLAYER'} WRONG −4  ·  ${data.correctAnswer}`;
+      // No answer reveal here — the other team may still have a chance at it.
+      const msg = iAmBuzzer ? '✗ WRONG −4' : `✗ ${data.playerName || 'PLAYER'} WRONG −4`;
       olResult(msg, 'incorrect');
       updateRoster('fail', data.playerId);
+      beep(220, 220);
+
+      // Both teams have now missed it — end the toss-up immediately rather than
+      // making everyone sit through another buzz window nobody can use.
+      if (tossUpIsOver(data)) { endTossUpNow(data); return; }
+
       gPhase = 'BUZZ_OPEN';
       // Show opp-chance banner based on who was locked
       setTimeout(() => {
@@ -1284,8 +1307,21 @@
         }
         startBuzzTimer();
       }, 2200);
-      beep(220, 220);
     }
+  }
+
+  // Both teams have missed it. Trust the server's flag when it sends one; an
+  // older deployed server build doesn't, so fall back to our own lock state.
+  function tossUpIsOver(data) {
+    return !!data.dead || (teamLock.my && teamLock.en);
+  }
+
+  // Finish the toss-up right now — no pause, no reopened buzz window.
+  function endTossUpNow(data) {
+    olTossUpDead(data.correctAnswer);
+    // If the server never flagged it, it still thinks the question is live and
+    // would ignore the host's NEXT. Tell it the question is done.
+    if (!data.dead && isHostFlag) wsend({ type: 'questionExpired', questionId: curQ.id });
   }
 
   function handleAnswerTimeout(data) {
@@ -1298,6 +1334,10 @@
     updateScores();
     updateRoster('fail', data.playerId);
     olResult('TIME EXPIRED — −4', 'incorrect');
+    beep(220, 220);
+
+    if (tossUpIsOver(data)) { endTossUpNow(data); return; }
+
     gPhase = 'BUZZ_OPEN';
     setTimeout(() => {
       olResult('', '');
@@ -1305,18 +1345,51 @@
       if (!isLockedOut()) {
         eid('BuzzBtn').style.display = '';
         enableBuzzBtn();
+      } else {
+        disableBuzzBtn();
       }
       startBuzzTimer();
     }, 2200);
-    beep(220, 220);
+  }
+
+  // Both teams have missed it — no second attempts, so the toss-up ends here
+  // instead of reopening the buzz window with everyone locked out.
+  function olTossUpDead(correctAnswer) {
+    stopBuzzTimer();
+    eid('opp-chance-banner').style.display = 'none';
+    eid('locked-banner').style.display = 'none';
+    eid('BuzzBtn').style.display = 'none';
+    disableBuzzBtn();
+    olResult('⊘ BOTH TEAMS INCORRECT — TOSS-UP DEAD', 'neutral');
+    showCorrectAnswer(correctAnswer);
+    gPhase = 'RESULT';
+    if (isHostFlag) eid('NextBtn').style.display = 'inline-block';
+    beep(200, 150);
+  }
+
+  // Reveal the answer under the result line. Only ever called once a toss-up is
+  // finished, so there is nothing left to give away.
+  function showCorrectAnswer(correctAnswer) {
+    const el = eid('answer-reveal');
+    if (!correctAnswer) { el.style.display = 'none'; return; }
+    el.innerHTML = `<span class="ar-label">CORRECT ANSWER</span>${escapeHtml(correctAnswer)}`;
+    el.style.display = 'block';
+  }
+
+  function hideCorrectAnswer() {
+    eid('answer-reveal').style.display = 'none';
   }
 
   function handleQuestionExpired(data) {
+    // We may have already ended this toss-up ourselves because both teams
+    // missed it. Don't overwrite that result with "nobody buzzed".
+    if (gPhase === 'RESULT') return;
     stopBuzzTimer();
     myScore = data.scores.my;
     enScore = data.scores.en;
     updateScores();
-    olResult('TIME EXPIRED — QUESTION DEAD', 'neutral');
+    olResult('⊘ NOBODY BUZZED — TOSS-UP DEAD', 'neutral');
+    showCorrectAnswer(data.correctAnswer);
     disableBuzzBtn();
     eid('opp-chance-banner').style.display = 'none';
     gPhase = 'RESULT';
@@ -1337,7 +1410,7 @@
     const col = tied ? 'var(--cyan)' : teamWon ? 'var(--green)' : 'var(--magenta)';
 
     ['BuzzBtn','NextBtn'].forEach(id => eid(id).style.display = 'none');
-    ['question-area','buzz-zone','round-result','opp-chance-banner','locked-banner','teams-panel']
+    ['question-area','buzz-zone','round-result','answer-reveal','opp-chance-banner','locked-banner','teams-panel']
       .forEach(id => { const el = eid(id); if (el) el.style.display = 'none'; });
 
     eid('game-over').innerHTML = `

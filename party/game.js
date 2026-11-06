@@ -203,8 +203,9 @@ export class GameRoom {
           if (this.buzzedTeam === 'my') { this.scores.my -= 4; this.teamLock.my = true; }
           else { this.scores.en -= 4; this.teamLock.en = true; }
           this.buzzedWs = null; this.buzzedTeam = null;
-          this.phase = 'BUZZ_OPEN';
-          this.broadcast({ type: 'answerResult', playerId: player.id, correct: false, answer: msg.answer, correctAnswer: this.currentQuestion.answer, scores: { ...this.scores }, teamLock: { ...this.teamLock } });
+          const dead = this.bothTeamsLocked();
+          this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
+          this.broadcast({ type: 'answerResult', playerId: player.id, correct: false, answer: msg.answer, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, correctAnswer: this.revealAnswer(dead) });
         }
         break;
       }
@@ -215,15 +216,16 @@ export class GameRoom {
         if (this.buzzedTeam === 'my') { this.scores.my -= 4; this.teamLock.my = true; }
         else { this.scores.en -= 4; this.teamLock.en = true; }
         this.buzzedWs = null; this.buzzedTeam = null;
-        this.phase = 'BUZZ_OPEN';
-        this.broadcast({ type: 'answerTimeout', playerId: player.id, scores: { ...this.scores }, teamLock: { ...this.teamLock } });
+        const dead = this.bothTeamsLocked();
+        this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
+        this.broadcast({ type: 'answerTimeout', playerId: player.id, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, correctAnswer: this.revealAnswer(dead) });
         break;
       }
 
       case 'questionExpired':
         if (this.phase !== 'BUZZ_OPEN' || !player.isHost) return;
         this.phase = 'RESULT';
-        this.broadcast({ type: 'questionExpired', scores: { ...this.scores } });
+        this.broadcast({ type: 'questionExpired', scores: { ...this.scores }, correctAnswer: this.revealAnswer(true) });
         break;
     }
   }
@@ -245,6 +247,22 @@ export class GameRoom {
   }
 
   // ── helpers ────────────────────────────────────────────────────────────────
+
+  // Once both teams have been penalised on a toss-up, neither gets another
+  // attempt — the question is dead and play moves on. Without this the buzz
+  // window would reopen with both teams locked out, which reads to players as
+  // the team that buzzed first getting a second go.
+  bothTeamsLocked() {
+    return this.teamLock.my && this.teamLock.en;
+  }
+
+  // The answer is only ever sent to clients once the toss-up is over. While a
+  // team still has a chance at it, nobody gets told the answer — otherwise the
+  // team that buzzed second could just read it off their own screen.
+  revealAnswer(finished) {
+    return finished ? this.currentQuestion?.answer ?? null : null;
+  }
+
   send(ws, data) {
     try { ws.send(JSON.stringify(data)); } catch (_) {}
   }
