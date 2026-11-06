@@ -26,14 +26,14 @@
     <style>
       .page-wrap { max-width: 860px; margin: 0 auto; padding: 0 1rem 4rem; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
-      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-shadow: 0 0 6px var(--cyan)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--cyan)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
-      .back-link:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: var(--cyan)11; }
-      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-decoration: none; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--cyan) 33%, transparent); padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: color-mix(in srgb, var(--cyan) 7%, transparent); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); margin: 0.25rem 0; }
       .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
 
       .faq-search-wrap { max-width: 520px; margin: 1.5rem auto 0; position: relative; }
-      .faq-search-input { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 0.84rem; letter-spacing: 0.04em; background: var(--surface); border: 1px solid var(--muted)55; color: var(--text); padding: 0.7rem 1rem; border-radius: 4px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-      .faq-search-input:focus { border-color: var(--cyan); box-shadow: 0 0 10px var(--cyan)44; }
+      .faq-search-input { width: 100%; box-sizing: border-box; font-family: inherit; font-size: 0.84rem; letter-spacing: 0.04em; background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 33%, transparent); color: var(--text); padding: 0.7rem 1rem; border-radius: 4px;  transition: border-color 0.2s, box-shadow 0.2s; }
+      .faq-search-input:focus { border-color: var(--cyan); }
       .faq-search-input::placeholder { color: var(--muted); }
       .faq-search-count { text-align: center; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); margin-top: 0.6rem; min-height: 1em; }
       .faq-search-count span { color: var(--cyan); }
@@ -44,17 +44,17 @@
       .faq-intro p { color: var(--text); line-height: 1.85; font-size: 0.9rem; margin: 0; }
 
       .faq-toc { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin: 0 auto 2.75rem; max-width: 700px; transition: opacity 0.15s; }
-      .faq-toc a { font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); border: 1px solid var(--muted)44; padding: 0.4rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
-      .faq-toc a:hover { color: var(--text); border-color: var(--text)77; text-shadow: none; }
+      .faq-toc a { font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); padding: 0.4rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+      .faq-toc a:hover { color: var(--text); border-color: color-mix(in srgb, var(--text) 47%, transparent); text-shadow: none; }
 
       .faq-category { margin-bottom: 3rem; scroll-margin-top: 1.25rem; }
-      .faq-cat-header { border-bottom: 1px solid var(--muted)33; padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
+      .faq-cat-header { border-bottom: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); padding-bottom: 0.75rem; margin-bottom: 1.4rem; }
       .faq-cat-title { font-size: 1.15rem; letter-spacing: 0.14em; color: var(--c); text-shadow: 0 0 12px var(--c); margin: 0; }
       .faq-cat-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.6; margin-top: 0.45rem; max-width: 620px; }
 
       .faq-list { display: flex; flex-direction: column; gap: 0.6rem; }
-      .faq-item { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; overflow: hidden; transition: border-color 0.2s; }
-      .faq-item[open] { border-color: var(--c)55; }
+      .faq-item { background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); border-radius: 4px; overflow: hidden; transition: border-color 0.2s; }
+      .faq-item[open] { border-color: color-mix(in srgb, var(--c) 33%, transparent); }
       .faq-item summary { cursor: pointer; padding: 0.9rem 1.1rem; font-size: 0.83rem; letter-spacing: 0.02em; color: var(--text); list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; user-select: none; }
       .faq-item summary::-webkit-details-marker { display: none; }
       .faq-item summary::marker { content: ''; }
@@ -67,7 +67,7 @@
       .faq-answer em { font-style: normal; color: var(--text); }
       .faq-table-wrap { overflow-x: auto; margin: 1rem 0; }
       .faq-table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: 0.74rem; line-height: 1.55; }
-      .faq-table th, .faq-table td { text-align: left; vertical-align: top; padding: 0.45rem 0.8rem 0.45rem 0; border-bottom: 1px solid var(--muted)22; }
+      .faq-table th, .faq-table td { text-align: left; vertical-align: top; padding: 0.45rem 0.8rem 0.45rem 0; border-bottom: 1px solid color-mix(in srgb, var(--muted) 13%, transparent); }
       .faq-table thead th { font-size: 0.62rem; font-weight: normal; letter-spacing: 0.16em; color: var(--c); padding-bottom: 0.6rem; }
       .faq-table tbody th { font-weight: normal; color: var(--muted); white-space: nowrap; }
       .faq-table tbody td { color: var(--text); }
@@ -78,7 +78,7 @@
       .faq-cta-row { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
       .faq-cta-btn { display: inline-block; font-size: 0.72rem; letter-spacing: 0.18em; padding: 0.5rem 1.1rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
 
-      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 2rem 0; }
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 2rem 0; }
 
       @media (max-width: 600px) {
         .page-header { padding: 1.5rem 0 0.75rem; }
@@ -483,8 +483,8 @@
         <div class="panel-label">READY?</div>
         <p>Reading about Science Bowl only gets you so far — the fastest way to actually get better is to start answering real questions.</p>
         <div class="faq-cta-row">
-          <a href="/Practice/" class="faq-cta-btn" style="color:var(--cyan);border:1px solid var(--cyan)55;text-shadow:0 0 6px var(--cyan)99">START PRACTICING →</a>
-          <a href="/Buzzer/" class="faq-cta-btn" style="color:var(--magenta);border:1px solid var(--magenta)55;text-shadow:0 0 6px var(--magenta)99">TRAIN THE BUZZER →</a>
+          <a href="/Practice/" class="faq-cta-btn" style="color:var(--cyan);border:1px solid color-mix(in srgb, var(--cyan) 33%, transparent);">START PRACTICING →</a>
+          <a href="/Buzzer/" class="faq-cta-btn" style="color:var(--magenta);border:1px solid color-mix(in srgb, var(--magenta) 33%, transparent);">TRAIN THE BUZZER →</a>
         </div>
       </div>
 
@@ -540,23 +540,8 @@
         input.addEventListener('input', runSearch);
       })();
 
-      // Starfield
-      (function() {
-        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
-        var _sf_last=0,_sf_raf;
-        function draw(ts) {
-          if(ts-_sf_last>=33){_sf_last=ts;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
-          }
-          _sf_raf=requestAnimationFrame(draw);
-        }
-        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
-        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
-      })();
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+    <script src="/starfield.js"></script>
   </body>
 </html>

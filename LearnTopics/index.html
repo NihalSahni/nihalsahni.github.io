@@ -27,9 +27,9 @@
     <style>
       .page-wrap { max-width: 900px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
-      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--green); text-shadow: 0 0 6px var(--green)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--green)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
-      .back-link:hover { color: var(--green); text-shadow: 0 0 12px var(--green); border-color: var(--green); background: var(--green)11; }
-      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green)44; margin: 0.25rem 0; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--green); text-decoration: none; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--green) 33%, transparent); padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--green); text-shadow: 0 0 12px var(--green); border-color: var(--green); background: color-mix(in srgb, var(--green) 7%, transparent); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--green); margin: 0.25rem 0; }
       .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
 
       .level-select-grid {
@@ -43,7 +43,7 @@
       .level-card {
         position: relative;
         background: var(--surface);
-        border: 1px solid var(--muted)44;
+        border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
         border-radius: 4px;
         padding: 2.5rem 2rem 2rem;
         text-decoration: none;
@@ -72,8 +72,7 @@
         transition: width 0.2s, height 0.2s;
       }
       .level-card:hover {
-        border-color: var(--c, var(--cyan))88;
-        box-shadow: 0 0 32px var(--c, var(--cyan))33;
+        border-color: color-mix(in srgb, var(--c, var(--cyan)) 53%, transparent);
         transform: translateY(-4px);
       }
       .level-card:hover::before, .level-card:hover::after { width: 32px; height: 32px; }
@@ -110,11 +109,11 @@
         text-align: center;
         font-size: 0.62rem;
         letter-spacing: 0.3em;
-        color: var(--muted)66;
+        color: color-mix(in srgb, var(--muted) 40%, transparent);
         margin: 0.5rem 0;
       }
 
-      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 3rem 0 2rem; }
     </style>
   <script type="application/ld+json">
   [
@@ -157,7 +156,7 @@
       <p class="divider-label">// CHOOSE COMPETITION LEVEL //</p>
 
       <div style="text-align:center;margin-bottom:0.5rem">
-        <a href="/Progress/" style="font-size:0.65rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid var(--muted)44;padding:0.3rem 0.85rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.color='var(--green)';this.style.borderColor='var(--green)'" onmouseout="this.style.color='';this.style.borderColor=''">VIEW PROGRESS →</a>
+        <a href="/Progress/" style="font-size:0.65rem;letter-spacing:0.22em;color:var(--muted);text-decoration:none;border:1px solid color-mix(in srgb, var(--muted) 27%, transparent);padding:0.3rem 0.85rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.color='var(--green)';this.style.borderColor='var(--green)'" onmouseout="this.style.color='';this.style.borderColor=''">VIEW PROGRESS →</a>
       </div>
 
       <div class="level-select-grid">
@@ -194,22 +193,9 @@
     </div>
 
     <script>
-      (function() {
-        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
-        var _sf_last=0,_sf_raf;
-        function draw(ts) {
-          if(ts-_sf_last>=33){_sf_last=ts;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
-          }
-          _sf_raf=requestAnimationFrame(draw);
-        }
-        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
-        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
-      })();
+
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+    <script src="/starfield.js"></script>
   </body>
 </html>

@@ -56,7 +56,7 @@
     .subj-btn {
       font-family: inherit; font-size: 0.68rem; letter-spacing: 0.14em;
       padding: 0.28rem 0.7rem; border-radius: 2px; cursor: pointer;
-      background: transparent; border: 1px solid var(--muted)66; color: var(--muted);
+      background: transparent; border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent); color: var(--muted);
       transition: all 0.2s;
     }
     .subj-btn.active { border-color: #f5a623; color: #f5a623; background: #f5a62311; }
@@ -65,9 +65,8 @@
     .search-input {
       width: 100%; box-sizing: border-box;
       font-family: inherit; font-size: 0.78rem; letter-spacing: 0.08em;
-      background: var(--surface); border: 1px solid var(--muted)55; color: var(--text);
-      padding: 0.45rem 0.8rem; border-radius: 2px; outline: none;
-      transition: border-color 0.2s;
+      background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 33%, transparent); color: var(--text);
+      padding: 0.45rem 0.8rem; border-radius: 2px;  transition: border-color 0.2s;
     }
     .search-input:focus { border-color: #f5a623; }
     .search-input::placeholder { color: var(--muted); }
@@ -81,7 +80,7 @@
     .q-list { display: flex; flex-direction: column; gap: 0.6rem; }
 
     .q-card {
-      background: var(--surface); border: 1px solid var(--muted)33;
+      background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
       border-radius: 3px; padding: 1rem 1.2rem; cursor: pointer;
       transition: border-color 0.2s;
       position: relative;
@@ -99,7 +98,7 @@
     }
     .q-answer {
       display: none; margin-top: 0.75rem; padding-top: 0.75rem;
-      border-top: 1px solid var(--muted)22;
+      border-top: 1px solid color-mix(in srgb, var(--muted) 13%, transparent);
       font-size: 0.8rem; color: #f5a623;
       text-shadow: 0 0 8px #f5a62388; letter-spacing: 0.06em;
     }
@@ -307,5 +306,6 @@
 
     render();
   </script>
+  <script src="/starfield.js"></script>
 </body>
 </html>

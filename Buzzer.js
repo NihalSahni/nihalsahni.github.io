@@ -177,7 +177,7 @@ function bzBuildTeams() {
     $('my-team-label').textContent = 'PLAYER 1';
     $('en-team-label').textContent = 'PLAYER 2';
     mc.innerHTML = '<div class="t-col-label friendly">⚡ PLAYER 1</div>' + memberHTML('p1', '⚡', 'PLAYER 1', false);
-    ec.innerHTML = '<div class="t-col-label enemy" style="color:var(--green);text-shadow:0 0 6px var(--green)88">⚡ PLAYER 2</div>' + memberHTML('p2', '⚡', 'PLAYER 2', false);
+    ec.innerHTML = '<div class="t-col-label enemy" style="color:var(--green);">⚡ PLAYER 2</div>' + memberHTML('p2', '⚡', 'PLAYER 2', false);
   } else {
     mc.innerHTML += memberHTML('you', '⚡', 'YOU', true);
     MY_BOTS.forEach(b => { mc.innerHTML += memberHTML(b.id, b.icon, b.name, false); });
@@ -428,7 +428,7 @@ function bzBotBuzz(bot) {
   $('bot-msg').textContent = '...';
   ov.style.display = 'flex';
   ov.style.borderColor = 'var(--orange)';
-  ov.style.boxShadow = '0 0 30px var(--orange)55';
+  ov.style.boxShadow = '';
   $('bot-icon').style.textShadow = '';
 
   const thinkMs = 2500 + Math.random() * 4500;
@@ -447,7 +447,7 @@ function bzBotAnswer(bot, correct) {
     else                   bzEnScore += 4;
     $('bot-msg').textContent = '✓ CORRECT  +4';
     $('bot-overlay').style.borderColor = 'var(--green)';
-    $('bot-overlay').style.boxShadow   = '0 0 30px var(--green)55';
+    $('bot-overlay').style.boxShadow   = '';
     $('bot-icon').style.textShadow     = '0 0 20px var(--green)';
     beep(880, 130);
     bzUpdateScores();
@@ -458,7 +458,7 @@ function bzBotAnswer(bot, correct) {
     else                   { bzEnScore -= 4; bzEnLocked = true; }
     $('bot-msg').textContent = '✗ INCORRECT  −4';
     $('bot-overlay').style.borderColor = 'var(--magenta)';
-    $('bot-overlay').style.boxShadow   = '0 0 30px var(--magenta)55';
+    $('bot-overlay').style.boxShadow   = '';
     $('bot-icon').style.textShadow     = '0 0 20px var(--magenta)';
     beep(220, 220);
     bzUpdateScores();
@@ -485,12 +485,12 @@ function bzOppChance(whichGetsChance) {
       bn.textContent = '⚡ PLAYER 2 WRONG — RE-READING FOR PLAYER 1...';
       bn.style.borderColor = 'var(--cyan)';
       bn.style.color = 'var(--cyan)';
-      bn.style.textShadow = '0 0 8px var(--cyan)55';
+      bn.style.textShadow = '';
     } else {
       bn.textContent = '⚡ PLAYER 1 WRONG — RE-READING FOR PLAYER 2...';
       bn.style.borderColor = 'var(--green)';
       bn.style.color = 'var(--green)';
-      bn.style.textShadow = '0 0 8px var(--green)55';
+      bn.style.textShadow = '';
     }
     $('locked-banner').style.display = 'none';
     $('h2h-buttons').style.display = 'flex';
@@ -502,7 +502,7 @@ function bzOppChance(whichGetsChance) {
       bn.textContent = '⚡ OPPONENT WRONG — RE-READING FOR YOUR TEAM...';
       bn.style.borderColor = 'var(--green)';
       bn.style.color = 'var(--green)';
-      bn.style.textShadow = '0 0 8px var(--green)55';
+      bn.style.textShadow = '';
       $('BuzzBtn').style.display = '';
       $('BuzzBtn').disabled = false;
       $('locked-banner').style.display = 'none';
@@ -511,7 +511,7 @@ function bzOppChance(whichGetsChance) {
       bn.textContent = '⊘ YOUR TEAM ANSWERED WRONG — RE-READING FOR OPPONENT...';
       bn.style.borderColor = 'var(--orange)';
       bn.style.color = 'var(--orange)';
-      bn.style.textShadow = '0 0 8px var(--orange)55';
+      bn.style.textShadow = '';
       $('BuzzBtn').style.display = 'none';
       $('locked-banner').style.display = 'block';
       bzScheduleBots(EN_BOTS, readMs);
@@ -607,7 +607,7 @@ function bzHideBot() {
   const ov = $('bot-overlay');
   ov.style.display = 'none';
   ov.style.borderColor = 'var(--orange)';
-  ov.style.boxShadow = '0 0 30px var(--orange)55';
+  ov.style.boxShadow = '';
   $('bot-icon').style.textShadow = '';
   // Only re-show single buzz button in bot mode
   if (bzMatchType !== 'h2h') $('BuzzBtn').style.display = '';
@@ -877,29 +877,6 @@ function bzLev(a, b) {
 
 // ══ STARFIELD ════════════════════════════════════════════════════════════════
 
-(function() {
-  const cv = document.getElementById('starfield');
-  const cx = cv.getContext('2d');
-  let stars = [];
-  function resize() { cv.width = innerWidth; cv.height = innerHeight; }
-  function init() {
-    stars = Array.from({length:200}, () => ({
-      x: Math.random()*cv.width, y: Math.random()*cv.height,
-      r: Math.random()*1.2+0.2, speed: Math.random()*0.25+0.04, op: Math.random()*0.6+0.2
-    }));
-  }
-  function draw() {
-    cx.clearRect(0,0,cv.width,cv.height);
-    stars.forEach(s => {
-      cx.beginPath(); cx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      cx.fillStyle=`rgba(232,244,255,${s.op})`; cx.fill();
-      s.y+=s.speed; if(s.y>cv.height){s.y=0;s.x=Math.random()*cv.width;}
-    });
-    requestAnimationFrame(draw);
-  }
-  window.addEventListener('resize',()=>{resize();init();});
-  resize(); init(); draw();
-})();
 
 // ══ BEEP ═════════════════════════════════════════════════════════════════════
 

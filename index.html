@@ -42,9 +42,6 @@
       .hero-title {
         font-size: clamp(2rem, 6vw, 4rem);
         color: var(--cyan);
-        text-shadow:
-          0 0 30px var(--cyan),
-          0 0 60px var(--cyan)44;
         margin: 0.25rem 0;
         line-height: 1.15;
       }
@@ -71,7 +68,6 @@
 
       .briefing p span {
         color: var(--cyan);
-        text-shadow: 0 0 8px var(--cyan)88;
       }
 
       .missions {
@@ -108,7 +104,7 @@
       .mission-card {
         position: relative;
         background: var(--surface);
-        border: 1px solid var(--muted) 44;
+        border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
         border-radius: 4px;
         padding: 2rem 1.5rem 1.5rem;
         text-decoration: none;
@@ -151,8 +147,7 @@
       }
 
       .mission-card:hover {
-        border-color: var(--accent, var(--cyan)) 88;
-        box-shadow: 0 0 24px var(--accent, var(--cyan)) 33;
+        border-color: color-mix(in srgb, var(--accent, var(--cyan)) 53%, transparent);
         transform: translateY(-3px);
       }
 
@@ -206,8 +201,8 @@
         max-width: 600px;
         margin: 1rem auto 3rem;
         padding: 1.2rem;
-        border-top: 1px solid var(--muted) 33;
-        border-bottom: 1px solid var(--muted) 33;
+        border-top: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
       }
 
       .stat {
@@ -231,7 +226,7 @@
         text-align: center;
         font-size: 0.65rem;
         letter-spacing: 0.15em;
-        color: var(--muted) 88;
+        color: color-mix(in srgb, var(--muted) 53%, transparent);
         padding-bottom: 2rem;
       }
 
@@ -459,7 +454,7 @@
       </a>
     </div>
 
-    <div id="streak-banner" style="display:none;text-align:center;margin:0 auto 2.5rem;padding:1.4rem 2rem;max-width:400px;border:1px solid var(--cyan)44;border-radius:4px;background:var(--surface);position:relative">
+    <div id="streak-banner" style="display:none;text-align:center;margin:0 auto 2.5rem;padding:1.4rem 2rem;max-width:400px;border:1px solid color-mix(in srgb, var(--cyan) 27%, transparent);border-radius:4px;background:var(--surface);position:relative">
       <div style="font-size:0.6rem;letter-spacing:0.3em;color:var(--muted);margin-bottom:0.4rem">PRACTICE STREAK</div>
       <div id="streak-count" style="font-size:3rem;color:var(--cyan);text-shadow:0 0 30px var(--cyan)"></div>
       <div style="font-size:1.6rem;line-height:1;margin:0.2rem 0">🔥</div>
@@ -473,7 +468,7 @@
 
     <div style="text-align:center;margin:0 auto 1.5rem;max-width:500px;padding:0 1rem">
       <p style="font-size:0.72rem;color:var(--muted);line-height:1.8;letter-spacing:0.04em;margin:0">
-        Built by <span style="color:var(--cyan);text-shadow:0 0 8px var(--cyan)88">Nihal Sahni</span> —
+        Built by <span style="color:var(--cyan)">Nihal Sahni</span> —
         a student at Glastonbury Public Schools who loved Science Bowl and wanted to make it easier for everyone else to get good at it too.
       </p>
     </div>
@@ -491,55 +486,6 @@
     </footer>
 
     <script>
-      // Starfield
-      (function () {
-        const canvas = document.getElementById("starfield");
-        const ctx = canvas.getContext("2d");
-        let stars = [];
-        function resize() {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-        }
-        function init() {
-          stars = Array.from({ length: 200 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 1.2 + 0.2,
-            speed: Math.random() * 0.25 + 0.04,
-            opacity: Math.random() * 0.6 + 0.2,
-          }));
-        }
-        let _sf_last = 0, _sf_raf;
-        function draw(ts) {
-          if (ts - _sf_last >= 33) {
-            _sf_last = ts;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach((s) => {
-              ctx.beginPath();
-              ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(232,244,255,${s.opacity})`;
-              ctx.fill();
-              s.y += s.speed;
-              if (s.y > canvas.height) {
-                s.y = 0;
-                s.x = Math.random() * canvas.width;
-              }
-            });
-          }
-          _sf_raf = requestAnimationFrame(draw);
-        }
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden) cancelAnimationFrame(_sf_raf);
-          else _sf_raf = requestAnimationFrame(draw);
-        });
-        window.addEventListener("resize", () => {
-          resize();
-          init();
-        });
-        resize();
-        init();
-        _sf_raf = requestAnimationFrame(draw);
-      })();
 
       // Typing subtitle
       const lines = [
@@ -585,5 +531,6 @@
       })();
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+    <script src="/starfield.js"></script>
   </body>
 </html>

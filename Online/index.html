@@ -39,7 +39,7 @@
     @media (max-width: 560px) { #lobby-grid { grid-template-columns: 1fr; } }
 
     .action-box {
-      border: 1px solid var(--muted)44;
+      border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
       background: var(--surface);
       padding: 1.5rem;
       display: flex;
@@ -62,13 +62,13 @@
       font-size: 0.95rem;
       padding: 0.55rem 0.9rem;
       background: var(--surface);
-      border: 1px solid var(--muted)66;
+      border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent);
       color: var(--text);
       width: 100%;
       box-sizing: border-box;
       letter-spacing: 0.1em;
     }
-    .ol-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan)44; }
+    .ol-input:focus {  border-color: var(--cyan); }
     .ol-input.code-input { font-size: 1.3rem; letter-spacing: 0.35em; text-align: center; text-transform: uppercase; }
 
     /* ── PUBLIC ROOMS ── */
@@ -78,12 +78,12 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid var(--muted)33;
+      border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
       background: var(--surface);
       padding: 0.75rem 1rem;
       gap: 1rem;
     }
-    .room-row:hover { border-color: var(--cyan)55; }
+    .room-row:hover { border-color: color-mix(in srgb, var(--cyan) 33%, transparent); }
     .room-code-tag { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); font-size: 1rem; letter-spacing: 0.2em; }
     .room-meta { font-size: 0.72rem; color: var(--muted); flex: 1; }
     .room-join-btn {
@@ -119,12 +119,12 @@
     .lb-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
     .lb-table th {
       font-size: 0.58rem; font-weight: normal; letter-spacing: 0.18em; color: var(--muted);
-      text-align: right; padding: 0 0.5rem 0.6rem; border-bottom: 1px solid var(--muted)33;
+      text-align: right; padding: 0 0.5rem 0.6rem; border-bottom: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
     }
     .lb-table th:nth-child(1), .lb-table th:nth-child(2) { text-align: left; }
     .lb-table td {
       padding: 0.5rem; text-align: right; color: var(--text);
-      border-bottom: 1px solid var(--muted)1f;
+      border-bottom: 1px solid color-mix(in srgb, var(--muted) 12%, transparent);
     }
     .lb-table td:nth-child(1), .lb-table td:nth-child(2) { text-align: left; }
     .lb-table tr:last-child td { border-bottom: none; }
@@ -160,27 +160,27 @@
       margin: 1.2rem 0;
     }
     .team-col {
-      border: 1px solid var(--muted)33;
+      border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
       background: var(--surface);
       padding: 1rem;
     }
     .team-col-label {
       font-size: 0.62rem; letter-spacing: 0.22em; margin-bottom: 0.7rem;
-      padding-bottom: 0.5rem; border-bottom: 1px solid var(--muted)22;
+      padding-bottom: 0.5rem; border-bottom: 1px solid color-mix(in srgb, var(--muted) 13%, transparent);
     }
-    .team-col-label.team-a { color: var(--green); text-shadow: 0 0 8px var(--green)88; }
-    .team-col-label.team-b { color: var(--magenta); text-shadow: 0 0 8px var(--magenta)88; }
+    .team-col-label.team-a { color: var(--green); }
+    .team-col-label.team-b { color: var(--magenta); }
 
     .player-row {
       display: flex; align-items: center; gap: 0.5rem;
       padding: 0.35rem 0.5rem; margin-bottom: 0.4rem;
-      border: 1px solid var(--muted)18; border-radius: 2px;
+      border: 1px solid color-mix(in srgb, var(--muted) 9%, transparent); border-radius: 2px;
       font-size: 0.8rem;
     }
     .player-row .pr-name { flex: 1; }
     .player-row .pr-host { font-size: 0.62rem; color: var(--orange); }
     .player-row .pr-ready { font-size: 0.62rem; color: var(--green); }
-    .player-row.is-me { border-color: var(--cyan)44; background: var(--cyan)08; }
+    .player-row.is-me { border-color: color-mix(in srgb, var(--cyan) 27%, transparent); background: color-mix(in srgb, var(--cyan) 3%, transparent); }
 
     #room-settings { margin: 1rem 0; }
     #room-settings .hud-panel { margin-bottom: 0.8rem; }
@@ -202,7 +202,7 @@
       border-radius: 11px; cursor: pointer; transition: background 0.2s;
       flex-shrink: 0;
     }
-    .toggle-switch.on { background: var(--cyan)33; border-color: var(--cyan); }
+    .toggle-switch.on { background: color-mix(in srgb, var(--cyan) 20%, transparent); border-color: var(--cyan); }
     .toggle-knob {
       position: absolute; top: 3px; left: 3px;
       width: 14px; height: 14px; border-radius: 50%;
@@ -211,9 +211,9 @@
     .toggle-switch.on .toggle-knob { left: 21px; background: var(--cyan); }
 
     #ready-btn { width: 100%; margin-top: 0.5rem; font-size: 1rem; padding: 0.8rem; border-color: var(--green); color: var(--green); }
-    #ready-btn.is-ready { background: var(--green)18; text-shadow: 0 0 10px var(--green); box-shadow: 0 0 18px var(--green)44; }
+    #ready-btn.is-ready { background: color-mix(in srgb, var(--green) 9%, transparent); text-shadow: 0 0 10px var(--green); }
     #launch-btn { width: 100%; margin-top: 0.5rem; font-size: 1.1rem; padding: 0.9rem; border-color: var(--magenta); color: var(--magenta); }
-    #launch-btn:hover:not(:disabled) { background: var(--magenta)18; box-shadow: 0 0 20px var(--magenta)55; }
+    #launch-btn:hover:not(:disabled) { background: color-mix(in srgb, var(--magenta) 9%, transparent); }
     #launch-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
     #room-status-msg { text-align: center; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.15em; margin-top: 0.5rem; min-height: 1.2em; }
@@ -222,7 +222,7 @@
     #score-bar {
       display: flex; justify-content: space-between; align-items: center;
       padding: 1rem 2rem; border: 1px solid var(--muted);
-      background: linear-gradient(135deg, var(--cyan)08 0%, transparent 60%);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--cyan) 3%, transparent) 0%, transparent 60%);
       margin-bottom: 0.8rem; position: relative;
     }
     #score-bar::before { content:'';position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid var(--cyan);border-left:3px solid var(--cyan); }
@@ -238,11 +238,11 @@
 
     #question-area {
       min-height: 130px; padding: 1.4rem 1.6rem;
-      border: 1px solid var(--muted)44; background: var(--surface);
+      border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); background: var(--surface);
       margin-bottom: 1.2rem; position: relative;
     }
-    #question-area::before { content:'';position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid var(--cyan)88;border-left:2px solid var(--cyan)88; }
-    #q-subject { font-size:0.65rem;color:var(--orange);letter-spacing:0.25em;margin-bottom:0.7rem;text-shadow:0 0 6px var(--orange)66; }
+    #question-area::before { content:'';position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid color-mix(in srgb, var(--cyan) 53%, transparent);border-left:2px solid color-mix(in srgb, var(--cyan) 53%, transparent); }
+    #q-subject { font-size:0.65rem;color:var(--orange);letter-spacing:0.25em;margin-bottom:0.7rem;}
     #q-text    { font-size:1.05rem;line-height:1.75;color:var(--text); }
     .q-opts { margin-top:0.8rem;display:flex;flex-direction:column;gap:0.3rem; }
     .q-opt  { padding:0.25rem 0; }
@@ -264,14 +264,13 @@
       font-size:2rem;padding:1.4rem 5rem;
       border:3px solid var(--magenta);color:var(--magenta);
       text-shadow:0 0 20px var(--magenta);
-      box-shadow:0 0 25px var(--magenta)55,inset 0 0 20px var(--magenta)0a;
       animation:buzz-pulse 1.6s ease-in-out infinite;
       letter-spacing:0.2em;transition:transform 0.08s,box-shadow 0.1s;
     }
-    #BuzzBtn:hover { background:var(--magenta)1a;box-shadow:0 0 55px var(--magenta),inset 0 0 30px var(--magenta)1a;transform:scale(1.03); }
+    #BuzzBtn:hover { background:color-mix(in srgb, var(--magenta) 10%, transparent);transform:scale(1.03); }
     #BuzzBtn:active { transform:scale(0.96); }
     #BuzzBtn:disabled { opacity:0.25;animation:none;transform:none;cursor:not-allowed; }
-    @keyframes buzz-pulse { 0%,100%{box-shadow:0 0 15px var(--magenta)44;}50%{box-shadow:0 0 45px var(--magenta),0 0 80px var(--magenta)33;} }
+    @keyframes buzz-pulse { 0%,100%{}50%{} }
 
     #timer-wrap { position:relative;width:80px;height:80px; }
     #timer-wrap svg { transform:rotate(-90deg); }
@@ -284,7 +283,7 @@
     #who-buzzing {
       display:none;flex-direction:column;align-items:center;gap:0.5rem;
       padding:1.2rem 2rem;border:2px solid var(--orange);
-      box-shadow:0 0 20px var(--orange)55;background:var(--surface);
+      background:var(--surface);
       font-size:0.9rem;letter-spacing:0.12em;color:var(--orange);
       text-shadow:0 0 8px var(--orange);
     }
@@ -298,21 +297,19 @@
 
     #mc-panel { display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center; }
     .mc-buzz-btn {
-      font-size:1rem;padding:0.7rem 1.4rem;border:2px solid var(--muted)66;color:var(--text);
+      font-size:1rem;padding:0.7rem 1.4rem;border:2px solid color-mix(in srgb, var(--muted) 40%, transparent);color:var(--text);
       min-width:180px;text-align:left;
     }
     .mc-buzz-btn:hover { border-color:var(--cyan);color:var(--cyan); }
-    .mc-buzz-btn.sel { border-color:var(--cyan);color:var(--cyan);background:var(--cyan)18;box-shadow:0 0 14px var(--cyan)55; }
+    .mc-buzz-btn.sel { border-color:var(--cyan);color:var(--cyan);background:color-mix(in srgb, var(--cyan) 9%, transparent);}
 
     #oe-panel { display:none; }
     #BuzzerOE {
       font-size:1.15rem;padding:0.6rem 1.1rem;width:100%;max-width:380px;
-      border:2px solid var(--cyan);box-shadow:0 0 10px var(--cyan)44;
-      background:var(--surface);color:var(--text);font-family:'Share Tech Mono',monospace;
+      border:2px solid var(--cyan);background:var(--surface);color:var(--text);font-family:'Share Tech Mono',monospace;
     }
-    #BuzzerOE:focus { outline:none;box-shadow:0 0 20px var(--cyan)77; }
     #ConfirmBtn { font-size:1.05rem;padding:0.65rem 2.4rem;border-color:var(--green);color:var(--green);text-shadow:0 0 8px var(--green); }
-    #ConfirmBtn:hover { background:var(--green)18;box-shadow:0 0 20px var(--green); }
+    #ConfirmBtn:hover { background:color-mix(in srgb, var(--green) 9%, transparent);box-shadow:0 0 20px var(--green); }
 
     #round-result { text-align:center;min-height:1.8rem;font-size:1.15rem;letter-spacing:0.1em;margin:0.5rem 0; }
     #round-result.correct   { color:var(--green);text-shadow:0 0 14px var(--green); }
@@ -337,25 +334,25 @@
 
     /* online roster */
     #teams-panel {
-      display:flex;gap:0;border:1px solid var(--muted)44;
-      background:linear-gradient(135deg,var(--cyan)05 0%,transparent 60%);
+      display:flex;gap:0;border:1px solid color-mix(in srgb, var(--muted) 27%, transparent);
+      background:linear-gradient(135deg,color-mix(in srgb, var(--cyan) 2%, transparent) 0%,transparent 60%);
       margin-top:1.2rem;position:relative;
     }
     #teams-panel::before { content:'';position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:3px solid var(--cyan);border-left:3px solid var(--cyan); }
     #teams-panel::after  { content:'';position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:3px solid var(--cyan);border-right:3px solid var(--cyan); }
     .t-col { flex:1;padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:0.5rem; }
-    .t-col+.t-col { border-left:1px solid var(--muted)33; }
-    .t-col-label { font-size:0.62rem;letter-spacing:0.22em;margin-bottom:0.4rem;padding-bottom:0.4rem;border-bottom:1px solid var(--muted)22; }
-    .t-col-label.friendly { color:var(--green);text-shadow:0 0 6px var(--green)88; }
-    .t-col-label.enemy    { color:var(--magenta);text-shadow:0 0 6px var(--magenta)88; }
-    .member { display:flex;align-items:center;gap:0.6rem;padding:0.38rem 0.6rem;border:1px solid var(--muted)18;border-radius:3px;transition:all 0.25s; }
-    .member.buzzing { border-color:var(--orange);box-shadow:0 0 18px var(--orange)77;animation:member-pop 0.35s ease-out; }
+    .t-col+.t-col { border-left:1px solid color-mix(in srgb, var(--muted) 20%, transparent); }
+    .t-col-label { font-size:0.62rem;letter-spacing:0.22em;margin-bottom:0.4rem;padding-bottom:0.4rem;border-bottom:1px solid color-mix(in srgb, var(--muted) 13%, transparent); }
+    .t-col-label.friendly { color:var(--green);}
+    .t-col-label.enemy    { color:var(--magenta);}
+    .member { display:flex;align-items:center;gap:0.6rem;padding:0.38rem 0.6rem;border:1px solid color-mix(in srgb, var(--muted) 9%, transparent);border-radius:3px;transition:all 0.25s; }
+    .member.buzzing { border-color:var(--orange);animation:member-pop 0.35s ease-out; }
     @keyframes member-pop { 0%{transform:scale(1.07);}100%{transform:scale(1);} }
-    .member.ok   { border-color:var(--green);box-shadow:0 0 12px var(--green)55; }
-    .member.fail { border-color:var(--magenta);box-shadow:0 0 12px var(--magenta)55; }
+    .member.ok   { border-color:var(--green);}
+    .member.fail { border-color:var(--magenta);}
     .m-icon   { font-size:1.3rem;width:28px;text-align:center;flex-shrink:0; }
     .m-name   { font-size:0.76rem;letter-spacing:0.08em;flex:1; }
-    .m-name.you-label { color:var(--cyan);text-shadow:0 0 6px var(--cyan)88; }
+    .m-name.you-label { color:var(--cyan);}
     .m-status { font-size:0.62rem;color:var(--muted);min-width:55px;text-align:right; }
 
     #game-over { display:none;text-align:center;padding:2.5rem 1rem; }
@@ -420,7 +417,7 @@
   <div id="connection-status" class="connecting">⟳ CONNECTING...</div>
 
   <div style="text-align:center;margin-top:1.5rem">
-    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME</a>
+    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-decoration:none;border:1px solid color-mix(in srgb, var(--magenta) 33%, transparent);padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)'" onmouseout="this.style.background=''">← HOME</a>
   </div>
 
   <div class="related-links-panel" style="margin-top:1rem;margin-bottom:0">
@@ -632,7 +629,7 @@
     <button id="NextBtn" onclick="olNext()">NEXT TOSS-UP ›</button>
 
     <div style="text-align:center;margin-top:0.75rem">
-      <button onclick="if(confirm('Leave match?'))location.href='/Online/'" style="background:transparent;border:1px solid var(--muted)55;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color=''">✕ LEAVE MATCH</button>
+      <button onclick="if(confirm('Leave match?'))location.href='/Online/'" style="background:transparent;border:1px solid color-mix(in srgb, var(--muted) 33%, transparent);color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.color='#ff4444'" onmouseout="this.style.color=''">✕ LEAVE MATCH</button>
     </div>
 
     <div id="game-over"></div>
@@ -1731,30 +1728,6 @@
     }
   });
 
-  // ── STARFIELD ────────────────────────────────────────────────────────────────
-  (function () {
-    const cv = document.getElementById('starfield');
-    const cx = cv.getContext('2d');
-    let stars = [];
-    function resize() { cv.width = innerWidth; cv.height = innerHeight; }
-    function init() {
-      stars = Array.from({ length: 200 }, () => ({
-        x: Math.random() * cv.width, y: Math.random() * cv.height,
-        r: Math.random() * 1.2 + 0.2, speed: Math.random() * 0.25 + 0.04, op: Math.random() * 0.6 + 0.2,
-      }));
-    }
-    function draw() {
-      cx.clearRect(0, 0, cv.width, cv.height);
-      stars.forEach(s => {
-        cx.beginPath(); cx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        cx.fillStyle = `rgba(232,244,255,${s.op})`; cx.fill();
-        s.y += s.speed; if (s.y > cv.height) { s.y = 0; s.x = Math.random() * cv.width; }
-      });
-      requestAnimationFrame(draw);
-    }
-    window.addEventListener('resize', () => { resize(); init(); });
-    resize(); init(); draw();
-  })();
 
   // ── INIT ─────────────────────────────────────────────────────────────────────
   window.addEventListener('DOMContentLoaded', () => {
@@ -1781,5 +1754,6 @@
     });
   });
   </script>
+  <script src="/starfield.js"></script>
 </body>
 </html>

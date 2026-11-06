@@ -25,27 +25,27 @@
     <style>
       .page-wrap { max-width: 640px; margin: 0 auto; }
       .page-header { padding: 2rem 0 1rem; text-align: center; }
-      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--muted); text-shadow: none; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--muted)44; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--muted); text-shadow: none; text-decoration: none; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
       .back-link:hover { color: var(--cyan); border-color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
-      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); margin: 0.25rem 0; }
       .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
 
       .settings-section { margin-bottom: 2.8rem; }
-      .settings-heading { font-size: 0.6rem; letter-spacing: 0.35em; color: var(--muted); border-bottom: 1px solid var(--muted)33; padding-bottom: 0.6rem; margin-bottom: 1.1rem; }
+      .settings-heading { font-size: 0.6rem; letter-spacing: 0.35em; color: var(--muted); border-bottom: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); padding-bottom: 0.6rem; margin-bottom: 1.1rem; }
 
-      .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.95rem 1.1rem; background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; margin-bottom: 0.6rem; }
+      .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.95rem 1.1rem; background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); border-radius: 4px; margin-bottom: 0.6rem; }
       .setting-row.col { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
       .setting-row-top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
       .setting-info { flex: 1; }
       .setting-label { font-size: 0.72rem; letter-spacing: 0.15em; color: var(--text); }
       .setting-desc { font-size: 0.6rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.25rem; }
 
-      .toggle-wrap { display: flex; border: 1px solid var(--muted)44; border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+      .toggle-wrap { display: flex; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
       .toggle-btn { background: transparent; border: none; border-radius: 0; padding: 0.3rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: background 0.15s, color 0.15s; box-shadow: none; text-shadow: none; }
-      .toggle-sep { width: 1px; background: var(--muted)44; flex-shrink: 0; }
-      .toggle-btn.is-on  { background: var(--green)22;   color: var(--green);   text-shadow: 0 0 6px var(--green); }
-      .toggle-btn.is-off { background: var(--magenta)22; color: var(--magenta); text-shadow: 0 0 6px var(--magenta); }
-      .toggle-btn.is-sel { background: var(--cyan)22;    color: var(--cyan);    text-shadow: 0 0 6px var(--cyan); }
+      .toggle-sep { width: 1px; background: color-mix(in srgb, var(--muted) 27%, transparent); flex-shrink: 0; }
+      .toggle-btn.is-on  { background: color-mix(in srgb, var(--green) 13%, transparent);   color: var(--green);   text-shadow: 0 0 6px var(--green); }
+      .toggle-btn.is-off { background: color-mix(in srgb, var(--magenta) 13%, transparent); color: var(--magenta); text-shadow: 0 0 6px var(--magenta); }
+      .toggle-btn.is-sel { background: color-mix(in srgb, var(--cyan) 13%, transparent);    color: var(--cyan);    text-shadow: 0 0 6px var(--cyan); }
 
       /* Color swatches */
       .swatches { display: flex; gap: 0.65rem; flex-wrap: wrap; }
@@ -59,17 +59,17 @@
 
       /* Subject pills */
       .subj-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-      .subj-pill { background: transparent; border: 1px solid var(--muted)44; border-radius: 2px; padding: 0.3rem 0.7rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: all 0.15s; box-shadow: none; text-shadow: none; }
-      .subj-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: var(--cyan)11; }
+      .subj-pill { background: transparent; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 2px; padding: 0.3rem 0.7rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: all 0.15s; box-shadow: none; text-shadow: none; }
+      .subj-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: color-mix(in srgb, var(--cyan) 7%, transparent); }
 
       /* Reset grid */
       .reset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-      .r-btn { background: transparent; border: 1px solid var(--muted)44; color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.13em; padding: 0.65rem 0.85rem; cursor: pointer; border-radius: 2px; transition: border-color 0.2s, color 0.2s; text-align: left; line-height: 1.5; box-shadow: none; text-shadow: none; }
+      .r-btn { background: transparent; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); color: var(--muted); font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.13em; padding: 0.65rem 0.85rem; cursor: pointer; border-radius: 2px; transition: border-color 0.2s, color 0.2s; text-align: left; line-height: 1.5; box-shadow: none; text-shadow: none; }
       .r-btn:hover { border-color: var(--red, #ff4444); color: var(--red, #ff4444); background: transparent; box-shadow: none; }
       .r-btn .r-level { display: block; font-size: 0.52rem; letter-spacing: 0.22em; opacity: 0.55; margin-bottom: 0.15rem; }
       .r-btn.r-confirmed { border-color: var(--green) !important; color: var(--green) !important; }
 
-      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 3rem 0 2rem; }
 
       @media (max-width: 600px) {
         .reset-grid { grid-template-columns: 1fr; }
@@ -315,23 +315,8 @@
 
       refreshAll();
 
-      // Starfield
-      (function () {
-        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        function init() { stars = Array.from({length: 200}, function () { return { x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.2 + 0.2, speed: Math.random() * 0.25 + 0.04, opacity: Math.random() * 0.6 + 0.2 }; }); }
-        var _sf_last=0,_sf_raf;
-        function draw(ts) {
-          if(ts-_sf_last>=33){_sf_last=ts;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(function (s) { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(232,244,255,' + s.opacity + ')'; ctx.fill(); s.y += s.speed; if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; } });
-          }
-          _sf_raf=requestAnimationFrame(draw);
-        }
-        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
-        window.addEventListener('resize', function () { resize(); init(); }); resize(); init(); _sf_raf=requestAnimationFrame(draw);
-      })();
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+    <script src="/starfield.js"></script>
   </body>
 </html>

@@ -78,19 +78,17 @@ button {
   font-family: 'Share Tech Mono', 'Courier New', monospace;
   font-size: 1rem;
   text-shadow: 0 0 6px var(--cyan);
-  box-shadow: 0 0 10px var(--cyan)44;
   transition: background 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-  background: var(--cyan)22;
+  background: color-mix(in srgb, var(--cyan) 13%, transparent);
   box-shadow: 0 0 18px var(--cyan);
 }
 
 button.selected {
-  background: var(--cyan)33;
+  background: color-mix(in srgb, var(--cyan) 20%, transparent);
   border-color: var(--cyan);
-  box-shadow: 0 0 18px var(--cyan), inset 0 0 10px var(--cyan)33;
   color: var(--cyan);
 }
 
@@ -106,12 +104,12 @@ button.selected {
 }
 
 #Submit:hover {
-  background: var(--magenta)22;
+  background: color-mix(in srgb, var(--magenta) 13%, transparent);
   box-shadow: 0 0 30px var(--magenta);
 }
 
 #AbandonBtn {
-  border-color: var(--muted)66;
+  border-color: color-mix(in srgb, var(--muted) 40%, transparent);
   color: var(--muted);
   font-size: 0.7rem;
   letter-spacing: 0.2em;
@@ -128,8 +126,8 @@ button.selected {
 }
 
 @keyframes launch-pulse {
-  0%, 100% { box-shadow: 0 0 10px var(--magenta)66; }
-  50%       { box-shadow: 0 0 30px var(--magenta), 0 0 60px var(--magenta)44; }
+  0%, 100% { }
+  50%       { }
 }
 
 input[type="range"] {
@@ -138,7 +136,6 @@ input[type="range"] {
   height: 6px;
   border-radius: 3px;
   background: linear-gradient(to right, var(--cyan) 30%, var(--surface) 30%);
-  outline: none;
   cursor: pointer;
 }
 
@@ -163,9 +160,7 @@ input[type="text"], input:not([type]) {
 }
 
 input[type="text"]:focus, input:not([type]):focus {
-  outline: none;
   border-color: var(--cyan);
-  box-shadow: 0 0 8px var(--cyan)66;
 }
 
 label {
@@ -185,10 +180,10 @@ label.flash {
 
 .hud-panel {
   position: relative;
-  border: 1px solid var(--muted)44;
+  border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
   padding: 1.5rem 1.5rem 1.2rem;
   margin: 1rem 0;
-  background: linear-gradient(135deg, var(--cyan)06 0%, transparent 60%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cyan) 2%, transparent) 0%, transparent 60%);
 }
 
 .hud-panel::before {
@@ -278,7 +273,7 @@ label.flash {
 .status-overall {
   margin-top: 0.3rem;
   padding-top: 0.4rem;
-  border-top: 1px solid var(--muted)33;
+  border-top: 1px solid color-mix(in srgb, var(--muted) 20%, transparent);
 }
 
 .status-check {
@@ -375,14 +370,11 @@ label.flash {
   padding: 0.4rem 0.9rem;
   cursor: pointer;
   border-radius: 2px;
-  text-shadow: 0 0 6px var(--green)88;
-  box-shadow: 0 0 8px var(--green)22;
   transition: all 0.2s;
 }
 .override-btn:hover {
-  background: var(--green)15;
-  box-shadow: 0 0 14px var(--green)55;
-}
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+  }
 .override-btn:disabled {
   opacity: 0.6;
   cursor: default;
@@ -454,7 +446,7 @@ label.flash {
   gap: 1rem;
   height: 180px;
   padding: 0 0.5rem 0.5rem;
-  border-bottom: 2px solid var(--muted)66;
+  border-bottom: 2px solid color-mix(in srgb, var(--muted) 40%, transparent);
   margin-bottom: 1.5rem;
 }
 
@@ -477,7 +469,7 @@ label.flash {
   width: 100%;
   height: 130px;
   background: var(--surface);
-  border: 1px solid var(--muted)44;
+  border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
   border-radius: 4px 4px 0 0;
   display: flex;
   align-items: flex-end;
@@ -520,7 +512,7 @@ label.flash {
 
 .bar-track {
   background: var(--surface);
-  border: 1px solid var(--muted)66;
+  border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent);
   border-radius: 6px;
   height: 18px;
   overflow: hidden;
@@ -559,8 +551,7 @@ label.flash {
   border-left: 4px solid var(--orange);
   border-radius: 4px;
   padding: 0.75rem 1rem;
-  box-shadow: 0 0 10px var(--orange)33;
-}
+  }
 
 .missed-q {
   font-weight: bold;
@@ -642,14 +633,12 @@ label.flash {
   cursor: pointer;
   border-radius: 2px;
   text-shadow: 0 0 8px var(--cyan);
-  box-shadow: 0 0 10px var(--cyan)33;
   transition: all 0.2s;
 }
 
 .debrief-btn:hover {
-  background: var(--cyan)22;
-  box-shadow: 0 0 18px var(--cyan)66;
-}
+  background: color-mix(in srgb, var(--cyan) 13%, transparent);
+  }
 
 .debrief-btn-secondary {
   border-color: var(--muted);
@@ -662,8 +651,7 @@ label.flash {
   border-color: var(--green);
   color: var(--green);
   text-shadow: 0 0 8px var(--green);
-  box-shadow: 0 0 10px var(--green)33;
-  background: var(--green)11;
+  background: color-mix(in srgb, var(--green) 7%, transparent);
 }
 
 .question-text {
@@ -685,7 +673,7 @@ label.flash {
   align-items: flex-start;
   gap: 0.6rem;
   background: var(--surface);
-  border: 1px solid var(--muted)44;
+  border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
   border-radius: 4px;
   padding: 0.65rem 1rem;
   cursor: pointer;
@@ -696,8 +684,8 @@ label.flash {
 }
 
 .mc-label:hover {
-  border-color: var(--cyan)88;
-  background: var(--cyan)0d;
+  border-color: color-mix(in srgb, var(--cyan) 53%, transparent);
+  background: color-mix(in srgb, var(--cyan) 5%, transparent);
 }
 
 .mc-label input[type="radio"] {
@@ -738,7 +726,7 @@ label.flash {
   gap: 0.4rem;
   margin-bottom: 1rem;
   background: var(--surface);
-  border: 1px solid var(--muted)44;
+  border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent);
   border-radius: 4px;
   padding: 0.8rem 1rem;
 }
@@ -773,7 +761,7 @@ label.flash {
 .option-divider {
   width: 100%;
   height: 1px;
-  background: var(--muted)44;
+  background: color-mix(in srgb, var(--muted) 27%, transparent);
   margin: 0.5rem 0;
 }
 
@@ -879,4 +867,59 @@ label.flash {
   button { font-size: 0.9rem; }
 
   .timing-row { flex-direction: column; gap: 0.2rem; }
+}
+
+/* ── REDUCED MOTION ──────────────────────────────────────────────────────────
+   Respect the operating system's "reduce motion" setting. Animation can
+   trigger migraines and motion sickness, so when it's on we drop the ambient
+   effects (screen flicker, drifting starfield, CRT scanlines) and cut the
+   looping animations. Transitions are shortened rather than removed so
+   buttons still read as interactive. Nothing here changes the layout or
+   colours, and the Settings toggles still work on top of it. */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none !important;
+  }
+
+  #starfield,
+  #scanlines {
+    display: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── KEYBOARD FOCUS ──────────────────────────────────────────────────────────
+   Inputs and sliders used to set `outline: none` and replace the browser's
+   focus ring with a glow whose colour was written by sticking a two-digit
+   alpha suffix onto a var() — invalid CSS, so the glow never rendered and
+   anyone navigating by keyboard got no indicator at all.
+   A crisp ring is used instead of a glow: easier to see, and it doesn't add
+   haze to the design. :focus-visible means it appears for keyboard users and
+   stays out of the way when you click with a mouse. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* Sliders don't move the ring off the track, so keep it tight to the edge. */
+input[type="range"]:focus-visible {
+  outline-offset: 4px;
 }

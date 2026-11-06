@@ -48,7 +48,7 @@
     }
     .level-btn { font-size: 0.72rem; padding: 0.35rem 0.9rem; border: 1px solid var(--muted); color: var(--muted); }
     .level-btn.active { border-color: #a78bfa; color: #a78bfa; text-shadow: 0 0 8px #a78bfa; background: #a78bfa11; }
-    .subj-btn { font-size: 0.68rem; padding: 0.28rem 0.7rem; border: 1px solid var(--muted)66; color: var(--muted); }
+    .subj-btn { font-size: 0.68rem; padding: 0.28rem 0.7rem; border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent); color: var(--muted); }
     .subj-btn.active { border-color: #a78bfa; color: #a78bfa; background: #a78bfa11; }
 
     .count-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
@@ -82,7 +82,7 @@
     .reset-btn {
       font-family: inherit; font-size: 0.72rem; letter-spacing: 0.2em;
       padding: 0.5rem 1.4rem; border-radius: 2px; cursor: pointer;
-      background: transparent; border: 1px solid var(--muted)66; color: var(--muted);
+      background: transparent; border: 1px solid color-mix(in srgb, var(--muted) 40%, transparent); color: var(--muted);
       transition: all 0.2s;
     }
     .reset-btn:hover { border-color: var(--muted); color: var(--text); }
@@ -95,7 +95,7 @@
     .q-num { font-size: 0.6rem; letter-spacing: 0.22em; color: #a78bfa; margin-bottom: 0.3rem; }
     .q-body { font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-wrap; }
 
-    .answer-key-section { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--muted)33; }
+    .answer-key-section { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); }
     .answer-key-title { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--muted); margin-bottom: 1.2rem; }
     .answer-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -346,5 +346,6 @@
       document.getElementById('test-output').style.display = 'none';
     });
   </script>
+  <script src="/starfield.js"></script>
 </body>
 </html>

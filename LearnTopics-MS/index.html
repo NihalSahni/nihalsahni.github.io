@@ -27,23 +27,23 @@
       .page-wrap { max-width: 1040px; margin: 0 auto; }
 
       .page-header { padding: 2rem 0 1rem; text-align: center; }
-      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-shadow: 0 0 6px var(--cyan)99; text-decoration: none; margin-bottom: 1rem; border: 1px solid var(--cyan)55; padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
-      .back-link:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: var(--cyan)11; }
-      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px var(--cyan)44; margin: 0.25rem 0; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-decoration: none; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--cyan) 33%, transparent); padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: color-mix(in srgb, var(--cyan) 7%, transparent); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); margin: 0.25rem 0; }
       .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
 
       /* ── MODE TABS ──────────────────────────────── */
-      .mode-tabs { display: flex; max-width: 720px; margin: 1.75rem auto 0; border: 1px solid var(--muted)44; border-radius: 4px; overflow: hidden; }
-      .mode-tab { flex: 1; background: transparent; border: none; border-right: 1px solid var(--muted)44; border-radius: 0; padding: 0.8rem 0.5rem; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
+      .mode-tabs { display: flex; max-width: 720px; margin: 1.75rem auto 0; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 4px; overflow: hidden; }
+      .mode-tab { flex: 1; background: transparent; border: none; border-right: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 0; padding: 0.8rem 0.5rem; font-size: 0.72rem; letter-spacing: 0.12em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: background 0.2s, color 0.2s; }
       .mode-tab:last-child { border-right: none; }
       .mode-tab:hover { background: var(--surface); color: var(--text); box-shadow: none; }
-      .mode-tab.active { background: var(--cyan)18; color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: inset 0 -2px 0 var(--cyan); }
+      .mode-tab.active { background: color-mix(in srgb, var(--cyan) 9%, transparent); color: var(--cyan); text-shadow: 0 0 8px var(--cyan); box-shadow: inset 0 -2px 0 var(--cyan); }
 
       /* ── SUBJECT FILTER PILLS ───────────────────── */
       .filter-bar { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 1.5rem 0 1rem; }
-      .filter-pill { background: transparent; border: 1px solid var(--muted)55; border-radius: 2px; padding: 0.3rem 0.75rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+      .filter-pill { background: transparent; border: 1px solid color-mix(in srgb, var(--muted) 33%, transparent); border-radius: 2px; padding: 0.3rem 0.75rem; font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); text-shadow: none; box-shadow: none; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; }
       .filter-pill:hover { border-color: var(--text); color: var(--text); background: transparent; box-shadow: none; }
-      .filter-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: var(--cyan)11; box-shadow: none; }
+      .filter-pill.active { border-color: var(--cyan); color: var(--cyan); text-shadow: 0 0 6px var(--cyan); background: color-mix(in srgb, var(--cyan) 7%, transparent); box-shadow: none; }
 
       /* ── MODE PANELS ────────────────────────────── */
       .mode-panel { display: none; }
@@ -55,10 +55,10 @@
       #a-detail { display: none; }
       .subject-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.4rem; margin-top: 0.5rem; }
 
-      .subject-tile { position: relative; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; padding: 2rem 1.5rem 1.5rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.6rem; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+      .subject-tile { position: relative; background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 4px; padding: 2rem 1.5rem 1.5rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.6rem; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
       .subject-tile::before { content: ''; position: absolute; top: -2px; left: -2px; width: 16px; height: 16px; border-top: 3px solid var(--c, var(--cyan)); border-left: 3px solid var(--c, var(--cyan)); transition: width 0.2s, height 0.2s; }
       .subject-tile::after  { content: ''; position: absolute; bottom: -2px; right: -2px; width: 16px; height: 16px; border-bottom: 3px solid var(--c, var(--cyan)); border-right: 3px solid var(--c, var(--cyan)); transition: width 0.2s, height 0.2s; }
-      .subject-tile:hover { border-color: var(--c, var(--cyan))66; box-shadow: 0 0 24px var(--c, var(--cyan))33; transform: translateY(-3px); }
+      .subject-tile:hover { border-color: color-mix(in srgb, var(--c, var(--cyan)) 40%, transparent); transform: translateY(-3px); }
       .subject-tile:hover::before, .subject-tile:hover::after { width: 26px; height: 26px; }
 
       .tile-icon  { font-size: 2rem; line-height: 1; }
@@ -70,20 +70,20 @@
       .a-back-btn { background: transparent; border: none; padding: 0; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--muted); cursor: pointer; text-shadow: none; box-shadow: none; margin-bottom: 1.75rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
       .a-back-btn:hover { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); background: transparent; box-shadow: none; }
 
-      .a-subject-header { display: flex; align-items: center; gap: 1.1rem; padding-bottom: 1.25rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--muted)33; }
+      .a-subject-header { display: flex; align-items: center; gap: 1.1rem; padding-bottom: 1.25rem; margin-bottom: 1.75rem; border-bottom: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); }
       .a-subject-icon { font-size: 2.5rem; }
       .a-subject-name { font-size: clamp(1.6rem, 4vw, 2.5rem); margin: 0; text-shadow: none; }
 
       .a-concepts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 0.7rem; }
 
-      .a-concept-card { background: var(--surface); border: 1px solid var(--muted)33; border-radius: 4px; overflow: hidden; transition: border-color 0.15s; }
-      .a-concept-card.open { border-color: var(--muted)66; }
+      .a-concept-card { background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 20%, transparent); border-radius: 4px; overflow: hidden; transition: border-color 0.15s; }
+      .a-concept-card.open { border-color: color-mix(in srgb, var(--muted) 40%, transparent); }
       .a-concept-term-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.7rem 1rem; cursor: pointer; transition: background 0.15s; user-select: none; }
       .a-concept-term-row:hover { background: rgba(255,255,255,0.03); }
       .a-concept-term-text { font-size: 0.85rem; letter-spacing: 0.08em; flex: 1; }
       .a-concept-arrow { font-size: 0.62rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
       .a-concept-card.open .a-concept-arrow { transform: rotate(90deg); }
-      .a-concept-def { display: none; padding: 0.4rem 1rem 0.8rem; font-size: 0.78rem; color: var(--muted); line-height: 1.72; border-top: 1px solid var(--muted)18; }
+      .a-concept-def { display: none; padding: 0.4rem 1rem 0.8rem; font-size: 0.78rem; color: var(--muted); line-height: 1.72; border-top: 1px solid color-mix(in srgb, var(--muted) 9%, transparent); }
       .a-concept-card.open .a-concept-def { display: block; }
 
       /* ══════════════════════════════════════════════
@@ -93,33 +93,33 @@
       .fc-progress-text { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.12em; }
       .fc-shuffle-btn { padding: 0.3rem 0.85rem; font-size: 0.68rem; letter-spacing: 0.12em; border-color: var(--muted); color: var(--muted); text-shadow: none; box-shadow: none; }
       .fc-shuffle-btn:hover { border-color: var(--text); color: var(--text); background: transparent; box-shadow: none; }
-      .fc-progress-bar-wrap { max-width: 560px; margin: 0 auto 1.5rem; height: 3px; background: var(--muted)22; border-radius: 2px; overflow: hidden; }
+      .fc-progress-bar-wrap { max-width: 560px; margin: 0 auto 1.5rem; height: 3px; background: color-mix(in srgb, var(--muted) 13%, transparent); border-radius: 2px; overflow: hidden; }
       .fc-progress-bar-fill { height: 100%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); transition: width 0.3s ease, background 0.3s; }
 
       .fc-card-wrap { perspective: 1000px; width: 100%; max-width: 560px; height: 300px; margin: 0 auto; cursor: pointer; }
       .fc-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.45s ease; }
       .fc-card-inner.flipped { transform: rotateY(180deg); }
-      .fc-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
+      .fc-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
       .fc-face-back { transform: rotateY(180deg); }
       .fc-subject-badge { font-size: 0.58rem; letter-spacing: 0.22em; padding: 0.2rem 0.6rem; border: 1px solid currentColor; margin-bottom: 0.6rem; }
       .fc-term { font-size: 1.55rem; letter-spacing: 0.1em; margin: 0 0 1rem; text-shadow: none; }
       .fc-flip-hint { font-size: 0.6rem; letter-spacing: 0.18em; color: var(--muted); margin-top: auto; }
       .fc-definition { font-size: 0.83rem; color: var(--text); line-height: 1.72; max-width: 480px; }
-      .fc-known-btn { margin-top: 1.2rem; padding: 0.6rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.2em; border: 2px solid var(--muted)88; color: var(--muted); background: transparent; cursor: pointer; border-radius: 3px; font-family: 'Share Tech Mono', monospace; transition: all 0.2s; }
-      .fc-known-btn:hover { border-color: var(--green); color: var(--green); background: var(--green)11; box-shadow: 0 0 12px var(--green)44; }
-      .fc-known-btn.known { border-color: var(--green); color: var(--green); background: var(--green)18; text-shadow: 0 0 8px var(--green); box-shadow: 0 0 16px var(--green)55; }
+      .fc-known-btn { margin-top: 1.2rem; padding: 0.6rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.2em; border: 2px solid color-mix(in srgb, var(--muted) 53%, transparent); color: var(--muted); background: transparent; cursor: pointer; border-radius: 3px; font-family: 'Share Tech Mono', monospace; transition: all 0.2s; }
+      .fc-known-btn:hover { border-color: var(--green); color: var(--green); background: color-mix(in srgb, var(--green) 7%, transparent); }
+      .fc-known-btn.known { border-color: var(--green); color: var(--green); background: color-mix(in srgb, var(--green) 9%, transparent); text-shadow: 0 0 8px var(--green); }
 
       .fc-nav { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 1.5rem; }
       .fc-nav button { padding: 0.5rem 1.6rem; font-size: 0.72rem; letter-spacing: 0.15em; }
       .fc-key-hint { text-align: center; font-size: 0.6rem; letter-spacing: 0.12em; color: var(--muted); margin-top: 0.75rem; }
 
       .search-wrap { max-width: 560px; margin: 0.5rem auto 0; }
-      .search-input { width: 100%; background: var(--surface); border: 1px solid var(--muted)44; border-radius: 4px; padding: 0.55rem 1rem; font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--text); outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+      .search-input { width: 100%; background: var(--surface); border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 4px; padding: 0.55rem 1rem; font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; letter-spacing: 0.14em; color: var(--text);  transition: border-color 0.2s; box-sizing: border-box; }
       .search-input::placeholder { color: var(--muted); }
-      .search-input:focus { border-color: var(--cyan); box-shadow: 0 0 8px var(--cyan)44; }
+      .search-input:focus { border-color: var(--cyan); }
       .search-count { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 1rem; }
 
-      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted)88; padding: 3rem 0 2rem; }
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 3rem 0 2rem; }
 
       @media (max-width: 600px) {
         .fc-card-wrap { height: 240px; }
@@ -258,7 +258,6 @@
       <footer>Science Bowl Practice &nbsp;·&nbsp; STUDY HARD. KNOW MORE. WIN.</footer>
     </div>
 
-    <script src="/question.js"></script>
     <script src="/Learn.js"></script>
     <script src="/Flashcards.js"></script>
     <script>
@@ -308,7 +307,6 @@
       function getItems(subject) {
         return CONCEPTS[subject].items.filter(function(c) { return c.level === 'MS'; });
       }
-
 
       // ── Mode switching ─────────────────────────────
       function switchMode(mode) {
@@ -533,23 +531,8 @@
       renderModeAOverview();
       buildFCDeck();
 
-      // Starfield
-      (function() {
-        var canvas = document.getElementById('starfield'), ctx = canvas.getContext('2d'), stars = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        function init() { stars = Array.from({length:200}, function() { return { x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*1.2+0.2, speed:Math.random()*0.25+0.04, opacity:Math.random()*0.6+0.2 }; }); }
-        var _sf_last=0,_sf_raf;
-        function draw(ts) {
-          if(ts-_sf_last>=33){_sf_last=ts;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            stars.forEach(function(s) { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle='rgba(232,244,255,'+s.opacity+')'; ctx.fill(); s.y+=s.speed; if(s.y>canvas.height){s.y=0;s.x=Math.random()*canvas.width;} });
-          }
-          _sf_raf=requestAnimationFrame(draw);
-        }
-        document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(_sf_raf);else _sf_raf=requestAnimationFrame(draw);});
-        window.addEventListener('resize', function(){resize();init();}); resize(); init(); _sf_raf=requestAnimationFrame(draw);
-      })();
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+    <script src="/starfield.js"></script>
   </body>
 </html>

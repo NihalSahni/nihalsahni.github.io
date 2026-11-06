@@ -185,7 +185,7 @@ function showKeyboardTip() {
   localStorage.setItem('sb_kb_tip_shown', '1');
   const tip = document.createElement('div');
   tip.id = 'kb-tip';
-  tip.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--cyan)55;border-radius:4px;padding:0.9rem 1.6rem 0.9rem 1.4rem;text-align:center;z-index:999;opacity:1;transition:opacity 0.5s;max-width:90vw;white-space:nowrap';
+  tip.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid color-mix(in srgb, var(--cyan) 33%, transparent);border-radius:4px;padding:0.9rem 1.6rem 0.9rem 1.4rem;text-align:center;z-index:999;opacity:1;transition:opacity 0.5s;max-width:90vw;white-space:nowrap';
   tip.innerHTML =
     '<div style="font-size:0.58rem;letter-spacing:0.28em;color:var(--muted);margin-bottom:0.4rem">KEYBOARD SHORTCUTS</div>' +
     '<div style="font-size:0.72rem;letter-spacing:0.1em;color:var(--cyan);text-shadow:0 0 6px var(--cyan)">W / X / Y / Z &nbsp;·&nbsp; select answer &nbsp;&nbsp;|&nbsp;&nbsp; ENTER &nbsp;·&nbsp; submit</div>' +
@@ -581,43 +581,6 @@ function showResults() {
     </div>`;
 }
 
-// ── STARFIELD ──────────────────────────────────────────────────────────────────
-(function () {
-  const canvas = document.getElementById("starfield");
-  const ctx = canvas.getContext("2d");
-  let stars = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  function init() {
-    stars = Array.from({ length: 200 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.2,
-      speed: Math.random() * 0.25 + 0.04,
-      opacity: Math.random() * 0.6 + 0.2,
-    }));
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    stars.forEach(s => {
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(232,244,255,${s.opacity})`;
-      ctx.fill();
-      s.y += s.speed;
-      if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
-    });
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener("resize", () => { resize(); init(); });
-  resize(); init(); draw();
-})();
 
 // ── AUDIO BEEP ────────────────────────────────────────────────────────────────
 function beep(freq = 880, duration = 80) {
