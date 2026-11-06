@@ -114,7 +114,7 @@ export class Leaderboard {
         return json({ ok: true, name: existing.name, token: existing.token, returning: true });
       }
       return json({ ok: false, reason: 'taken',
-        error: 'That callsign is already taken. Pick another.' }, 409);
+        error: 'That name is already taken. Pick another.' }, 409);
     }
 
     const fresh = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');

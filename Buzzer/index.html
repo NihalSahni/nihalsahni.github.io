@@ -531,7 +531,7 @@
   <div id="scanlines"></div>
 
   <div style="text-align:center;margin-top:1.5rem">
-    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)';this.style.textShadow='0 0 12px var(--magenta)';this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='';this.style.textShadow='0 0 6px var(--magenta)99';this.style.borderColor='var(--magenta)55'">← HOME BASE</a>
+    <a href="/" style="display:inline-block;font-size:0.78rem;letter-spacing:0.22em;color:var(--magenta);text-shadow:0 0 6px var(--magenta)99;text-decoration:none;border:1px solid var(--magenta)55;padding:0.3rem 0.8rem;border-radius:2px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,0,200,0.07)';this.style.textShadow='0 0 12px var(--magenta)';this.style.borderColor='var(--magenta)'" onmouseout="this.style.background='';this.style.textShadow='0 0 6px var(--magenta)99';this.style.borderColor='var(--magenta)55'">← HOME</a>
   </div>
 
   <div class="related-links-panel" style="margin-top:1rem;margin-bottom:0">
@@ -542,18 +542,18 @@
     </div>
   </div>
 
-  <h1 id="Title">BUZZER ARENA<span class="blink-cursor">|</span></h1>
+  <h1 id="Title">BUZZER TRAINER<span class="blink-cursor">|</span></h1>
 
   <!-- ══ SETUP PANELS ══════════════════════════════════════════════════════════ -->
   <div id="ranks" class="hud-panel">
-    <div class="panel-label">OPERATIVE CLASS</div>
-    <button id="Cadet" onclick="bzMS()">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
-    <button id="Lieutenant" onclick="bzHS()">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
+    <div class="panel-label">YOUR LEVEL</div>
+    <button id="Cadet" onclick="bzMS()">MIDDLE SCHOOL <span class="rank-sub">[ grades 6-8 ]</span></button>
+    <button id="Lieutenant" onclick="bzHS()">HIGH SCHOOL <span class="rank-sub">[ grades 9-12 ]</span></button>
   </div>
 
   <div id="SubjectContainer" class="hud-panel">
-    <div class="panel-label">MODULE SELECT</div>
-    <label><input id="Everything" type="checkbox" onclick="bzSubject('Everything',this)" /> ALL MODULES</label>
+    <div class="panel-label">SUBJECTS</div>
+    <label><input id="Everything" type="checkbox" onclick="bzSubject('Everything',this)" /> ALL SUBJECTS</label>
     <label><input id="Biology"    type="checkbox" onclick="bzSubject('Biology',this)"    /> BIOLOGY</label>
     <label><input id="Physics"    type="checkbox" onclick="bzSubject('Physics',this)"    /> PHYSICS</label>
     <label><input id="Chemistry"  type="checkbox" onclick="bzSubject('Chemistry',this)"  /> CHEMISTRY</label>
@@ -569,27 +569,27 @@
   </div>
 
   <div id="ModePanel" class="hud-panel">
-    <div class="panel-label">QUESTION DELIVERY</div>
-    <label><input type="radio" name="bzmode" value="audio" checked onchange="bzSetMode('audio')" /> AUDIO READOUT <span class="rank-sub">[ default ]</span></label>
-    <label><input type="radio" name="bzmode" value="display" onchange="bzSetMode('display')" /> DISPLAY TEXT</label>
+    <div class="panel-label">QUESTION FORMAT</div>
+    <label><input type="radio" name="bzmode" value="audio" checked onchange="bzSetMode('audio')" /> READ ALOUD <span class="rank-sub">[ default ]</span></label>
+    <label><input type="radio" name="bzmode" value="display" onchange="bzSetMode('display')" /> SHOW AS TEXT</label>
   </div>
 
   <div id="MatchTypePanel" class="hud-panel">
     <div class="panel-label">MATCH TYPE</div>
     <button id="mt-bot" class="diff-btn selected" onclick="bzSetMatchType('bot')">VS BOT <span class="rank-sub">[ solo practice ]</span></button>
     <button id="mt-h2h" class="diff-btn"          onclick="bzSetMatchType('h2h')">HEAD-TO-HEAD <span class="rank-sub">[ 2 players, same device ]</span></button>
-    <a href="/Online/" class="diff-btn" style="text-decoration:none;display:block;text-align:center;color:var(--cyan);border-color:var(--cyan);background:var(--cyan)0a;text-shadow:0 0 8px var(--cyan)88">ONLINE ARENA <span class="rank-sub">[ live multiplayer ]</span></a>
+    <a href="/Online/" class="diff-btn" style="text-decoration:none;display:block;text-align:center;color:var(--cyan);border-color:var(--cyan);background:var(--cyan)0a;text-shadow:0 0 8px var(--cyan)88">PLAY ONLINE <span class="rank-sub">[ live multiplayer ]</span></a>
   </div>
 
   <div id="DifficultyPanel" class="hud-panel">
     <div class="panel-label">BOT DIFFICULTY</div>
-    <button id="diff-cadet"    class="diff-btn selected" onclick="bzSetDifficulty('cadet')">CADET <span class="rank-sub">[ easy ]</span></button>
-    <button id="diff-standard" class="diff-btn"          onclick="bzSetDifficulty('standard')">STANDARD <span class="rank-sub">[ normal ]</span></button>
-    <button id="diff-elite"    class="diff-btn"          onclick="bzSetDifficulty('elite')">ELITE <span class="rank-sub">[ hard ]</span></button>
+    <button id="diff-cadet"    class="diff-btn selected" onclick="bzSetDifficulty('cadet')">EASY</button>
+    <button id="diff-standard" class="diff-btn"          onclick="bzSetDifficulty('standard')">NORMAL</button>
+    <button id="diff-elite"    class="diff-btn"          onclick="bzSetDifficulty('elite')">HARD</button>
   </div>
 
   <div id="bz-status"></div>
-  <button onclick="bzStart()" id="BzLaunch">&#9889; LAUNCH MATCH</button>
+  <button onclick="bzStart()" id="BzLaunch">&#9889; START MATCH</button>
 
   <!-- ══ GAME AREA ═════════════════════════════════════════════════════════════ -->
   <div id="game-area">
@@ -673,7 +673,7 @@
     <button id="NextBtn" onclick="bzNext()">NEXT TOSS-UP ›</button>
 
     <div style="text-align:center;margin-top:0.75rem">
-      <button onclick="if(confirm('Abandon match and return to Home Base?'))location.href='index.html'" style="background:transparent;border:1px solid var(--muted)55;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.borderColor='#ff4444';this.style.color='#ff4444'" onmouseout="this.style.borderColor='';this.style.color=''">✕ ABANDON MATCH</button>
+      <button onclick="if(confirm('Quit this match and go back to the home page?'))location.href='index.html'" style="background:transparent;border:1px solid var(--muted)55;color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;padding:0.35rem 1rem;cursor:pointer;border-radius:2px;transition:all 0.2s" onmouseover="this.style.borderColor='#ff4444';this.style.color='#ff4444'" onmouseout="this.style.borderColor='';this.style.color=''">✕ QUIT MATCH</button>
     </div>
 
     <!-- Game over -->

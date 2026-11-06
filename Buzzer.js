@@ -147,13 +147,13 @@ function bzStatus() {
   const el = $('bz-status');
   if (!el) return;
   const ready = bzLevel && bzSubjectNames.size > 0;
-  const lvText = bzLevel === 'MS' ? 'AGENT [ MIDDLE SCHOOL ]' : bzLevel === 'HS' ? 'COMMANDER [ HIGH SCHOOL ]' : null;
+  const lvText = bzLevel === 'MS' ? 'MIDDLE SCHOOL' : bzLevel === 'HS' ? 'HIGH SCHOOL' : null;
   const lvRow = lvText
     ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${lvText}</span></div>`
-    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT OPERATIVE CLASS</span></div>`;
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT YOUR LEVEL</span></div>`;
   const sjRow = bzSubjectNames.size > 0
     ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${[...bzSubjectNames].join(' · ')}</span></div>`
-    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT AT LEAST ONE MODULE</span></div>`;
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">PICK AT LEAST ONE SUBJECT</span></div>`;
   const dc = ready ? 'dot-ready' : 'dot-offline';
   const c  = ready ? 'var(--green)' : 'var(--orange)';
   const t  = ready ? 'SYSTEMS READY' : 'SYSTEMS OFFLINE';

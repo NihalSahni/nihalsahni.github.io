@@ -10,14 +10,14 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sciencebowlpractice.org/LearnTopics-MS/" />
     <meta property="og:site_name" content="Science Bowl Practice" />
-    <meta property="og:title" content="Middle School Science Bowl Practice Topics — MS Intel Database" />
+    <meta property="og:title" content="Middle School Science Bowl Study Topics" />
     <meta property="og:description" content="Middle School Science Bowl Practice topics and reference guide. Learn biology, physics, chemistry, earth &amp; space science, energy, and math for NSB competitions." />
     <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
-    <meta name="twitter:title" content="Middle School Science Bowl Practice Topics — MS Intel Database" />
+    <meta name="twitter:title" content="Middle School Science Bowl Study Topics" />
     <meta name="twitter:description" content="Middle School Science Bowl Practice topics and reference guide. Learn biology, physics, chemistry, earth &amp; space science, energy, and math for NSB competitions." />
-    <title>MS Intel Database — Science Bowl Practice</title>
+    <title>Middle School Study Topics — Science Bowl Practice</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
     <link rel="manifest" href="/manifest.json" />
@@ -174,10 +174,10 @@
 
     <div class="page-wrap">
       <div class="page-header">
-        <a href="/LearnTopics/" class="back-link">← SELECT DIVISION</a>
+        <a href="/LearnTopics/" class="back-link">← CHANGE LEVEL</a>
         <a href="/Progress/" class="back-link" style="margin-left:1.5rem">VIEW PROGRESS →</a>
-        <h1 class="page-title">MS INTEL DATABASE</h1>
-        <p class="page-sub">MODULE 03A — MIDDLE SCHOOL CONCEPT REFERENCE &amp; STUDY TOOLS</p>
+        <h1 class="page-title">MIDDLE SCHOOL STUDY TOPICS</h1>
+        <p class="page-sub">CONCEPT GUIDES &amp; FLASHCARDS</p>
       </div>
 
       <!-- Mode tabs -->
@@ -220,7 +220,7 @@
         <div class="fc-top-row">
           <span class="fc-progress-text" id="fc-progress">Card 1 of —</span>
           <div style="display:flex;gap:0.5rem">
-            <button class="fc-shuffle-btn" id="fc-mode-btn" onclick="toggleDefFirst()">DEF → TERM</button>
+            <button class="fc-shuffle-btn" id="fc-mode-btn" onclick="toggleDefFirst()">SHOW DEFINITION FIRST</button>
             <button class="fc-shuffle-btn" onclick="shuffleDeck()">⟳ SHUFFLE</button>
           </div>
         </div>
@@ -285,7 +285,7 @@
       function toggleDefFirst() {
         defFirst = !defFirst;
         var btn = document.getElementById('fc-mode-btn');
-        btn.textContent = defFirst ? 'TERM → DEF' : 'DEF → TERM';
+        btn.textContent = defFirst ? 'SHOW TERM FIRST' : 'SHOW DEFINITION FIRST';
         btn.style.color = defFirst ? 'var(--cyan)' : '';
         btn.style.borderColor = defFirst ? 'var(--cyan)' : '';
         fcFlipped = false;

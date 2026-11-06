@@ -202,7 +202,7 @@ function loadQuestion() {
   stopTimer();
   maxQuestions--;
   questionNumber++;
-  submitBtn.innerHTML = (!survivalMode && maxQuestions === 0) ? "FINISH OPERATION" : "ADVANCE >";
+  submitBtn.innerHTML = (!survivalMode && maxQuestions === 0) ? "FINISH" : "ADVANCE >";
   const ctr = document.getElementById("question-counter");
   if (ctr) {
     ctr.textContent = survivalMode ? `Q ${questionNumber}` : `${questionNumber} / ${totalQuestions}`;
@@ -260,7 +260,7 @@ function loadQuestion() {
   document.getElementById("key-hint").style.display = "block";
   document.getElementById("EndEarly").style.display = "inline-block";
   document.getElementById("AbandonBtn").style.display = "inline-block";
-  typeText(document.getElementById("Title"), reviewMode ? "REVIEW ACTIVE" : "MISSION ACTIVE");
+  typeText(document.getElementById("Title"), reviewMode ? "REVIEW ACTIVE" : "PRACTICE ACTIVE");
   if (questionNumber === 1) showKeyboardTip();
 
   if (audioMode) {
@@ -543,14 +543,14 @@ function showResults() {
         <p class="missed-q">${q.question}</p>
         <p class="missed-yours">Your answer: <span>${q.userAnswer || "(no answer)"}</span></p>
         ${hideAnswersMode
-          ? `<p class="missed-queued">⚑ Added to Review Queue — answer revealed when drilled</p>`
+          ? `<p class="missed-queued">⚑ Added to Review Queue — answer shown when you practice it</p>`
           : `<p class="missed-correct">Correct answer: <span>${q.correctAnswer}</span></p>`}
         <p class="missed-subject">Subject: ${q.subjectName}${q.timeTaken !== null ? ` · ${q.timeTaken.toFixed(1)}s` : ""}</p>
       </div>`).join("");
 
   container.innerHTML = `
     <div class="results-screen">
-      <h2>${reviewMode ? "REVIEW DEBRIEF" : "MISSION DEBRIEF"}</h2>
+      <h2>${reviewMode ? "REVIEW RESULTS" : "YOUR RESULTS"}</h2>
       <div class="overall-score">
         <svg class="score-ring" viewBox="0 0 120 120">
           <circle class="ring-bg"   cx="60" cy="60" r="50"/>
@@ -562,7 +562,7 @@ function showResults() {
         <div class="score-text">
           <span class="score-pct" style="color:${scoreColor}">${overallPct}%</span>
           <span class="score-fraction">${totalCorrect} / ${totalAnswered}</span>
-          ${bestStreak > 0 ? `<span class="score-streak">best chain: ${bestStreak}</span>` : ""}
+          ${bestStreak > 0 ? `<span class="score-streak">best streak: ${bestStreak}</span>` : ""}
         </div>
       </div>
       ${timedHTML}
@@ -576,7 +576,7 @@ function showResults() {
         : newlyQueued > 0 ? `<p class="review-note">⚑ ${newlyQueued} missed question${newlyQueued !== 1 ? 's' : ''} added to your Review Queue.</p>` : ''}
       <div class="debrief-actions">
         <button class="debrief-btn" onclick="location.reload()">PRACTICE AGAIN</button>
-        <button class="debrief-btn debrief-btn-secondary" onclick="location.href='index.html'">HOME BASE</button>
+        <button class="debrief-btn debrief-btn-secondary" onclick="location.href='index.html'">HOME</button>
       </div>
     </div>`;
 }
@@ -697,16 +697,16 @@ function updateStatus() {
   if (!indicator) return;
 
   const ready = level !== "" && selectedSubjectNames.size > 0;
-  const levelText = level === "MS" ? "AGENT [ MIDDLE SCHOOL ]" : level === "HS" ? "COMMANDER [ HIGH SCHOOL ]" : null;
+  const levelText = level === "MS" ? "MIDDLE SCHOOL" : level === "HS" ? "HIGH SCHOOL" : null;
   const subjectList = [...selectedSubjectNames].join(" · ");
 
   const levelRow = levelText
     ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${levelText}</span></div>`
-    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT OPERATIVE CLASS</span></div>`;
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT YOUR LEVEL</span></div>`;
 
   const subjectRow = selectedSubjectNames.size > 0
     ? `<div class="status-row"><span class="status-check">✓</span><span class="status-item">${subjectList}</span></div>`
-    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">SELECT AT LEAST ONE MODULE</span></div>`;
+    : `<div class="status-row"><span class="status-arrow">→</span><span class="status-needed">PICK AT LEAST ONE SUBJECT</span></div>`;
 
   const dotClass = ready ? "dot-ready" : "dot-offline";
   const statusColor = ready ? "var(--green)" : "var(--orange)";
@@ -773,7 +773,7 @@ function matchesFilter(key) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 window.addEventListener("DOMContentLoaded", () => {
-  typeText(document.getElementById("Title"), "COMMAND DECK");
+  typeText(document.getElementById("Title"), "PRACTICE QUIZ");
   updateSliderTrail();
 
   // Review queue UI
@@ -781,7 +781,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const rlEl = document.getElementById("review-launch");
   if (rlEl) {
     if (rq.length > 0) {
-      rlEl.innerHTML = `<button class="review-queue-btn" onclick="startReviewMode()">⚑ DRILL REVIEW QUEUE <span class="review-queue-count">${rq.length}</span></button>`;
+      rlEl.innerHTML = `<button class="review-queue-btn" onclick="startReviewMode()">⚑ PRACTICE MISSED QUESTIONS <span class="review-queue-count">${rq.length}</span></button>`;
     } else {
       rlEl.innerHTML = `<p class="review-queue-empty">Review queue is empty — missed questions appear here after practice.</p>`;
     }

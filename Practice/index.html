@@ -83,7 +83,7 @@
     <div id="scanlines"></div>
 
     <div id="home-link-wrap" style="text-align:center;margin-top:1.5rem">
-      <a href="/" class="debrief-btn debrief-btn-secondary" style="font-size:0.72rem;letter-spacing:0.22em;text-decoration:none;display:inline-block">← HOME BASE</a>
+      <a href="/" class="debrief-btn debrief-btn-secondary" style="font-size:0.72rem;letter-spacing:0.22em;text-decoration:none;display:inline-block">← HOME</a>
     </div>
 
     <div class="related-links-panel" style="margin-top:1rem;margin-bottom:0">
@@ -95,16 +95,16 @@
       </div>
     </div>
 
-    <h1 id="Title">COMMAND DECK<span class="blink-cursor">|</span></h1>
+    <h1 id="Title">PRACTICE QUIZ<span class="blink-cursor">|</span></h1>
 
     <div id="ranks" class="hud-panel">
-      <div class="panel-label">OPERATIVE CLASS</div>
-      <button id="Cadet" onclick="MSSelect()">AGENT <span class="rank-sub">[ MIDDLE SCHOOL ]</span></button>
-      <button id="Lieutenant" onclick="HSSelect()">COMMANDER <span class="rank-sub">[ HIGH SCHOOL ]</span></button>
+      <div class="panel-label">YOUR LEVEL</div>
+      <button id="Cadet" onclick="MSSelect()">MIDDLE SCHOOL <span class="rank-sub">[ grades 6-8 ]</span></button>
+      <button id="Lieutenant" onclick="HSSelect()">HIGH SCHOOL <span class="rank-sub">[ grades 9-12 ]</span></button>
     </div>
 
     <div id="CampaignLength" class="hud-panel">
-      <div class="panel-label">OPERATION SCALE</div>
+      <div class="panel-label">SESSION LENGTH</div>
       <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem">
         <button id="standard-btn" class="diff-btn" onclick="setSurvivalMode(false)">STANDARD</button>
         <button id="survival-btn" class="diff-btn" onclick="setSurvivalMode(true)">SURVIVAL <span class="rank-sub">[ 3 lives ]</span></button>
@@ -115,8 +115,8 @@
     </div>
 
     <div id="SubjectContainer" class="hud-panel">
-      <div class="panel-label">MODULE SELECT</div>
-      <label><input id="Everything" type="checkbox" onclick="addSubject('Everything', this)" /> ALL MODULES</label>
+      <div class="panel-label">SUBJECTS</div>
+      <label><input id="Everything" type="checkbox" onclick="addSubject('Everything', this)" /> ALL SUBJECTS</label>
       <label><input id="Biology"    type="checkbox" onclick="addSubject('Biology', this)"    /> BIOLOGY</label>
       <label><input id="Physics"    type="checkbox" onclick="addSubject('Physics', this)"    /> PHYSICS</label>
       <label><input id="Chemistry"  type="checkbox" onclick="addSubject('Chemistry', this)"  /> CHEMISTRY</label>
@@ -126,10 +126,10 @@
     </div>
 
     <div id="OptionsPanel" class="hud-panel">
-      <div class="panel-label">MISSION OPTIONS</div>
+      <div class="panel-label">OPTIONS</div>
       <label><input id="TimedMode" type="checkbox" /> TIMED MODE</label>
-      <label><input id="AudioMode" type="checkbox" /> AUDIO READOUT</label>
-      <label><input id="HideAnswers" type="checkbox" /> HIDE ANSWERS IN DEBRIEF</label>
+      <label><input id="AudioMode" type="checkbox" /> READ QUESTIONS ALOUD</label>
+      <label><input id="HideAnswers" type="checkbox" /> HIDE ANSWERS UNTIL THE END</label>
       <div class="option-divider"></div>
       <span class="option-group-label">QUESTION TYPE</span>
       <label><input type="radio" name="qtype" value="mixed" checked /> MIXED</label>
@@ -146,9 +146,9 @@
     <div id="key-hint" style="display:none" class="key-hint">W / X / Y / Z to select &nbsp;·&nbsp; ENTER to submit</div>
     <div id="QuestionContainer"></div>
     <div id="answer"></div>
-    <button onclick="AddMCQuestion()" id="Submit">&#9889; LAUNCH SEQUENCE</button>
-    <button onclick="showResults()" id="EndEarly" style="display:none">&#9632; END OPERATION EARLY</button>
-    <button onclick="location.href='index.html'" id="AbandonBtn" style="display:none">✕ ABANDON</button>
+    <button onclick="AddMCQuestion()" id="Submit">&#9889; START PRACTICE</button>
+    <button onclick="showResults()" id="EndEarly" style="display:none">&#9632; FINISH NOW</button>
+    <button onclick="location.href='index.html'" id="AbandonBtn" style="display:none">✕ QUIT</button>
 
     <script src="/question.js"></script>
     <script src="/Practice.js"></script>
