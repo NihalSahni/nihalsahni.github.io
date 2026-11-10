@@ -342,6 +342,30 @@
     <div id="scanlines"></div>
     <a href="/Settings/" class="settings-gear">⚙ SETTINGS</a>
 
+    <!-- Asked once, then remembered. level.js shows this only when no level is
+         stored yet, and every tool then opens on the chosen level. -->
+    <div id="level-ask" role="dialog" aria-modal="true" aria-labelledby="level-ask-title" aria-hidden="true">
+      <div class="level-ask-card">
+        <h2 id="level-ask-title">Which level are you?</h2>
+        <p>
+          Science Bowl has separate middle school and high school questions.
+          Pick yours and every tool will start there — you can change it any
+          time in Settings.
+        </p>
+        <div class="level-ask-btns">
+          <button type="button" data-pick="MS">
+            MIDDLE SCHOOL
+            <span class="level-ask-sub">GRADES 6-8</span>
+          </button>
+          <button type="button" data-pick="HS">
+            HIGH SCHOOL
+            <span class="level-ask-sub">GRADES 9-12</span>
+          </button>
+        </div>
+        <button type="button" class="level-ask-skip" data-pick="skip">NOT SURE YET — LET ME LOOK AROUND</button>
+      </div>
+    </div>
+
     <div class="hero">
       <p class="hero-tag">
         // FREE SCIENCE BOWL PRACTICE — NO ACCOUNT NEEDED //
@@ -387,7 +411,7 @@
         <span class="mission-enter" style="color:var(--magenta);text-shadow:0 0 6px var(--magenta)">START A MATCH →</span>
       </a>
 
-      <a href="/LearnTopics/" class="mission-card" style="--accent: var(--green)">
+      <a href="/LearnTopics/" data-level-link="/LearnTopics-{L}/" class="mission-card" style="--accent: var(--green)">
         <div class="mission-icon">📡</div>
         <span class="mission-label" style="color:var(--green);text-shadow:0 0 8px var(--green)">STUDY</span>
         <h2 class="mission-title">STUDY TOPICS</h2>
@@ -531,6 +555,7 @@
       })();
     </script>
     <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+    <script src="/level.js"></script>
     <script src="/starfield.js"></script>
   </body>
 </html>

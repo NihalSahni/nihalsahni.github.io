@@ -1,4 +1,4 @@
-﻿const CACHE = 'sbcn-v11';
+﻿const CACHE = 'sbcn-v12';
 const ASSETS = [
   '/',
   '/index.html',
@@ -14,6 +14,7 @@ const ASSETS = [
   '/FAQ/',
   '/settings.js',
   '/starfield.js',
+  '/level.js',
   '/style.css',
   '/question.js',
   '/Practice.js',

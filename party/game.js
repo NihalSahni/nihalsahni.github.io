@@ -18,6 +18,14 @@ function lev(a, b) {
   return dp[a.length][b.length];
 }
 
+// Must match readingTimeFor() and the 2.2s result pause in Online/index.html,
+// so the server agrees with the players' screens about when reading is over.
+function readingMsFor(text) {
+  const words = (text || '').trim().split(/\s+/).length;
+  return Math.min(15, Math.max(3, Math.ceil(words * 0.25))) * 1000;
+}
+const REOPEN_DELAY_MS = 2200;
+
 // A player's token is a secret. Strip it (and the verified flag) from anything
 // that leaves the room, so it never reaches the other clients.
 function publicPlayer(p) {
@@ -40,6 +48,9 @@ export class GameRoom {
     this.currentQuestion = null;
     this.buzzedWs = null;
     this.buzzedTeam = null;
+    this.readEndsAt = 0;     // when the reading period ends (ms timestamp)
+    this.readMsLeft = 0;     // reading time left at the moment of the buzz
+    this.kicked = new Set(); // names the host removed; they can't rejoin this room
     this.roomId = '';
   }
 
@@ -62,6 +73,11 @@ export class GameRoom {
   handleConnect(ws, url) {
     const name = (url.searchParams.get('name') || 'PLAYER').toUpperCase().slice(0, 16);
     const token = url.searchParams.get('token') || '';
+    if (this.kicked.has(name)) {
+      this.send(ws, { type: 'kicked' });
+      try { ws.close(4001, 'kicked'); } catch (_) {}
+      return;
+    }
     const isFirst = this.sessions.size === 0;
     if (isFirst) this.hostWs = ws;
 
@@ -97,7 +113,7 @@ export class GameRoom {
 
   assignTeam() {
     let my = 0, en = 0;
-    for (const p of this.sessions.values()) { if (p.team === 'my') my++; else en++; }
+    for (const p of this.sessions.values()) { if (p.team === 'my') my++; else if (p.team === 'en') en++; }
     return my <= en ? 'my' : 'en';
   }
 
@@ -128,11 +144,28 @@ export class GameRoom {
         this.broadcast({ type: 'playerReadyChanged', playerId: player.id, ready: player.ready });
         break;
 
-      case 'changeTeam':
-        if (this.phase !== 'LOBBY') return;
-        player.team = msg.team === 'en' ? 'en' : 'my';
-        this.broadcast({ type: 'playerTeamChanged', playerId: player.id, team: player.team });
+      // Only the host picks teams. The host may also sit out as a spectator
+      // ('spec'); other players are always on a team.
+      case 'changeTeam': {
+        if (!player.isHost || this.phase !== 'LOBBY') return;
+        const target = this.findPlayer(msg.playerId);
+        if (!target) return;
+        const team = msg.team === 'spec' && target.isHost ? 'spec' : msg.team === 'en' ? 'en' : 'my';
+        target.team = team;
+        this.broadcast({ type: 'playerTeamChanged', playerId: target.id, team });
         break;
+      }
+
+      case 'kick': {
+        if (!player.isHost) return;
+        const targetWs = this.findSocket(msg.playerId);
+        if (!targetWs || targetWs === ws) return;
+        this.kicked.add(this.sessions.get(targetWs).name);
+        this.send(targetWs, { type: 'kicked' });
+        this.handleClose(targetWs);
+        try { targetWs.close(4001, 'kicked'); } catch (_) {}
+        break;
+      }
 
       case 'start':
         if (!player.isHost || this.phase !== 'LOBBY') return;
@@ -159,6 +192,7 @@ export class GameRoom {
         this.teamLock = { my: false, en: false };
         this.currentQuestion = { id: msg.questionId, text: msg.questionText, answer: msg.answer, type: msg.qType, subject: msg.subject };
         this.phase = 'BUZZ_OPEN';
+        this.readEndsAt = Date.now() + readingMsFor(msg.questionText);
         this.broadcast({
           type: 'questionLoaded',
           round: this.round,
@@ -174,11 +208,13 @@ export class GameRoom {
       case 'buzz': {
         if (this.phase !== 'BUZZ_OPEN') return;
         if (msg.questionId !== this.currentQuestion?.id) return;
+        if (player.team === 'spec') return;
         if (player.team === 'my' && this.teamLock.my) return;
         if (player.team === 'en' && this.teamLock.en) return;
         if (this.buzzedWs) return;
         this.buzzedWs = ws;
         this.buzzedTeam = player.team;
+        this.readMsLeft = Math.max(0, this.readEndsAt - Date.now());
         this.phase = 'PLAYER_ANSWERING';
         this.broadcast({
           type: 'buzzed',
@@ -200,12 +236,10 @@ export class GameRoom {
           this.phase = 'RESULT';
           this.broadcast({ type: 'answerResult', playerId: player.id, correct: true, answer: msg.answer, correctAnswer: this.currentQuestion.answer, scores: { ...this.scores } });
         } else {
-          if (this.buzzedTeam === 'my') { this.scores.my -= 4; this.teamLock.my = true; }
-          else { this.scores.en -= 4; this.teamLock.en = true; }
-          this.buzzedWs = null; this.buzzedTeam = null;
+          const interrupt = this.missed();
           const dead = this.bothTeamsLocked();
           this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
-          this.broadcast({ type: 'answerResult', playerId: player.id, correct: false, answer: msg.answer, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, correctAnswer: this.revealAnswer(dead) });
+          this.broadcast({ type: 'answerResult', playerId: player.id, correct: false, answer: msg.answer, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, interrupt, correctAnswer: this.revealAnswer(dead) });
         }
         break;
       }
@@ -213,12 +247,7 @@ export class GameRoom {
       case 'noAnswer': {
         if (this.phase !== 'PLAYER_ANSWERING') return;
         if (ws !== this.buzzedWs) return;
-        if (this.buzzedTeam === 'my') { this.scores.my -= 4; this.teamLock.my = true; }
-        else { this.scores.en -= 4; this.teamLock.en = true; }
-        this.buzzedWs = null; this.buzzedTeam = null;
-        const dead = this.bothTeamsLocked();
-        this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
-        this.broadcast({ type: 'answerTimeout', playerId: player.id, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, correctAnswer: this.revealAnswer(dead) });
+        this.answerTimedOut(player);
         break;
       }
 
@@ -233,6 +262,9 @@ export class GameRoom {
   handleClose(ws) {
     const player = this.sessions.get(ws);
     if (!player) return;
+    // Leaving (or being kicked) mid-answer counts as running out of time, so
+    // the toss-up doesn't freeze waiting for an answer that will never come.
+    if (ws === this.buzzedWs && this.phase === 'PLAYER_ANSWERING') this.answerTimedOut(player);
     this.sessions.delete(ws);
     this.broadcast({ type: 'playerLeft', playerId: player.id, playerName: player.name });
 
@@ -247,6 +279,38 @@ export class GameRoom {
   }
 
   // ── helpers ────────────────────────────────────────────────────────────────
+
+  findSocket(playerId) {
+    for (const [ws, p] of this.sessions) if (p.id === playerId) return ws;
+    return null;
+  }
+
+  findPlayer(playerId) {
+    const ws = this.findSocket(playerId);
+    return ws ? this.sessions.get(ws) : null;
+  }
+
+  answerTimedOut(player) {
+    const interrupt = this.missed();
+    const dead = this.bothTeamsLocked();
+    this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
+    this.broadcast({ type: 'answerTimeout', playerId: player.id, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, interrupt, correctAnswer: this.revealAnswer(dead) });
+  }
+
+  // The buzzing team missed (wrong answer or ran out of time). Nobody ever
+  // loses points. Missing on an interrupt — buzzing while the question was
+  // still being read — gives the other team 4 points, but only if that team
+  // hasn't already had its go. Returns whether the 4 points were awarded.
+  missed() {
+    const team = this.buzzedTeam, other = team === 'my' ? 'en' : 'my';
+    const interrupt = this.readMsLeft > 0 && !this.teamLock[other];
+    if (interrupt) this.scores[other] += 4;
+    this.teamLock[team] = true;
+    this.buzzedWs = null; this.buzzedTeam = null;
+    // Players' screens pause, then resume whatever reading time was left.
+    this.readEndsAt = Date.now() + REOPEN_DELAY_MS + this.readMsLeft;
+    return interrupt;
+  }
 
   // Once both teams have been penalised on a toss-up, neither gets another
   // attempt — the question is dead and play moves on. Without this the buzz
@@ -306,7 +370,7 @@ export class GameRoom {
   async recordResults() {
     const players = [...this.sessions.values()];
     const entries = players
-      .filter(p => p.verified && p.token)
+      .filter(p => p.verified && p.token && p.team !== 'spec')
       .map(p => ({
         name:  p.name,
         token: p.token,

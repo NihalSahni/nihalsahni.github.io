@@ -133,7 +133,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.2rem;
+      gap: 2rem;
       margin: 0.5rem 0 1rem;
     }
 
@@ -199,6 +199,12 @@
                  transition: stroke-dasharray 0.1s linear; }
     .ring-arc.warn   { stroke: var(--orange); }
     .ring-arc.danger { stroke: var(--magenta); }
+    .ring-arc.reading { stroke: var(--green); }
+    #timer-label {
+      position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%); margin-top: 0.4rem;
+      font-size: 1rem; letter-spacing: 0.18em; color: var(--muted); white-space: nowrap;
+    }
     #timer-num {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
@@ -611,7 +617,7 @@
     <!-- Buzz zone -->
     <div id="buzz-zone">
 
-      <!-- 7-second buzz window ring (hidden until question finishes) -->
+      <!-- Reading countdown, then the 7-second buzz window -->
       <div id="timer-wrap" style="display:none">
         <svg width="80" height="80" viewBox="0 0 80 80">
           <circle class="ring-bg"  cx="40" cy="40" r="33" />
@@ -619,6 +625,7 @@
             stroke-dasharray="207.3 207.3" />
         </svg>
         <div id="timer-num">7</div>
+        <div id="timer-label">BUZZ</div>
       </div>
 
       <button id="BuzzBtn">&#9889; BUZZ IN</button>
@@ -685,6 +692,7 @@
   <script src="/question.js"></script>
   <script src="/Buzzer.js"></script>
   <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+  <script src="/level.js"></script>
   <script src="/starfield.js"></script>
 </body>
 </html>

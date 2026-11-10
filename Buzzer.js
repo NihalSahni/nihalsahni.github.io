@@ -83,6 +83,7 @@ let bzPickedMC = '';
 
 let bzMyLocked = false;
 let bzEnLocked = false;
+let bzInterrupted = false; // did the current buzz come while the question was being read?
 
 // Phase: SETUP | READING | BUZZ_OPEN | PLAYER | BOT | RESULT | DONE
 let bzPhase = 'SETUP';
@@ -269,7 +270,7 @@ function bzLoad() {
 
   $('q-subject').textContent = `[ ${bzCurSubjName.toUpperCase()} · ${bzCurType === 'MC' ? 'MULTIPLE CHOICE' : 'OPEN ENDED'} ]`;
 
-  const readMs = bzAudioMode ? bzEstimateSpeechMs(bzCurQ) : Math.min(bzCurQ.length * 16, 4500);
+  const readMs = bzAudioMode ? bzEstimateSpeechMs(bzCurQ) : bzReadingSecs(bzCurQ) * 1000;
 
   if (bzMatchType !== 'h2h') bzScheduleBots([...MY_BOTS, ...EN_BOTS], readMs);
   bzDisplayQuestion();
@@ -285,18 +286,39 @@ function bzDisplayQuestion() {
       bzOpenBuzzWindow();
     });
   } else {
-    const el = $('q-text');
-    el.textContent = '';
-    let i = 0;
-    const iv = setInterval(() => {
-      el.textContent = bzCurQ.slice(0, i);
-      i++;
-      if (i > bzCurQ.length) {
-        clearInterval(iv);
-        if (bzPhase === 'READING') bzOpenBuzzWindow();
-      }
-    }, 16);
+    bzRevealQuestion();
+    bzStartReadTimer(bzReadingSecs(bzCurQ));
   }
+}
+
+// Seconds to read a question before the 7-second buzz window. Same formula as
+// the Online Arena, so both modes feel the same.
+function bzReadingSecs(text) {
+  const words = text.trim().split(/\s+/).length;
+  return Math.min(15, Math.max(3, Math.ceil(words * 0.25)));
+}
+
+// Reading countdown on the timer ring. Shares bzBuzzWindowTimer, so anything
+// that stops the buzz window (a buzz, quitting) stops this too.
+function bzStartReadTimer(total) {
+  bzStopBuzzWindow();
+  let left = total;
+  const arc = $('ring-arc');
+  arc.style.strokeDasharray = `${CIRC} ${CIRC}`;
+  arc.className = 'ring-arc reading';
+  $('timer-num').textContent = total;
+  $('timer-label').textContent = 'READING';
+  $('timer-wrap').style.display = 'block';
+
+  bzBuzzWindowTimer = setInterval(() => {
+    left -= 0.1;
+    arc.style.strokeDasharray = `${Math.max(0, left / total) * CIRC} ${CIRC}`;
+    $('timer-num').textContent = Math.ceil(left);
+    if (left <= 0) {
+      bzStopBuzzWindow();
+      if (bzPhase === 'READING') bzOpenBuzzWindow();
+    }
+  }, 100);
 }
 
 function bzRevealQuestion() {
@@ -377,6 +399,7 @@ function bzOpenBuzzWindow() {
   arc.style.strokeDasharray = `${CIRC} ${CIRC}`;
   arc.className = 'ring-arc';
   $('timer-num').textContent = '7';
+  $('timer-label').textContent = 'BUZZ';
   $('timer-wrap').style.display = 'block';
 
   bzBuzzWindowTimer = setInterval(() => {
@@ -408,6 +431,7 @@ function bzBotBuzz(bot) {
   if (bot.team === 'my' && bzMyLocked) return;
   if (bot.team === 'en' && bzEnLocked) return;
 
+  bzInterrupted = bzPhase === 'READING';
   bzPhase = 'BOT';
   bzCancelTimers();
   bzStopBuzzWindow();
@@ -454,9 +478,7 @@ function bzBotAnswer(bot, correct) {
     bzPhase = 'RESULT';
     setTimeout(() => { bzHideBot(); bzAfterResult(); }, 2000);
   } else {
-    if (bot.team === 'my') { bzMyScore -= 4; bzMyLocked = true; }
-    else                   { bzEnScore -= 4; bzEnLocked = true; }
-    $('bot-msg').textContent = '✗ INCORRECT  −4';
+    $('bot-msg').textContent = '✗ INCORRECT' + bzMiss(bot.team);
     $('bot-overlay').style.borderColor = 'var(--magenta)';
     $('bot-overlay').style.boxShadow   = '';
     $('bot-icon').style.textShadow     = '0 0 20px var(--magenta)';
@@ -497,7 +519,7 @@ function bzOppChance(whichGetsChance) {
     $('BuzzBtn1').disabled = (whichGetsChance !== 'my');
     $('BuzzBtn2').disabled = (whichGetsChance !== 'en');
   } else {
-    const readMs = bzAudioMode ? bzEstimateSpeechMs(bzCurQ) : Math.min(bzCurQ.length * 16, 4500);
+    const readMs = bzAudioMode ? bzEstimateSpeechMs(bzCurQ) : bzReadingSecs(bzCurQ) * 1000;
     if (whichGetsChance === 'my') {
       bn.textContent = '⚡ OPPONENT WRONG — RE-READING FOR YOUR TEAM...';
       bn.style.borderColor = 'var(--green)';
@@ -530,6 +552,7 @@ function bzPlayerBuzz(player) {
   if (player === 2 && bzEnLocked) return;
 
   bzActivePlayer = player;
+  bzInterrupted = bzPhase === 'READING';
   bzPhase = 'PLAYER';
   bzCancelTimers();
   bzStopBuzzWindow();
@@ -644,13 +667,12 @@ function bzTimeout() {
   bzMember(memberId, 'idle');
 
   if (bzMatchType === 'h2h') {
-    // In H2H, timing out = wrong answer: -4 and opponent gets a chance
-    if (bzActivePlayer === 1) { bzMyScore -= 4; bzMyLocked = true; }
-    else                      { bzEnScore -= 4; bzEnLocked = true; }
+    // In H2H, timing out = wrong answer: opponent gets a chance
+    const note = bzMiss(bzActivePlayer === 1 ? 'my' : 'en');
     bzStats.wrong++;
     beep(220, 220);
     bzUpdateScores();
-    bzResult('TIME EXPIRED — −4', 'incorrect');
+    bzResult('TIME EXPIRED' + note, 'incorrect');
     setTimeout(() => {
       if (bzMyLocked && bzEnLocked) {
         bzQuestionDead('BOTH TEAMS INCORRECT — TOSS-UP DEAD');
@@ -660,7 +682,9 @@ function bzTimeout() {
       }
     }, 2200);
   } else {
-    bzResult('TIME EXPIRED — NO ANSWER', 'neutral');
+    const note = bzMiss('my');
+    bzUpdateScores();
+    bzResult('TIME EXPIRED — NO ANSWER' + note, 'neutral');
     bzStats.noAnswer++;
     bzAfterResult();
   }
@@ -698,12 +722,11 @@ function bzConfirm() {
     bzResult(`✓ CORRECT! +4  ·  ${bzCurAnswer}`, 'correct');
     bzAfterResult();
   } else {
-    if (isP2) { bzEnScore -= 4; bzEnLocked = true; }
-    else      { bzMyScore -= 4; bzMyLocked = true; }
+    const note = bzMiss(isP2 ? 'en' : 'my');
     bzStats.wrong++;
     beep(220, 220);
     bzUpdateScores();
-    bzResult(`✗ WRONG −4  ·  Correct: ${bzCurAnswer}`, 'incorrect');
+    bzResult(`✗ WRONG${note}  ·  Correct: ${bzCurAnswer}`, 'incorrect');
     setTimeout(() => {
       if (bzMyLocked && bzEnLocked) {
         bzQuestionDead('BOTH TEAMS INCORRECT — TOSS-UP DEAD');
@@ -713,6 +736,24 @@ function bzConfirm() {
       }
     }, 2200);
   }
+}
+
+// ══ MISSED TOSS-UP ═══════════════════════════════════════════════════════════
+
+// A wrong answer (or no answer) never costs points. Missing on an interrupt —
+// buzzing while the question was still being read — gives the other team 4,
+// unless they've already had their go. Locks out the team that missed and
+// returns a note for the result line ('' when no points were given).
+function bzMiss(team) {
+  const other = team === 'my' ? 'en' : 'my';
+  const award = bzInterrupted && !(other === 'my' ? bzMyLocked : bzEnLocked);
+  if (award) { if (other === 'my') bzMyScore += 4; else bzEnScore += 4; }
+  if (team === 'my') bzMyLocked = true; else bzEnLocked = true;
+  if (!award) return '';
+  const names = bzMatchType === 'h2h'
+    ? { my: 'PLAYER 1', en: 'PLAYER 2' }
+    : { my: 'YOUR TEAM', en: 'OPPONENTS' };
+  return `  ·  INTERRUPT — ${names[other]} +4`;
 }
 
 // ══ RESULT / FLOW ════════════════════════════════════════════════════════════
@@ -905,7 +946,7 @@ function typeText(el, text, speed=50) {
 // ══ INIT ═════════════════════════════════════════════════════════════════════
 
 window.addEventListener('DOMContentLoaded', () => {
-  typeText($('Title'), 'BUZZER ARENA');
+  typeText($('Title'), 'BUZZER TRAINER');
   bzSliderTrail();
   bzStatus();
 
