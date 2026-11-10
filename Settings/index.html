@@ -42,6 +42,8 @@
 
       .toggle-wrap { display: flex; border: 1px solid color-mix(in srgb, var(--muted) 27%, transparent); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
       .toggle-btn { background: transparent; border: none; border-radius: 0; padding: 0.3rem 0.8rem; font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); cursor: pointer; font-family: 'Share Tech Mono', monospace; transition: background 0.15s, color 0.15s; box-shadow: none; text-shadow: none; }
+      .level-toggle { width: 100%; }
+      .level-toggle .toggle-btn { flex: 1; padding: 0.55rem 0.4rem; }
       .toggle-sep { width: 1px; background: color-mix(in srgb, var(--muted) 27%, transparent); flex-shrink: 0; }
       .toggle-btn.is-on  { background: color-mix(in srgb, var(--green) 13%, transparent);   color: var(--green);   text-shadow: 0 0 6px var(--green); }
       .toggle-btn.is-off { background: color-mix(in srgb, var(--magenta) 13%, transparent); color: var(--magenta); text-shadow: 0 0 6px var(--magenta); }
@@ -91,6 +93,24 @@
         <a href="/" class="back-link">← HOME</a>
         <h1 class="page-title">SETTINGS</h1>
         <p class="page-sub">CUSTOMIZE THE SITE</p>
+      </div>
+
+      <!-- YOUR LEVEL — the same choice the home page asks on a first visit -->
+      <div class="settings-section" id="level">
+        <div class="settings-heading">// YOUR LEVEL</div>
+        <div class="setting-row col">
+          <div class="setting-info">
+            <div class="setting-label">MIDDLE SCHOOL OR HIGH SCHOOL</div>
+            <div class="setting-desc">Practice, Buzzer, Learn, Browse and Printable Test all start on this level</div>
+          </div>
+          <div class="toggle-wrap level-toggle">
+            <button id="deflvl-MS" class="toggle-btn" onclick="setDefaultLevel('MS')">MIDDLE SCHOOL</button>
+            <div class="toggle-sep"></div>
+            <button id="deflvl-HS" class="toggle-btn" onclick="setDefaultLevel('HS')">HIGH SCHOOL</button>
+            <div class="toggle-sep"></div>
+            <button id="deflvl-"   class="toggle-btn" onclick="setDefaultLevel('')">NOT SET</button>
+          </div>
+        </div>
       </div>
 
       <!-- DISPLAY -->
@@ -154,20 +174,6 @@
       <!-- PRACTICE DEFAULTS -->
       <div class="settings-section">
         <div class="settings-heading">// PRACTICE DEFAULTS</div>
-
-        <div class="setting-row">
-          <div class="setting-info">
-            <div class="setting-label">DEFAULT LEVEL</div>
-            <div class="setting-desc">Auto-select when Practice or Buzzer opens</div>
-          </div>
-          <div class="toggle-wrap">
-            <button id="deflvl-"   class="toggle-btn" onclick="setDefaultLevel('')">NONE</button>
-            <div class="toggle-sep"></div>
-            <button id="deflvl-MS" class="toggle-btn" onclick="setDefaultLevel('MS')">MS</button>
-            <div class="toggle-sep"></div>
-            <button id="deflvl-HS" class="toggle-btn" onclick="setDefaultLevel('HS')">HS</button>
-          </div>
-        </div>
 
         <div class="setting-row col">
           <div class="setting-row-top">
@@ -239,6 +245,8 @@
       // ── Practice defaults ─────────────────────────────────────────────────────
       function setDefaultLevel(val) {
         SBSettings.set('defaultLevel', val);
+        // Picking here counts as answering the home-page question.
+        if (val) SBSettings.set('levelAsked', true);
         refreshAll();
       }
 

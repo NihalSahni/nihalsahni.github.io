@@ -29,15 +29,24 @@
     if (!box) return;                       // not the home page
     if (get() || S.get('levelAsked')) { pointLinks(); return; }
 
+    // Show it, then fade it in on the next frame so the transition runs.
     box.style.display = 'flex';
     box.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { box.classList.add('is-open'); });
+    });
 
+    var closed = false;
     function choose(v) {
+      if (closed) return;
+      closed = true;
       if (v) set(v);
       S.set('levelAsked', true);
-      box.style.display = 'none';
       box.setAttribute('aria-hidden', 'true');
       pointLinks();
+      // Fade out, then take it off the page entirely.
+      box.classList.remove('is-open');
+      setTimeout(function () { box.style.display = 'none'; }, 320);
     }
 
     var picks = box.querySelectorAll('[data-pick]');
@@ -52,7 +61,7 @@
 
     // Escape dismisses it the same way "not sure yet" does.
     document.addEventListener('keydown', function esc(e) {
-      if (e.key === 'Escape' && box.style.display !== 'none') {
+      if (e.key === 'Escape' && !closed) {
         choose(null);
         document.removeEventListener('keydown', esc);
       }
