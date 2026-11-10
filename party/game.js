@@ -1,5 +1,7 @@
 // ── Science Bowl Online Arena — Game Room (Cloudflare Durable Object) ─────────
 
+import { hasBlockedWord } from './blocklist.js';
+
 function fuzzyMatch(a, b) {
   const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
   const na = norm(a), nb = norm(b);
@@ -20,14 +22,21 @@ function lev(a, b) {
 
 // Must match readingTimeFor() and the 2.2s result pause in Online/index.html,
 // so the server agrees with the players' screens about when reading is over.
-function readingMsFor(text) {
+function readingMsFor(text, readAloud) {
   const words = (text || '').trim().split(/\s+/).length;
+  if (readAloud) return Math.min(30, Math.max(3, Math.ceil(words * 0.31))) * 1000;
   return Math.min(15, Math.max(3, Math.ceil(words * 0.25))) * 1000;
 }
 const REOPEN_DELAY_MS = 2200;
 
 // A player's token is a secret. Strip it (and the verified flag) from anything
 // that leaves the room, so it never reaches the other clients.
+// Room names show up in everyone's Open Rooms list, so keep them short and to
+// plain characters.
+function cleanRoomName(s) {
+  return String(s || '').replace(/[^A-Za-z0-9 '!?&.,:-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 30);
+}
+
 function publicPlayer(p) {
   return { id: p.id, name: p.name, team: p.team, isHost: p.isHost, ready: p.ready };
 }
@@ -42,6 +51,7 @@ export class GameRoom {
     this.phase = 'LOBBY';
     this.settings = { level: 'HS', subjects: [], rounds: 20 };
     this.isPublic = false;
+    this.roomName = '';
     this.round = 0;
     this.scores = { my: 0, en: 0 };
     this.teamLock = { my: false, en: false };
@@ -51,6 +61,8 @@ export class GameRoom {
     this.readEndsAt = 0;     // when the reading period ends (ms timestamp)
     this.readMsLeft = 0;     // reading time left at the moment of the buzz
     this.kicked = new Set(); // names the host removed; they can't rejoin this room
+    this.stats = new Map();  // player id -> how they did this match (for the host's report)
+    this.questionShownAt = 0;
     this.roomId = '';
   }
 
@@ -71,7 +83,8 @@ export class GameRoom {
 
   // ── connection ─────────────────────────────────────────────────────────────
   handleConnect(ws, url) {
-    const name = (url.searchParams.get('name') || 'PLAYER').toUpperCase().slice(0, 16);
+    let name = (url.searchParams.get('name') || 'PLAYER').toUpperCase().slice(0, 16);
+    if (hasBlockedWord(name)) name = 'PLAYER';
     const token = url.searchParams.get('token') || '';
     if (this.kicked.has(name)) {
       this.send(ws, { type: 'kicked' });
@@ -98,6 +111,7 @@ export class GameRoom {
       roomCode: this.roomId,
       settings: this.settings,
       isPublic: this.isPublic,
+      roomName: this.roomName,
       phase: this.phase,
       scores: { ...this.scores },
       round: this.round,
@@ -139,6 +153,16 @@ export class GameRoom {
         this.notifyLobby();
         break;
 
+      case 'setRoomName': {
+        if (!player.isHost) return;
+        const name = cleanRoomName(msg.name);
+        if (hasBlockedWord(name)) { this.send(ws, { type: 'roomNameRejected' }); return; }
+        this.roomName = name;
+        this.broadcast({ type: 'roomNameUpdated', roomName: this.roomName });
+        this.notifyLobby();
+        break;
+      }
+
       case 'ready':
         player.ready = !player.ready;
         this.broadcast({ type: 'playerReadyChanged', playerId: player.id, ready: player.ready });
@@ -173,7 +197,15 @@ export class GameRoom {
         this.phase = 'READING';
         this.round = 0;
         this.scores = { my: 0, en: 0 };
+        this.stats = new Map();
         this.broadcast({ type: 'gameStarted', settings: this.settings });
+        break;
+
+      // The host ran out of questions before the match length was reached.
+      case 'gameOver':
+        if (!player.isHost) return;
+        if (this.phase !== 'READING' && this.phase !== 'RESULT') return;
+        this.endGame(this.round);
         break;
 
       case 'loadQuestion': {
@@ -181,18 +213,16 @@ export class GameRoom {
         if (this.phase !== 'READING' && this.phase !== 'RESULT') return;
         this.round++;
         if (this.round > this.settings.rounds) {
-          this.phase = 'DONE';
-          this.broadcast({ type: 'gameOver', scores: { ...this.scores }, round: this.round - 1 });
-          this.recordResults();
-          this.notifyLobby();
+          this.endGame(this.round - 1);
           return;
         }
+        this.questionShownAt = Date.now();
         this.buzzedWs = null;
         this.buzzedTeam = null;
         this.teamLock = { my: false, en: false };
         this.currentQuestion = { id: msg.questionId, text: msg.questionText, answer: msg.answer, type: msg.qType, subject: msg.subject };
         this.phase = 'BUZZ_OPEN';
-        this.readEndsAt = Date.now() + readingMsFor(msg.questionText);
+        this.readEndsAt = Date.now() + readingMsFor(msg.questionText, this.settings.readAloud === true);
         this.broadcast({
           type: 'questionLoaded',
           round: this.round,
@@ -212,6 +242,11 @@ export class GameRoom {
         if (player.team === 'my' && this.teamLock.my) return;
         if (player.team === 'en' && this.teamLock.en) return;
         if (this.buzzedWs) return;
+        const s = this.statFor(player);
+        s.buzzes++;
+        // Buzz speed only means something on a question's first buzz; after a
+        // miss the clock also includes the other player's answering time.
+        if (!this.teamLock.my && !this.teamLock.en) s.buzzMs.push(Date.now() - this.questionShownAt);
         this.buzzedWs = ws;
         this.buzzedTeam = player.team;
         this.readMsLeft = Math.max(0, this.readEndsAt - Date.now());
@@ -233,10 +268,15 @@ export class GameRoom {
         const correct = fuzzyMatch(String(msg.answer || ''), this.currentQuestion.answer);
         if (correct) {
           if (this.buzzedTeam === 'my') this.scores.my += 4; else this.scores.en += 4;
+          const s = this.statFor(player);
+          s.correct++;
+          s.points += 4;
+          this.tallySubject(s, 'right');
           this.phase = 'RESULT';
           this.broadcast({ type: 'answerResult', playerId: player.id, correct: true, answer: msg.answer, correctAnswer: this.currentQuestion.answer, scores: { ...this.scores } });
         } else {
           const interrupt = this.missed();
+          this.recordMiss(player, 'wrong', interrupt);
           const dead = this.bothTeamsLocked();
           this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
           this.broadcast({ type: 'answerResult', playerId: player.id, correct: false, answer: msg.answer, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, interrupt, correctAnswer: this.revealAnswer(dead) });
@@ -292,6 +332,7 @@ export class GameRoom {
 
   answerTimedOut(player) {
     const interrupt = this.missed();
+    this.recordMiss(player, 'timeouts', interrupt);
     const dead = this.bothTeamsLocked();
     this.phase = dead ? 'RESULT' : 'BUZZ_OPEN';
     this.broadcast({ type: 'answerTimeout', playerId: player.id, scores: { ...this.scores }, teamLock: { ...this.teamLock }, dead, interrupt, correctAnswer: this.revealAnswer(dead) });
@@ -340,6 +381,64 @@ export class GameRoom {
 
   playerList() {
     return [...this.sessions.values()].map(publicPlayer);
+  }
+
+  // ── match report ───────────────────────────────────────────────────────────
+
+  statFor(player) {
+    let s = this.stats.get(player.id);
+    if (!s) {
+      s = { name: player.name, team: player.team, buzzes: 0, correct: 0, wrong: 0, timeouts: 0,
+            earlyMisses: 0, points: 0, gaveAway: 0, buzzMs: [], subjects: {} };
+      this.stats.set(player.id, s);
+    }
+    return s;
+  }
+
+  tallySubject(s, key) {
+    const subj = this.currentQuestion?.subject || 'Other';
+    const t = s.subjects[subj] || (s.subjects[subj] = { right: 0, missed: 0 });
+    t[key]++;
+  }
+
+  // kind is 'wrong' (answered wrong) or 'timeouts' (ran out of time).
+  recordMiss(player, kind, interrupt) {
+    const s = this.statFor(player);
+    s[kind]++;
+    if (interrupt) { s.earlyMisses++; s.gaveAway += 4; }
+    this.tallySubject(s, 'missed');
+  }
+
+  endGame(roundsPlayed) {
+    this.phase = 'DONE';
+    this.broadcast({ type: 'gameOver', scores: { ...this.scores }, round: roundsPlayed });
+    this.sendReport(roundsPlayed);
+    this.recordResults();
+    this.notifyLobby();
+  }
+
+  // The per-player breakdown goes to the host, or to everyone if the host
+  // chose to share it. Everyone who played is in it, including players who
+  // never buzzed and players who left partway.
+  sendReport(roundsPlayed) {
+    const shared = this.settings.shareReport === true;
+    if (!shared && !this.hostWs) return;
+    const here = new Set();
+    for (const p of this.sessions.values()) {
+      if (p.team === 'spec') continue;
+      here.add(p.id);
+      const s = this.statFor(p);
+      s.name = p.name; s.team = p.team;
+    }
+    const players = [...this.stats.entries()].map(([id, s]) => ({
+      name: s.name, team: s.team, left: !here.has(id),
+      buzzes: s.buzzes, correct: s.correct, wrong: s.wrong, timeouts: s.timeouts,
+      earlyMisses: s.earlyMisses, points: s.points, gaveAway: s.gaveAway,
+      avgBuzzSec: s.buzzMs.length ? Math.round(s.buzzMs.reduce((a, b) => a + b, 0) / s.buzzMs.length / 100) / 10 : null,
+      subjects: s.subjects,
+    }));
+    const report = { type: 'matchReport', shared, rounds: roundsPlayed, scores: { ...this.scores }, players };
+    if (shared) this.broadcast(report); else this.send(this.hostWs, report);
   }
 
   // ── leaderboard ────────────────────────────────────────────────────────────
@@ -405,6 +504,7 @@ export class GameRoom {
         body: JSON.stringify({
           roomCode: this.roomId,
           isPublic: this.isPublic,
+          roomName: this.roomName,
           playerCount: this.sessions.size,
           phase: this.phase,
           settings: this.settings,

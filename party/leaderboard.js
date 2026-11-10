@@ -12,6 +12,8 @@
 // ends. The /verify and /submit actions are unreachable from the public router
 // (see worker.js) — only direct DO-to-DO calls can use them.
 
+import { hasBlockedWord } from './blocklist.js';
+
 const NAME_RE    = /^[A-Z0-9_][A-Z0-9_ -]{1,14}[A-Z0-9_]$/; // 3–16 chars
 const MIN_ROUNDS = 5;   // shorter games don't count, to stop score farming
 const MIN_PLAYERS = 2;  // solo games don't count either
@@ -93,6 +95,7 @@ export class Leaderboard {
     if (!NAME_RE.test(name)) {
       return json({ available: false, reason: 'invalid' });
     }
+    if (hasBlockedWord(name)) return json({ available: false, reason: 'blocked' });
     const taken = this.row(`SELECT 1 FROM users WHERE name_lc = ?`, name.toLowerCase());
     return json({ available: !taken, reason: taken ? 'taken' : null });
   }
@@ -103,6 +106,10 @@ export class Leaderboard {
     if (!NAME_RE.test(name)) {
       return json({ ok: false, reason: 'invalid',
         error: 'Use 3–16 characters: letters, numbers, spaces, _ or -.' }, 400);
+    }
+    if (hasBlockedWord(name)) {
+      return json({ ok: false, reason: 'blocked',
+        error: "That name isn't allowed. Pick another." }, 400);
     }
 
     const nameLc = name.toLowerCase();

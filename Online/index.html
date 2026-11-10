@@ -85,7 +85,14 @@
     }
     .room-row:hover { border-color: color-mix(in srgb, var(--cyan) 33%, transparent); }
     .room-code-tag { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); font-size: 1rem; letter-spacing: 0.2em; }
-    .room-meta { font-size: 0.72rem; color: var(--muted); flex: 1; }
+    .room-meta { font-size: 0.72rem; color: var(--muted); flex: 1; min-width: 0; }
+    .room-name-tag { display: block; color: var(--text); font-size: 0.9rem; letter-spacing: 0.06em; margin-bottom: 0.15rem; overflow-wrap: anywhere; }
+    #room-name-display { text-align: center; font-size: 1.2rem; letter-spacing: 0.08em; color: var(--text); margin-top: 0.4rem; overflow-wrap: anywhere; }
+    #room-name-display:empty { display: none; }
+    #room-name-row { margin: -0.3rem 0 0.9rem; }
+    #room-name-input { width: 100%; text-transform: none; letter-spacing: 0.04em; }
+    #room-name-hint { font-size: 0.75rem; color: var(--magenta); margin-top: 0.3rem; }
+    #room-name-hint:empty { display: none; }
     .room-join-btn {
       font-size: 0.72rem; padding: 0.35rem 1rem;
       border-color: var(--cyan); color: var(--cyan);
@@ -207,6 +214,7 @@
     body.spectating #opp-chance-banner,
     body.spectating #locked-banner { display: none !important; }
     body.spectating #spectating-banner { display: block; }
+    .audio-listen { display: block; text-align: center; padding: 1.2rem 0; color: var(--orange); letter-spacing: 0.2em; font-size: 0.95rem; }
     #spectating-banner {
       display: none; text-align: center; font-size: 0.85rem; letter-spacing: 0.2em;
       color: var(--cyan); border: 1px solid color-mix(in srgb, var(--cyan) 33%, transparent);
@@ -386,6 +394,20 @@
     .go-score-num { font-size:4rem;line-height:1.1; }
     .go-stats { font-size:0.82rem;color:var(--muted);line-height:2;letter-spacing:0.05em; }
 
+    #match-report { text-align: left; max-width: 760px; margin: 2rem auto 0; }
+    #match-report:empty { display: none; }
+    .mr-title { font-size: 0.8rem; letter-spacing: 0.22em; color: var(--cyan); margin-bottom: 0.2rem; }
+    .mr-sub { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.9rem; }
+    .mr-team-my { color: var(--green); }
+    .mr-team-en { color: var(--magenta); }
+    .mr-left { color: var(--muted); font-size: 0.62rem; }
+    .mr-subjects { margin-top: 1.1rem; font-size: 0.75rem; line-height: 1.8; color: var(--text); }
+    .mr-subjects b { color: var(--cyan); font-weight: normal; letter-spacing: 0.06em; }
+    .mr-good { color: var(--green); }
+    .mr-bad { color: var(--orange); }
+    .mr-copy { font-size: 0.72rem; padding: 0.4rem 1.1rem; margin-top: 1rem; border-color: var(--muted); color: var(--muted); }
+    .mr-copy:hover { border-color: var(--cyan); color: var(--cyan); }
+
     .countdown { text-align:center;font-size:5rem;color:var(--cyan);text-shadow:0 0 40px var(--cyan);animation:count-pop 0.3s ease-out; }
     @keyframes count-pop { 0%{transform:scale(1.4);opacity:0.4;}100%{transform:scale(1);opacity:1;} }
 
@@ -535,6 +557,7 @@
     <div style="text-align:center;margin-bottom:0.4rem">
       <div style="font-size:0.62rem;color:var(--muted);letter-spacing:0.25em">ROOM CODE — CLICK TO COPY</div>
     </div>
+    <div id="room-name-display"></div>
     <div id="room-code-display" onclick="copyRoomCode()" title="Click to copy">······</div>
     <div id="room-copy-hint">CLICK CODE TO COPY · SHARE WITH TEAMMATES</div>
 
@@ -566,6 +589,11 @@
       </div>
       <span>Make room public (visible in Open Rooms)</span>
     </div>
+    <div id="room-name-row" style="display:none">
+      <input id="room-name-input" class="ol-input" type="text" maxlength="30" autocomplete="off"
+             placeholder="Name your room (optional)" aria-label="Room name" oninput="onRoomNameInput()" />
+      <div id="room-name-hint" role="status" aria-live="polite"></div>
+    </div>
 
     <!-- Host settings -->
     <div id="room-settings" style="display:none">
@@ -590,6 +618,18 @@
         <div class="panel-label">MATCH LENGTH</div>
         <div id="rm-round-display" class="value-readout" role="status" aria-live="polite">20 TOSS-UPS</div>
         <input type="range" min="5" max="60" value="20" id="rm-round-slider" oninput="rmUpdateRounds()" />
+      </div>
+
+      <div class="hud-panel">
+        <div class="panel-label">QUESTION FORMAT</div>
+        <label><input id="rm-fmt-text"  type="radio" name="rmfmt" checked onchange="rmSetReadAloud(false)" /> SHOW AS TEXT</label>
+        <label><input id="rm-fmt-audio" type="radio" name="rmfmt"         onchange="rmSetReadAloud(true)"  /> READ ALOUD <span class="rank-sub">[ each player's device speaks the question ]</span></label>
+      </div>
+
+      <div class="hud-panel">
+        <div class="panel-label">MATCH REPORT</div>
+        <label><input id="rm-rep-host" type="radio" name="rmrep" checked onchange="rmSetShareReport(false)" /> ONLY ME <span class="rank-sub">[ host sees how everyone did ]</span></label>
+        <label><input id="rm-rep-all"  type="radio" name="rmrep"         onchange="rmSetShareReport(true)"  /> EVERYONE <span class="rank-sub">[ all players see the report ]</span></label>
       </div>
     </div>
 
@@ -700,6 +740,7 @@
   let roomCode = '';
   let settings = { level: '', subjects: [], rounds: 20 };
   let isPublic = false;
+  let roomName = '';
   let iAmReady = false;
 
   // game
@@ -842,6 +883,7 @@
       if (typedName() !== name) return;  // input moved on
       if (data.available)              setClaimStatus(`${name} is available.`, 'ok');
       else if (data.reason === 'taken') setClaimStatus(`${name} is already taken.`, 'bad');
+      else if (data.reason === 'blocked') setClaimStatus("That name isn't allowed. Pick another.", 'bad');
       else setClaimStatus('Use 3-16 characters: letters, numbers, spaces, _ or -.', 'bad');
     } catch (_) { /* offline — let the claim attempt report it */ }
   }
@@ -962,9 +1004,10 @@
     list.innerHTML = rooms.map(r => {
       const subs = r.settings?.subjects?.slice(0,3).join(' · ') || '—';
       const lev = r.settings?.level || '—';
+      const name = r.roomName ? `<span class="room-name-tag">${escapeHtml(r.roomName)}</span>` : '';
       return `<div class="room-row">
         <span class="room-code-tag">${r.roomCode}</span>
-        <span class="room-meta">${lev} · ${subs} · ${r.playerCount}/8 AGENTS</span>
+        <span class="room-meta">${name}${lev} · ${subs} · ${r.playerCount}/8 AGENTS</span>
         <button class="room-join-btn" onclick="joinRoomByCode('${r.roomCode}')">JOIN</button>
       </div>`;
     }).join('');
@@ -1022,6 +1065,8 @@
       case 'hostChanged':      handleHostChanged(data); break;
       case 'settingsUpdated':  handleSettingsUpdated(data); break;
       case 'publicUpdated':    handlePublicUpdated(data); break;
+      case 'roomNameUpdated':  roomName = data.roomName || ''; eid('room-name-hint').textContent = ''; updateRoomNameUI(); break;
+      case 'roomNameRejected': eid('room-name-hint').textContent = "That name isn't allowed. Try another."; break;
       case 'playerReadyChanged': handleReadyChanged(data); break;
       case 'playerTeamChanged': handleTeamChanged(data); break;
       case 'gameStarted':      handleGameStarted(data); break;
@@ -1032,6 +1077,7 @@
       case 'questionExpired':  handleQuestionExpired(data); break;
       case 'gameOver':         handleGameOver(data); break;
       case 'kicked':           handleKicked(); break;
+      case 'matchReport':      handleMatchReport(data); break;
     }
   }
 
@@ -1042,6 +1088,7 @@
     players = new Map(data.players.map(p => [p.id, p]));
     settings = data.settings || settings;
     isPublic = data.isPublic;
+    roomName = data.roomName || '';
     gRound = data.round || 0;
     myScore = data.scores?.my || 0;
     enScore = data.scores?.en || 0;
@@ -1092,6 +1139,7 @@
   function showHostControls() {
     eid('host-mode-row').style.display = isHostFlag ? 'flex' : 'none';
     eid('host-help').style.display = isHostFlag ? 'block' : 'none';
+    updateRoomNameUI();
   }
 
   // The host removed us from the room.
@@ -1111,6 +1159,22 @@
   function handlePublicUpdated(data) {
     isPublic = data.isPublic;
     eid('public-toggle').classList.toggle('on', isPublic);
+    updateRoomNameUI();
+  }
+
+  // Public rooms can have a name. The host types it; everyone sees it above the
+  // room code, and it shows in the Open Rooms list.
+  function updateRoomNameUI() {
+    eid('room-name-row').style.display = isHostFlag && isPublic ? 'block' : 'none';
+    const input = eid('room-name-input');
+    if (document.activeElement !== input) input.value = roomName;
+    eid('room-name-display').textContent = isPublic ? roomName : '';
+  }
+
+  let roomNameTimer = null;
+  function onRoomNameInput() {
+    clearTimeout(roomNameTimer);
+    roomNameTimer = setTimeout(() => wsend({ type: 'setRoomName', name: eid('room-name-input').value }), 400);
   }
 
   function handleReadyChanged(data) {
@@ -1185,6 +1249,8 @@
     if (settings.level === 'HS') { eid('rm-hs').classList.add('selected'); eid('rm-ms').classList.remove('selected'); }
     ALL_SUBS.forEach(n => { const el = eid('rm-' + n); if (el) el.checked = settings.subjects?.includes(n) || false; });
     if (settings.rounds) eid('rm-round-slider').value = settings.rounds;
+    eid(settings.readAloud ? 'rm-fmt-audio' : 'rm-fmt-text').checked = true;
+    eid(settings.shareReport ? 'rm-rep-all' : 'rm-rep-host').checked = true;
     rmSliderTrail();
     syncGuestSettingsDisplay();
   }
@@ -1193,7 +1259,9 @@
     const lvTxt = settings.level === 'MS' ? 'CLASS: AGENT [MS]' : settings.level === 'HS' ? 'CLASS: COMMANDER [HS]' : 'CLASS: —';
     const subTxt = settings.subjects?.length ? settings.subjects.join(' · ') : 'MODULES: —';
     const rndTxt = `ROUNDS: ${settings.rounds || 20} TOSS-UPS`;
-    eid('room-status-msg').textContent = `${lvTxt} · ${subTxt} · ${rndTxt}`;
+    const fmtTxt = settings.readAloud ? 'READ ALOUD' : 'TEXT';
+    const repTxt = settings.shareReport ? 'REPORT: EVERYONE' : 'REPORT: HOST ONLY';
+    eid('room-status-msg').textContent = `${lvTxt} · ${subTxt} · ${rndTxt} · ${fmtTxt} · ${repTxt}`;
   }
 
   // host settings controls
@@ -1221,6 +1289,16 @@
     eid('rm-round-display').textContent = settings.rounds + ' TOSS-UPS';
     rmSliderTrail();
     wsend({ type: 'updateSettings', settings: { rounds: settings.rounds } });
+  }
+
+  function rmSetReadAloud(on) {
+    settings.readAloud = on;
+    wsend({ type: 'updateSettings', settings: { readAloud: on } });
+  }
+
+  function rmSetShareReport(on) {
+    settings.shareReport = on;
+    wsend({ type: 'updateSettings', settings: { shareReport: on } });
   }
 
   function rmSliderTrail() {
@@ -1260,6 +1338,7 @@
     isPublic = !isPublic;
     eid('public-toggle').classList.toggle('on', isPublic);
     wsend({ type: 'setPublic', public: isPublic });
+    updateRoomNameUI();
   }
 
   function toggleReady() {
@@ -1316,6 +1395,7 @@
 
     displayQuestion();
     readTotal = readLeft = readingTimeFor(curQ.text);
+    if (settings.readAloud) startReadAloud(); else listening = false;
     startBuzzTimer();
     if (!isLockedOut()) enableBuzzBtn();
     else disableBuzzBtn();
@@ -1327,6 +1407,7 @@
   function handleBuzzed(data) {
     gPhase = 'PLAYER_ANSWERING';
     stopBuzzTimer();
+    stopReadAloud();
     iAmBuzzer = (data.playerId === me?.id);
 
     eid('BuzzBtn').style.display = 'none';
@@ -1446,6 +1527,7 @@
   // instead of reopening the buzz window with everyone locked out.
   function olTossUpDead(correctAnswer) {
     stopBuzzTimer();
+    stopReadAloud();
     eid('opp-chance-banner').style.display = 'none';
     eid('locked-banner').style.display = 'none';
     eid('BuzzBtn').style.display = 'none';
@@ -1475,6 +1557,7 @@
     // missed it. Don't overwrite that result with "nobody buzzed".
     if (gPhase === 'RESULT') return;
     stopBuzzTimer();
+    stopReadAloud();
     myScore = data.scores.my;
     enScore = data.scores.en;
     updateScores();
@@ -1489,6 +1572,7 @@
 
   function handleGameOver(data) {
     stopBuzzTimer(); stopAnsTimer();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     myScore = data.scores.my;
     enScore = data.scores.en;
     gPhase = 'DONE';
@@ -1521,11 +1605,98 @@
         </div>
       </div>
       <div class="go-stats">Rounds played: ${data.round || gRound}</div>
+      <div id="match-report"></div>
       <button onclick="location.href='/Online/'" style="margin-top:2rem;font-size:1rem;padding:0.7rem 2.5rem;border-color:var(--cyan);color:var(--cyan);">
         ↺ PLAY AGAIN
       </button>`;
     eid('game-over').style.display = 'block';
+    renderMatchReport();
     beep(teamWon || tied ? 880 : 220, 450);
+  }
+
+  // ── MATCH REPORT ────────────────────────────────────────────────────────────
+  // The server sends this right after the game ends — to the host only, or to
+  // everyone if the host chose to share it.
+  let matchReport = null;
+
+  function handleMatchReport(data) {
+    matchReport = data;
+    renderMatchReport();
+  }
+
+  function reportRows() {
+    return [...matchReport.players].sort((a, b) => b.points - a.points || b.correct - a.correct);
+  }
+
+  const teamName = t => t === 'my' ? 'ALPHA' : 'OMEGA';
+  const accuracy = p => p.buzzes ? Math.round(p.correct / p.buzzes * 100) + '%' : '—';
+  const avgBuzz = p => p.avgBuzzSec == null ? '—' : p.avgBuzzSec + 's';
+
+  // "Physics 3/3" style list of subjects a player got right / missed.
+  function subjectLine(p) {
+    const entries = Object.entries(p.subjects || {});
+    const good = entries.filter(([, t]) => t.right > t.missed).map(([s, t]) => `${s} ${t.right}/${t.right + t.missed}`);
+    const bad  = entries.filter(([, t]) => t.missed >= t.right).map(([s, t]) => `${s} ${t.right}/${t.right + t.missed}`);
+    return { good, bad };
+  }
+
+  function renderMatchReport() {
+    const box = eid('match-report');
+    if (!box || !matchReport) return;
+    const who = matchReport.shared ? 'The host shared this with everyone.' : 'Only you (the host) can see this.';
+    const rows = reportRows();
+    const body = rows.map(p => `<tr>
+        <td class="lb-name">${escapeHtml(p.name)}${p.left ? ' <span class="mr-left">(LEFT)</span>' : ''}</td>
+        <td class="mr-team-${p.team}">${teamName(p.team)}</td>
+        <td>${p.points}</td>
+        <td>${p.correct}</td>
+        <td>${p.wrong}</td>
+        <td class="lb-hide-sm">${p.timeouts}</td>
+        <td>${p.earlyMisses}</td>
+        <td>${accuracy(p)}</td>
+        <td class="lb-hide-sm">${avgBuzz(p)}</td>
+      </tr>`).join('');
+    const subjects = rows.map(p => {
+      const { good, bad } = subjectLine(p);
+      if (!good.length && !bad.length) return `<div><b>${escapeHtml(p.name)}</b> — didn't buzz in</div>`;
+      return `<div><b>${escapeHtml(p.name)}</b> — ` +
+        (good.length ? `<span class="mr-good">strong: ${good.join(', ')}</span>` : '') +
+        (good.length && bad.length ? ' · ' : '') +
+        (bad.length ? `<span class="mr-bad">needs work: ${bad.join(', ')}</span>` : '') + '</div>';
+    }).join('');
+    box.innerHTML = `
+      <div class="mr-title">MATCH REPORT</div>
+      <div class="mr-sub">${who} Early misses = wrong or no answer while the question was still being read, which gave the other team 4.</div>
+      <div class="lb-wrap"><table class="lb-table">
+        <thead><tr>
+          <th>PLAYER</th><th>TEAM</th><th>POINTS</th><th>RIGHT</th><th>WRONG</th>
+          <th class="lb-hide-sm">NO ANSWER</th><th>EARLY MISSES</th><th>ACCURACY</th><th class="lb-hide-sm">AVG BUZZ</th>
+        </tr></thead>
+        <tbody>${body}</tbody>
+      </table></div>
+      <div class="mr-subjects">${subjects}</div>
+      <button class="mr-copy" onclick="copyMatchReport(this)">⧉ COPY REPORT</button>`;
+  }
+
+  function copyMatchReport(btn) {
+    const r = matchReport;
+    const lines = [
+      `Science Bowl match report — ${r.rounds} toss-ups`,
+      `Team Alpha ${r.scores.my} · Team Omega ${r.scores.en}`,
+      '',
+      ...reportRows().map(p => {
+        const { good, bad } = subjectLine(p);
+        return `${p.name} (${teamName(p.team)}${p.left ? ', left early' : ''}): ${p.points} pts · ` +
+          `${p.correct} right · ${p.wrong} wrong · ${p.timeouts} no answer · ${p.earlyMisses} early misses · ` +
+          `accuracy ${accuracy(p)} · avg buzz ${avgBuzz(p)}` +
+          (good.length ? ` · strong: ${good.join(', ')}` : '') +
+          (bad.length ? ` · needs work: ${bad.join(', ')}` : '');
+      }),
+    ];
+    navigator.clipboard?.writeText(lines.join('\n')).then(() => {
+      btn.textContent = '✓ COPIED';
+      setTimeout(() => btn.textContent = '⧉ COPY REPORT', 2000);
+    });
   }
 
   // ── GAME ACTIONS ─────────────────────────────────────────────────────────────
@@ -1621,6 +1792,38 @@
     } else {
       el.textContent = curQ.text;
     }
+  }
+
+  // ── READ ALOUD ──
+  // Each player's own browser speaks the question. The text stays hidden while
+  // it's being read, then appears once reading time is up or someone buzzes.
+  let listening = false;
+
+  function startReadAloud() {
+    listening = true;
+    eid('q-text').innerHTML = '<span class="audio-listen">◈ &nbsp; LISTENING &nbsp; — &nbsp; BUZZ TO INTERRUPT</span>';
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    let readable = curQ.text;
+    if (curQ.type === 'MC' && readable.includes('W) ')) {
+      const stem = readable.slice(0, readable.indexOf('W) ')).trim();
+      readable = stem + '. ' + ['W','X','Y','Z'].map(l => `${l}: ${olOptText(curQ.text, l)}`).join('. ');
+    }
+    const utt = new SpeechSynthesisUtterance(readable);
+    utt.rate = 0.92;
+    window.speechSynthesis.speak(utt);
+  }
+
+  // Show the text if it was hidden for reading aloud. Leaves the voice running.
+  function endListening() {
+    if (!listening) return;
+    listening = false;
+    displayQuestion();
+  }
+
+  function stopReadAloud() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    endListening();
   }
 
   function olOptText(q, letter) {
@@ -1742,9 +1945,12 @@
 
   // Time to read the question before the 7-second buzz window starts. Every
   // client works this out from the same text, so the host's clock agrees with
-  // everyone else's. Players can still buzz in while reading.
+  // everyone else's. Players can still buzz in while reading. Reading aloud
+  // takes longer, so it gets the speaking-speed estimate the solo Buzzer uses.
+  // Must match readingMsFor() in party/game.js.
   function readingTimeFor(text) {
     const words = (text || '').trim().split(/\s+/).length;
+    if (settings.readAloud) return Math.min(30, Math.max(3, Math.ceil(words * 0.31)));
     return Math.min(15, Math.max(3, Math.ceil(words * 0.25)));
   }
 
@@ -1766,6 +1972,7 @@
           eid('timer-num').textContent = Math.ceil(readLeft);
         } else {
           showBuzzRing();
+          endListening();
         }
         return;
       }
