@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="High school Science Bowl study topics and flashcards — biology, physics, chemistry, earth &amp; space science, energy and math for NSB competition." />
+    <meta name="description" content="High school Science Bowl study topics, science words and flashcards — biology, physics, chemistry, earth &amp; space science, energy and math for NSB competition." />
     <meta name="keywords" content="high school science bowl topics, HSBE study guide, NSB high school prep, science bowl HS biology, science bowl HS physics, science bowl HS chemistry, science bowl HS math, high school Science Bowl Practice" />
     <link rel="canonical" href="https://sciencebowlpractice.org/LearnTopics-HS/" />
     <meta property="og:type" content="website" />
@@ -118,6 +118,15 @@
       .search-input:focus { border-color: var(--magenta); }
       .search-count { font-size: 0.62rem; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 1rem; }
 
+      /* ── WORDS ──────────────────────────────────── */
+      .w-intro { text-align: center; font-size: 0.78rem; color: var(--muted); line-height: 1.7; max-width: 560px; margin: 0 auto 1.25rem; }
+      .w-parts { display: block; font-size: 0.68rem; letter-spacing: 0.04em; color: var(--muted); margin-top: 0.25rem; text-transform: none; }
+      .w-term-wrap { flex: 1; min-width: 0; }
+      .fc-parts { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.04em; margin: 0.9rem 0 0; }
+      .fc-parts:empty { display: none; }
+      .fc-shuffle-btn.on { color: var(--green); border-color: var(--green); }
+      .fc-btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
       footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 3rem 0 2rem; }
 
       @media (max-width: 600px) {
@@ -176,12 +185,13 @@
         <a href="/LearnTopics/" class="back-link">← CHANGE LEVEL</a>
         <a href="/Progress/" class="back-link" style="margin-left:1.5rem">VIEW PROGRESS →</a>
         <h1 class="page-title">HIGH SCHOOL STUDY TOPICS</h1>
-        <p class="page-sub">CONCEPT GUIDES &amp; FLASHCARDS</p>
+        <p class="page-sub">CONCEPT GUIDES, SCIENCE WORDS &amp; FLASHCARDS</p>
       </div>
 
       <!-- Mode tabs -->
       <div class="mode-tabs">
         <button class="mode-tab active" data-mode="A" onclick="switchMode('A')">TOPIC CARDS</button>
+        <button class="mode-tab" data-mode="W" onclick="switchMode('W')">WORDS</button>
         <button class="mode-tab" data-mode="C" onclick="switchMode('C')">FLASHCARDS</button>
       </div>
 
@@ -214,11 +224,18 @@
         </div>
       </div>
 
+      <!-- MODE W: science words -->
+      <div id="panel-W" class="mode-panel">
+        <p class="w-intro">Useful science words and the parts they're built from. Learn that <em>hydro</em> means water and you can figure out words you've never seen. Tap a word to see its meaning.</p>
+        <div id="w-list"></div>
+      </div>
+
       <!-- MODE C -->
       <div id="panel-C" class="mode-panel">
         <div class="fc-top-row">
           <span class="fc-progress-text" id="fc-progress">Card 1 of —</span>
-          <div style="display:flex;gap:0.5rem">
+          <div class="fc-btn-row">
+            <button class="fc-shuffle-btn" id="fc-words-btn" onclick="toggleWords()" aria-pressed="true">+ WORDS: ON</button>
             <button class="fc-shuffle-btn" id="fc-mode-btn" onclick="toggleDefFirst()">SHOW DEFINITION FIRST</button>
             <button class="fc-shuffle-btn" onclick="shuffleDeck()">⟳ SHUFFLE</button>
           </div>
@@ -235,6 +252,7 @@
             </div>
             <div class="fc-face fc-face-back">
               <p class="fc-definition" id="fc-def"></p>
+              <p class="fc-parts" id="fc-parts"></p>
               <button class="fc-known-btn" id="fc-known-btn" onclick="toggleKnown(event)">MARK AS KNOWN</button>
             </div>
           </div>
@@ -275,6 +293,7 @@
 
     <script src="/Learn.js"></script>
     <script src="/Flashcards.js"></script>
+    <script src="/Words.js"></script>
     <script>
       var currentMode    = 'A';
       var currentSubject = 'ALL';
@@ -282,6 +301,9 @@
       var fcDeck = [], fcIndex = 0, fcFlipped = false, defFirst = false;
       var searchQuery    = '';
       var knownCards     = {};
+      // Science words in the flashcard deck: on unless turned off, remembered.
+      var includeWords   = true;
+      try { includeWords = window.SBSettings ? SBSettings.get('fcWords') !== false : true; } catch(e) {}
 
       function loadKnown() {
         try { knownCards = JSON.parse(localStorage.getItem('sb_known_HS') || '{}'); } catch(e) { knownCards = {}; }
@@ -305,6 +327,19 @@
         fcFlipped = false;
         document.getElementById('fc-inner').classList.remove('flipped');
         renderCard();
+      }
+
+      function toggleWords() {
+        includeWords = !includeWords;
+        try { if (window.SBSettings) SBSettings.set('fcWords', includeWords); } catch(e) {}
+        updateWordsBtn();
+        buildFCDeck();
+      }
+      function updateWordsBtn() {
+        var btn = document.getElementById('fc-words-btn');
+        btn.textContent = includeWords ? '+ WORDS: ON' : '+ WORDS: OFF';
+        btn.classList.toggle('on', includeWords);
+        btn.setAttribute('aria-pressed', includeWords ? 'true' : 'false');
       }
 
       function updateKnownBtn() {
@@ -332,14 +367,14 @@
         document.querySelectorAll('.mode-panel').forEach(function(p) { p.classList.remove('active'); });
         document.getElementById('panel-' + mode).classList.add('active');
         var sw = document.getElementById('search-wrap');
-        if (mode === 'A') {
-          sw.style.display = '';
-        } else {
-          sw.style.display = 'none';
-          document.getElementById('search-input').value = '';
-          searchQuery = '';
-          document.getElementById('search-results').style.display = 'none';
-        }
+        var si = document.getElementById('search-input');
+        sw.style.display = (mode === 'A' || mode === 'W') ? '' : 'none';
+        si.placeholder = mode === 'W' ? 'SEARCH WORDS...' : 'SEARCH TOPICS...';
+        si.value = '';
+        searchQuery = '';
+        document.getElementById('search-results').style.display = 'none';
+        document.getElementById('a-overview').style.display = '';
+        if (mode === 'W') renderWords();
         if (mode === 'C') buildFCDeck();
       }
 
@@ -355,12 +390,14 @@
           document.getElementById('search-results').style.display = 'none';
           closeSubject(); renderModeAOverview();
         }
+        if (currentMode === 'W') renderWords();
         if (currentMode === 'C') buildFCDeck();
       }
 
       // ── Search ─────────────────────────────────────
       function doSearch(q) {
         searchQuery = q.trim().toLowerCase();
+        if (currentMode === 'W') { renderWords(); return; }
         if (!searchQuery) {
           document.getElementById('search-results').style.display = 'none';
           document.getElementById('a-overview').style.display = '';
@@ -464,6 +501,37 @@
       }
 
       // ══════════════════════════════════════════════
+      //  MODE W — science words
+      // ══════════════════════════════════════════════
+      function renderWords() {
+        var list = WORDS['HS'].filter(function(w) {
+          if (currentSubject !== 'ALL' && w.subject !== currentSubject) return false;
+          if (!searchQuery) return true;
+          return (w.term + ' ' + w.parts + ' ' + w.def).toLowerCase().indexOf(searchQuery) !== -1;
+        });
+        var wrap = document.getElementById('w-list');
+        if (!list.length) {
+          wrap.innerHTML = '<p style="text-align:center;color:var(--muted);font-size:0.78rem;letter-spacing:0.15em;padding:2rem 0">NO MATCHES FOUND</p>';
+          return;
+        }
+        var html = (searchQuery ? '<p class="search-count">' + list.length + ' RESULT' + (list.length !== 1 ? 'S' : '') + '</p>' : '') + '<div class="a-concepts-grid">';
+        list.forEach(function(w, i) {
+          var color = CONCEPTS[w.subject] ? CONCEPTS[w.subject].color : 'var(--text)';
+          var uid = 'w' + i;
+          html += '<div class="a-concept-card" id="acd-' + uid + '">' +
+            '<div class="a-concept-term-row" onclick="toggleACard(\'acd-' + uid + '\')">' +
+              '<span class="w-term-wrap"><span class="a-concept-term-text" style="color:' + color + '">' + w.term.toUpperCase() + '</span>' +
+              '<span class="w-parts">' + w.parts + '</span></span>' +
+              (currentSubject === 'ALL' ? '<span style="font-size:0.58rem;letter-spacing:0.16em;color:' + color + ';opacity:0.75;flex-shrink:0">' + w.subject.toUpperCase() + '</span>' : '') +
+              '<span class="a-concept-arrow">▶</span>' +
+            '</div>' +
+            '<div class="a-concept-def">' + w.def + '</div>' +
+          '</div>';
+        });
+        wrap.innerHTML = html + '</div>';
+      }
+
+      // ══════════════════════════════════════════════
       //  MODE C
       // ══════════════════════════════════════════════
       function buildFCDeck() {
@@ -477,6 +545,12 @@
         source.forEach(function(card) {
           fcDeck.push({ subject: card.subject, concept: { term: card.term, def: card.def }, color: CONCEPTS[card.subject] ? CONCEPTS[card.subject].color : 'var(--magenta)' });
         });
+        if (includeWords) {
+          WORDS['HS'].forEach(function(w) {
+            if (currentSubject !== 'ALL' && w.subject !== currentSubject) return;
+            fcDeck.push({ subject: w.subject, isWord: true, parts: w.parts, concept: { term: w.term, def: w.def }, color: CONCEPTS[w.subject] ? CONCEPTS[w.subject].color : 'var(--magenta)' });
+          });
+        }
         for (var i = fcDeck.length - 1; i > 0; i--) {
           var j = Math.floor(Math.random() * (i + 1)), tmp = fcDeck[i]; fcDeck[i] = fcDeck[j]; fcDeck[j] = tmp;
         }
@@ -488,7 +562,8 @@
         var card = fcDeck[fcIndex], color = card.color;
 
         var badge = document.getElementById('fc-badge');
-        badge.textContent = card.subject.toUpperCase();
+        badge.textContent = card.subject.toUpperCase() + (card.isWord ? ' · WORD' : '');
+        document.getElementById('fc-parts').textContent = card.isWord ? card.parts : '';
         badge.style.color = color; badge.style.borderColor = color; badge.style.textShadow = '0 0 8px ' + color;
 
         var termEl = document.getElementById('fc-term');
@@ -543,6 +618,7 @@
 
       // ── Init ──────────────────────────────────────
       loadKnown();
+      updateWordsBtn();
       renderModeAOverview();
       buildFCDeck();
 

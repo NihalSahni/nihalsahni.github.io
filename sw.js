@@ -1,4 +1,4 @@
-﻿const CACHE = 'sbcn-v14';
+﻿const CACHE = 'sbcn-v15';
 const ASSETS = [
   '/',
   '/index.html',
@@ -20,6 +20,7 @@ const ASSETS = [
   '/question.js',
   '/Practice.js',
   '/Flashcards.js',
+  '/Words.js',
   '/Learn.js',
   '/Buzzer.js',
   'https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap'
