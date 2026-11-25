@@ -54,6 +54,23 @@
         min-height: 1.5em;
       }
 
+      .start-tour {
+        display: inline-block;
+        margin-top: 1.1rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        color: var(--cyan);
+        text-decoration: none;
+        border: 1px solid color-mix(in srgb, var(--cyan) 40%, transparent);
+        padding: 0.45rem 1rem;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      .start-tour:hover {
+        text-shadow: 0 0 10px var(--cyan);
+        background: color-mix(in srgb, var(--cyan) 8%, transparent);
+      }
+
       .briefing {
         max-width: 680px;
         margin: 2rem auto;
@@ -362,6 +379,7 @@
           </button>
         </div>
         <button type="button" class="level-ask-skip" data-pick="skip">NOT SURE YET — LET ME LOOK AROUND</button>
+        <a href="/Start/" class="level-ask-tour" id="level-ask-tour">FIRST TIME HERE? TAKE THE 1-MINUTE TOUR →</a>
         <p class="level-ask-note">You can change your level any time in ⚙ Settings.</p>
       </div>
     </div>
@@ -372,6 +390,8 @@
       </p>
       <h1 class="hero-title">Science Bowl<br />Study &amp; Practice</h1>
       <p class="hero-sub" id="hero-sub"></p>
+      <!-- Points new visitors at the tour; hidden once they've opened it. -->
+      <a href="/Start/" class="start-tour" id="start-tour">NEW HERE? TAKE THE 1-MINUTE TOUR →</a>
     </div>
 
     <div class="briefing hud-panel">
@@ -535,6 +555,16 @@
         }
       }
       typeLine();
+
+      // Going to the tour from the level pop-up counts as answering it, so the
+      // pop-up doesn't come back when they return. The tour's first step covers
+      // picking a level.
+      document.getElementById('level-ask-tour').addEventListener('click', function () {
+        try { if (window.SBSettings) SBSettings.set('levelAsked', true); } catch (e) {}
+      });
+
+      // Hide the tour link for people who have already seen the tour.
+      try { if (window.SBSettings && SBSettings.get('tourSeen')) document.getElementById('start-tour').style.display = 'none'; } catch (e) {}
 
       // Streak display
       (function() {

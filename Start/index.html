@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="New to Science Bowl Practice? A quick tour of the free tools: study guides, timed quizzes, a buzzer trainer, progress tracking, and online matches." />
+    <link rel="canonical" href="https://sciencebowlpractice.org/Start/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sciencebowlpractice.org/Start/" />
+    <meta property="og:site_name" content="Science Bowl Practice" />
+    <meta property="og:title" content="Start Here — Science Bowl Practice" />
+    <meta property="og:description" content="A quick tour of the free Science Bowl study tools on this site, and the best order to try them in." />
+    <meta property="og:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sciencebowlpractice.org/og-image.jpg" />
+    <meta name="twitter:title" content="Start Here — Science Bowl Practice" />
+    <meta name="twitter:description" content="A quick tour of the free Science Bowl study tools on this site, and the best order to try them in." />
+    <title>Start Here — Science Bowl Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/settings.js"></script>
+    <style>
+      .page-wrap { max-width: 720px; margin: 0 auto; padding: 0 1rem 4rem; }
+      .page-header { padding: 2rem 0 1rem; text-align: center; }
+      .back-link { display: inline-block; font-size: 0.78rem; letter-spacing: 0.22em; color: var(--cyan); text-decoration: none; margin-bottom: 1rem; border: 1px solid color-mix(in srgb, var(--cyan) 33%, transparent); padding: 0.3rem 0.8rem; border-radius: 2px; transition: all 0.2s; }
+      .back-link:hover { text-shadow: 0 0 12px var(--cyan); border-color: var(--cyan); background: color-mix(in srgb, var(--cyan) 7%, transparent); }
+      .page-title { font-size: clamp(1.8rem, 5vw, 3rem); color: var(--cyan); margin: 0.25rem 0; }
+      .page-sub { font-size: 0.68rem; letter-spacing: 0.3em; color: var(--muted); margin-top: 0.4rem; }
+      .intro { color: var(--text); line-height: 1.85; font-size: 0.88rem; text-align: center; margin: 1.5rem auto 2.25rem; max-width: 600px; }
+
+      .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.8rem; counter-reset: step; }
+      .step { display: flex; gap: 1rem; align-items: flex-start; background: var(--surface); border: 1px solid color-mix(in srgb, var(--c) 27%, transparent); border-radius: 4px; padding: 1rem 1.1rem; }
+      .step-num { flex-shrink: 0; width: 2rem; height: 2rem; border: 1px solid var(--c); color: var(--c); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; text-shadow: 0 0 8px var(--c); }
+      .step-body { flex: 1; min-width: 0; }
+      .step h2 { font-size: 0.95rem; letter-spacing: 0.12em; color: var(--c); margin: 0.2rem 0 0.4rem; }
+      .step p { font-size: 0.8rem; line-height: 1.75; color: var(--muted); margin: 0 0 0.7rem; }
+      .step-btn { display: inline-block; font-size: 0.68rem; letter-spacing: 0.18em; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); padding: 0.4rem 0.9rem; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+      .step-btn:hover { background: color-mix(in srgb, var(--c) 10%, transparent); text-shadow: 0 0 8px var(--c); }
+      .step-btn + .step-btn { margin-left: 0.5rem; }
+
+      .more { text-align: center; font-size: 0.75rem; line-height: 1.9; color: var(--muted); margin: 2.25rem auto 0; max-width: 560px; }
+      .more a { color: var(--cyan); }
+
+      footer { text-align: center; font-size: 0.62rem; letter-spacing: 0.15em; color: color-mix(in srgb, var(--muted) 53%, transparent); padding: 2rem 0; }
+
+      @media (max-width: 600px) {
+        .step { padding: 0.9rem; gap: 0.75rem; }
+        .step-btn + .step-btn { margin-left: 0; margin-top: 0.5rem; }
+        .step-btn { display: inline-block; }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="starfield"></canvas>
+    <div id="scanlines"></div>
+
+    <div class="page-wrap">
+      <div class="page-header">
+        <a href="/" class="back-link">← HOME</a>
+        <h1 class="page-title">START HERE</h1>
+        <p class="page-sub">A ONE-MINUTE TOUR OF THE SITE</p>
+      </div>
+
+      <p class="intro">
+        Science Bowl Practice is free, needs no account, and uses real questions
+        from official National Science Bowl sets. Here's what each tool does and
+        a good order to try them in.
+      </p>
+
+      <ol class="steps">
+        <li class="step" style="--c: var(--cyan)">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <h2>PICK YOUR LEVEL</h2>
+            <p>Choose middle school or high school once, and every tool opens on your level. <span id="level-now"></span></p>
+            <a href="/Settings/" class="step-btn">OPEN SETTINGS →</a>
+          </div>
+        </li>
+        <li class="step" style="--c: var(--green)">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <h2>STUDY THE TOPICS</h2>
+            <p>Read short guides and flip through flashcards for all six subjects: biology, chemistry, physics, earth and space, energy, and math.</p>
+            <a href="/LearnTopics/" data-level-link="/LearnTopics-{L}/" class="step-btn">START STUDYING →</a>
+          </div>
+        </li>
+        <li class="step" style="--c: var(--magenta)">
+          <span class="step-num">3</span>
+          <div class="step-body">
+            <h2>TAKE A PRACTICE QUIZ</h2>
+            <p>Answer timed questions in the real W/X/Y/Z format, then review the ones you missed.</p>
+            <a href="/Practice/" class="step-btn">START PRACTICING →</a>
+          </div>
+        </li>
+        <li class="step" style="--c: #f5a623">
+          <span class="step-num">4</span>
+          <div class="step-body">
+            <h2>TRAIN YOUR BUZZER</h2>
+            <p>Knowing the answer isn't enough; you have to buzz first. Practice your reaction time here.</p>
+            <a href="/Buzzer/" class="step-btn">TRY THE BUZZER →</a>
+          </div>
+        </li>
+        <li class="step" style="--c: #f5c542">
+          <span class="step-num">5</span>
+          <div class="step-body">
+            <h2>CHECK YOUR PROGRESS</h2>
+            <p>See your accuracy by subject so you know what to study next. It saves in your browser automatically.</p>
+            <a href="/Progress/" class="step-btn">VIEW PROGRESS →</a>
+          </div>
+        </li>
+        <li class="step" style="--c: #ff6b6b">
+          <span class="step-num">6</span>
+          <div class="step-body">
+            <h2>PRACTICE WITH YOUR TEAM</h2>
+            <p>Play live buzzer matches with friends online, or print a practice test for team meetings.</p>
+            <a href="/Online/" class="step-btn">PLAY ONLINE →</a>
+            <a href="/PrintableTest/" class="step-btn">PRINT A TEST →</a>
+          </div>
+        </li>
+      </ol>
+
+      <p class="more">
+        Want to look up a specific question? Use <a href="/Browse/">Browse</a>.
+        New to Science Bowl itself? The <a href="/FAQ/">FAQ</a> explains the rules,
+        scoring, and how to join a team.
+      </p>
+
+      <footer>Science Bowl Practice &nbsp;·&nbsp; TRAIN HARD. BUZZ FAST. WIN.</footer>
+    </div>
+
+    <script>
+      // Remember that the tour was seen, so the home page stops pointing here.
+      try { if (window.SBSettings) SBSettings.set('tourSeen', true); } catch (e) {}
+    </script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js',{scope:'/'});</script>
+    <script src="/level.js"></script>
+    <script>
+      // Show which level is saved right now, if any.
+      (function () {
+        var el = document.getElementById('level-now');
+        if (!el || !window.SBLevel) return;
+        var lvl = SBLevel.get();
+        el.textContent = lvl ? 'Right now it\'s set to ' + SBLevel.label(lvl).toLowerCase() + '.' : '';
+      })();
+    </script>
+    <script src="/starfield.js"></script>
+  </body>
+</html>

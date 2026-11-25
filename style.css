@@ -1069,6 +1069,25 @@ input[type="range"]:focus-visible {
 
 .level-ask-skip:hover { color: var(--cyan); }
 
+.level-ask-tour {
+  display: block;
+  width: fit-content;
+  margin: 0.6rem auto 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--cyan) 40%, transparent);
+  border-radius: 2px;
+  padding: 0.4rem 0.8rem;
+  transition: all 0.2s;
+}
+
+.level-ask-tour:hover {
+  text-shadow: 0 0 8px var(--cyan);
+  background: color-mix(in srgb, var(--cyan) 8%, transparent);
+}
+
 @media (max-width: 400px) {
   .level-ask-btns { grid-template-columns: 1fr; }
 }
