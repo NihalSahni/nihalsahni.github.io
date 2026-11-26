@@ -131,6 +131,9 @@
     .bank-table tbody th { font-weight: normal; color: var(--muted); }
     .bank-table td { color: var(--text); }
     .bank-table tfoot th, .bank-table tfoot td { color: var(--text); border-bottom: none; }
+    .sample-note { font-size: 0.74rem; color: var(--muted); line-height: 1.6; margin: 0.4rem 0 0.8rem; text-align: center; }
+    .sample-row { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; align-items: center; margin-bottom: 0.5rem; }
+    .sample-lvl { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); width: 100%; text-align: center; margin-top: 0.3rem; }
   </style>
   <script type="application/ld+json">
   {
@@ -218,6 +221,12 @@
       </div>
     </div>
 
+    <div class="hud-panel sample-panel" style="margin-bottom:1.5rem">
+      <div class="panel-label">QUESTIONS WITH ANSWERS EXPLAINED</div>
+      <p class="sample-note">15 hand-picked questions per subject, each with a short explanation of why the answer is right.</p>
+      <div class="sample-row"><span class="sample-lvl">HIGH SCHOOL</span><a href="/questions/high-school-biology/" class="related-link-pill" style="--c:var(--magenta)">BIOLOGY</a> <a href="/questions/high-school-chemistry/" class="related-link-pill" style="--c:var(--magenta)">CHEMISTRY</a> <a href="/questions/high-school-physics/" class="related-link-pill" style="--c:var(--magenta)">PHYSICS</a> <a href="/questions/high-school-earth-science/" class="related-link-pill" style="--c:var(--magenta)">EARTH SCIENCE</a> <a href="/questions/high-school-energy/" class="related-link-pill" style="--c:var(--magenta)">ENERGY</a> <a href="/questions/high-school-math/" class="related-link-pill" style="--c:var(--magenta)">MATH</a></div>
+      <div class="sample-row"><span class="sample-lvl">MIDDLE SCHOOL</span><a href="/questions/middle-school-biology/" class="related-link-pill" style="--c:var(--cyan)">BIOLOGY</a> <a href="/questions/middle-school-chemistry/" class="related-link-pill" style="--c:var(--cyan)">CHEMISTRY</a> <a href="/questions/middle-school-physics/" class="related-link-pill" style="--c:var(--cyan)">PHYSICS</a> <a href="/questions/middle-school-earth-science/" class="related-link-pill" style="--c:var(--cyan)">EARTH SCIENCE</a> <a href="/questions/middle-school-energy/" class="related-link-pill" style="--c:var(--cyan)">ENERGY</a> <a href="/questions/middle-school-math/" class="related-link-pill" style="--c:var(--cyan)">MATH</a></div>
+    </div>
     <div class="count-line" id="count-line">SHOWING <span id="count-num">0</span> QUESTIONS</div>
 
     <div class="q-list" id="q-list"></div>
