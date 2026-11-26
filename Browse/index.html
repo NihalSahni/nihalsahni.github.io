@@ -119,6 +119,18 @@
       .filter-panel { gap: 1rem; }
       .search-wrap { min-width: 100%; }
     }
+    .browse-intro { max-width: 680px; margin: 0 auto 1.5rem; text-align: center; font-size: 0.84rem; line-height: 1.8; color: var(--text); }
+    .browse-about { margin-top: 2.5rem; }
+    .browse-about h2 { font-size: 0.95rem; letter-spacing: 0.14em; color: var(--cyan); margin: 1.4rem 0 0.5rem; text-shadow: none; }
+    .browse-about p { font-size: 0.8rem; line-height: 1.8; color: var(--muted); margin: 0 0 0.8rem; }
+    .browse-about a { color: var(--cyan); }
+    .bank-table-wrap { overflow-x: auto; margin: 0.5rem 0 1rem; }
+    .bank-table { border-collapse: collapse; width: 100%; min-width: 360px; font-size: 0.76rem; }
+    .bank-table th, .bank-table td { text-align: left; padding: 0.4rem 0.8rem 0.4rem 0; border-bottom: 1px solid color-mix(in srgb, var(--muted) 15%, transparent); }
+    .bank-table thead th { font-size: 0.62rem; font-weight: normal; letter-spacing: 0.16em; color: var(--cyan); }
+    .bank-table tbody th { font-weight: normal; color: var(--muted); }
+    .bank-table td { color: var(--text); }
+    .bank-table tfoot th, .bank-table tfoot td { color: var(--text); border-bottom: none; }
   </style>
   <script type="application/ld+json">
   {
@@ -158,6 +170,12 @@
       <h1 class="page-title">BROWSE QUESTIONS</h1>
       <p class="page-sub">// TAP A QUESTION TO REVEAL THE ANSWER //</p>
     </div>
+    <p class="browse-intro">
+      Read through more than 2,400 real Science Bowl questions from official
+      National Science Bowl sets, for both middle school and high school.
+      Pick a level and subject, search for a keyword, and tap any question to
+      check your answer. It's the fastest way to see what each subject really asks.
+    </p>
 
     <div class="related-links-panel" style="margin-top:0;margin-bottom:1.5rem">
       <div class="related-links-row">
@@ -203,6 +221,43 @@
     <div class="count-line" id="count-line">SHOWING <span id="count-num">0</span> QUESTIONS</div>
 
     <div class="q-list" id="q-list"></div>
+
+    <section class="hud-panel browse-about" aria-labelledby="about-bank">
+      <div class="panel-label" id="about-bank">ABOUT THIS QUESTION BANK</div>
+      <p>
+        Every question here comes from official National Science Bowl question
+        sets released by the U.S. Department of Energy, so the wording and
+        difficulty match what you'll hear at a real regional competition.
+        Multiple-choice questions use the official W, X, Y, Z answer letters,
+        and the rest are short answer, just like toss-ups and bonuses in a match.
+      </p>
+      <h2>Questions by subject</h2>
+      <div class="bank-table-wrap">
+        <table class="bank-table">
+          <thead><tr><th scope="col">Subject</th><th scope="col">Middle school</th><th scope="col">High school</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Biology</th><td>226</td><td>260</td></tr>
+            <tr><th scope="row">Chemistry</th><td>84</td><td>220</td></tr>
+            <tr><th scope="row">Physics</th><td>162</td><td>218</td></tr>
+            <tr><th scope="row">Earth &amp; Space</th><td>284</td><td>194</td></tr>
+            <tr><th scope="row">Energy</th><td>90</td><td>154</td></tr>
+            <tr><th scope="row">Math</th><td>311</td><td>240</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Total</th><td>1,157</td><td>1,286</td></tr></tfoot>
+        </table>
+      </div>
+      <h2>How to use it</h2>
+      <p>
+        Browsing works best for getting a feel for a subject before you drill it.
+        Read a few dozen questions, note the facts that keep coming up, then test
+        yourself under time pressure in <a href="/Practice/">Practice</a> or train
+        your reaction speed on the <a href="/Buzzer/">Buzzer</a>. Coaches can turn
+        the same questions into a paper set with <a href="/PrintableTest/">Printable Test</a>.
+      </p>
+      <h2>Study the concepts behind the questions</h2>
+      <p>High school: <a href="/topics/high-school-biology/">Biology</a>, <a href="/topics/high-school-chemistry/">Chemistry</a>, <a href="/topics/high-school-physics/">Physics</a>, <a href="/topics/high-school-earth-science/">Earth Science</a>, <a href="/topics/high-school-energy/">Energy</a>, <a href="/topics/high-school-math/">Math</a>.</p>
+      <p>Middle school: <a href="/topics/middle-school-biology/">Biology</a>, <a href="/topics/middle-school-chemistry/">Chemistry</a>, <a href="/topics/middle-school-physics/">Physics</a>, <a href="/topics/middle-school-earth-science/">Earth Science</a>, <a href="/topics/middle-school-energy/">Energy</a>, <a href="/topics/middle-school-math/">Math</a>.</p>
+    </section>
   </div>
 
   <script src="/question.js"></script>
