@@ -415,6 +415,12 @@ ${choices.map(([l, t]) => `            <li><span class="sq-letter">${l})</span> 
   return `<!doctype html>
 <html lang="en">
   <head>
+<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-5RJ8BLLJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
